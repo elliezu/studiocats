@@ -152,8 +152,8 @@ footer nav{display:flex;align-items:center;gap:22px;font-size:10.5px;letter-spac
 <main><div class="wrap">
   <div class="secHead"><div><div class="kicker">04 / SECTION</div><h1 class="big">APPS</h1>
   <p class="lead">3D 에셋을 만들며 필요해서 함께 만든 애드온과 데스크톱 도구. 무료 배포이거나 판매 페이지로 연결됩니다.</p></div>
-  <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#8C8778;text-align:right"><div>3 tools</div><div style="margin-top:5px">Superhive · GitHub</div></div></div>
-  <div class="chips"><button type="button" class="chip on" data-filter="all" aria-pressed="true">All 3</button><button type="button" class="chip" data-filter="windows" aria-pressed="false">Windows 1</button><button type="button" class="chip" data-filter="blender" aria-pressed="false">Blender 2</button><button type="button" class="chip" data-filter="unity" aria-pressed="false">Unity 0</button><button type="button" class="chip" data-filter="comfyui" aria-pressed="false">ComfyUI 0</button></div>
+  <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#8C8778;text-align:right"><div>4 tools</div><div style="margin-top:5px">Superhive · GitHub</div></div></div>
+  <div class="chips"><button type="button" class="chip on" data-filter="all" aria-pressed="true">All 4</button><button type="button" class="chip" data-filter="windows" aria-pressed="false">Windows 1</button><button type="button" class="chip" data-filter="blender" aria-pressed="false">Blender 2</button><button type="button" class="chip" data-filter="unity" aria-pressed="false">Unity 0</button><button type="button" class="chip" data-filter="comfyui" aria-pressed="false">ComfyUI 0</button><button type="button" class="chip" data-filter="ai" aria-pressed="false">AI Tools 1</button></div>
 <p class="emptynote" style="display:none">준비 중입니다.</p>
   <article class="row app" data-group="windows" style="grid-template-columns:minmax(160px,220px) minmax(240px,1fr) minmax(170px,200px);padding:22px 0">
   <button type="button" class="thumb" data-full="../uploads/app-pawstick01.png" data-title="PawStick" aria-label="PawStick 크게 보기" style="aspect-ratio:16/10;overflow:hidden;border:1px solid #DCD9D1;background:#E9E7E1;display:block;padding:0;cursor:zoom-in;width:100%"><img src="../uploads/app-pawstick01.png" alt="PawStick" style="width:100%;height:100%;object-fit:cover"></button>
@@ -187,6 +187,21 @@ footer nav{display:flex;align-items:center;gap:22px;font-size:10.5px;letter-spac
   <div style="display:flex;flex-direction:column;gap:7px">
     <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#102848">JPY 500 · BOOTH</div>
     <a class="cta" href="https://studiocats.booth.pm/items/8043450" target="_blank" rel="noopener"><span>Go to shop</span><span>↗</span></a>
+  </div></article>
+<article class="row app" data-group="ai" style="grid-template-columns:minmax(160px,220px) minmax(240px,1fr) minmax(170px,200px);padding:22px 0">
+  <div style="aspect-ratio:16/10;border:1px solid #DCD9D1;background:#0B1526;display:flex;flex-direction:column;justify-content:center;gap:7px;padding:18px 20px;overflow:hidden">
+    <div style="font-family:ui-monospace,'Cascadia Mono',Consolas,monospace;font-size:10.5px;line-height:1.7;color:rgba(241,239,234,.55)">&gt; 프로젝트 정보 알려줘</div>
+    <div style="font-family:ui-monospace,'Cascadia Mono',Consolas,monospace;font-size:10.5px;line-height:1.7;color:rgba(241,239,234,.55)">&gt; 레이어 구조 보여줘</div>
+    <div style="font-family:ui-monospace,'Cascadia Mono',Consolas,monospace;font-size:10.5px;line-height:1.7;color:#D88830">&gt; 모든 텍스처셋에 Fill Layer 만들어줘</div>
+  </div>
+  <div>
+    <div style="display:flex;align-items:baseline;gap:11px;flex-wrap:wrap"><h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;letter-spacing:-.015em"><a href="https://github.com/elliezu/SubstancePainterMCP" target="_blank" rel="noopener">Substance Painter MCP</a></h3><span style="font-size:10.5px;letter-spacing:.14em;color:#B06A18">★ 7</span><span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8C8778">Substance Painter 2021.1+</span></div>
+    <p class="body" style="margin:9px 0 0;max-width:620px">Claude가 Substance Painter를 직접 제어할 수 있게 해주는 MCP 서버. 레이어 구조를 읽고, Fill Layer와 그룹을 만들고, 여러 텍스처셋에 일괄로 적용합니다. 텍스처 작업에서 반복되는 손을 덜어내려고 만들었습니다.</p>
+    <p style="font-size:11px;color:#5C6A82;margin:8px 0 0">MCP 서버 · Python 3.9+ · 소스 공개</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:7px">
+    <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#B06A18">Free · Open source</div>
+    <a class="cta" href="https://github.com/elliezu/SubstancePainterMCP" target="_blank" rel="noopener"><span>GitHub</span><span>↗</span></a>
   </div></article>
 </div></main>
 <footer><div class="wrap in">
@@ -235,7 +250,7 @@ footer nav{display:flex;align-items:center;gap:22px;font-size:10.5px;letter-spac
   var init = 'all';
   try {
     var q = new URLSearchParams(location.search).get('filter');
-    if (q && ['windows','blender','unity','comfyui'].indexOf(q) > -1) init = q;
+    if (q && ['windows','blender','unity','comfyui','ai'].indexOf(q) > -1) init = q;
   } catch(e){}
   apply(init);
 })();

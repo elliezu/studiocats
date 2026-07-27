@@ -1,59 +1,1513 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>StudioCats</title>
-<meta name="robots" content="noindex">
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    font-family:system-ui,-apple-system,sans-serif;
-    background:#FAF7F2;
-    color:#1B2A4A;
-    display:grid;
-    place-content:center;
-    text-align:center;
-    padding:24px;
-  }
-  h1{
-    font-size:clamp(28px,6vw,44px);
-    font-weight:700;
-    letter-spacing:-.02em;
-  }
-  .tag{
-    margin-top:10px;
-    font-size:11px;
-    letter-spacing:.22em;
-    color:#B8873F;
-    text-transform:uppercase;
-  }
-  .line{
-    width:44px;height:1px;
-    background:#1B2A4A;
-    opacity:.25;
-    margin:28px auto;
-  }
-  p{font-size:13px;line-height:1.9;color:#5A6580}
-  code{
-    font-family:ui-monospace,monospace;
-    font-size:12px;
-    background:rgba(27,42,74,.07);
-    padding:2px 6px;
-    border-radius:2px;
-  }
-</style>
+<script src="./support.js"></script>
 </head>
 <body>
-  <div>
-    <h1>StudioCats</h1>
-    <div class="tag">3D Art &amp; Design</div>
-    <div class="line"></div>
-    <p>
-      포트폴리오 준비 중이야.<br>
-      배포 확인용 임시 페이지 — <code>index.html</code>
-    </p>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; background: #F8F8F6; overflow-x: hidden; }
+  body { font-family: 'Archivo Narrow', sans-serif; color: #102848; -webkit-font-smoothing: antialiased; }
+  a { color: #102848; text-decoration: none; }
+  a:hover { color: #D88830; }
+  ::selection { background: #D88830; color: #F8F8F6; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; background:#F8F8F6;">
+
+  <!-- ============ HEADER ============ -->
+  <div style="position:sticky; top:0; z-index:50; background:{{ headerBg }}; border-bottom:1px solid {{ headerLine }};">
+    <div style="max-width:1400px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:{{ padHeader }};">
+      <div onClick="{{ goHome }}" style="display:flex; align-items:center; gap:12px; cursor:pointer; flex:0 0 auto;">
+        <div style="width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:{{ markPlate }}; border:1px solid {{ markPlateLine }};">
+          <img src="uploads/logo_img.png" alt="StudioCats" style="height:40px; width:auto; display:block;">
+        </div>
+      </div>
+
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ toggleMenu }}" style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:{{ navStrong }};">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <div style="width:22px; height:1px; background:{{ navStrong }};"></div>
+            <div style="width:22px; height:1px; background:{{ navStrong }};"></div>
+            <div style="width:22px; height:1px; background:{{ navStrong }};"></div>
+          </div>
+          <div>{{ menuLabel }}</div>
+        </div>
+      </sc-if>
+      <div style="display:{{ deskNavDisplay }}; align-items:center; gap:{{ headGap }}; min-width:0; flex:1 1 auto; justify-content:flex-end;">
+        <div style="display:flex; gap:{{ navGap }}; font-size:{{ navSize }}; font-weight:600; letter-spacing:{{ navTrack }}; text-transform:uppercase; white-space:nowrap; min-width:0;">
+          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+            <div onClick="{{ n.open }}" style="cursor:pointer; color:{{ n.color }}; padding-bottom:2px; border-bottom:1px solid {{ n.line }};">{{ n.label }}</div>
+          </sc-for>
+        </div>
+        <div style="width:1px; height:16px; background:{{ headerLine }}; flex:0 0 auto;"></div>
+        <div style="display:flex; gap:{{ navGap }}; font-size:{{ navSize }}; letter-spacing:{{ navTrack }}; text-transform:uppercase; color:{{ navMuted }}; white-space:nowrap; align-items:center;">
+          <div onClick="{{ goAbout }}" style="cursor:pointer;">{{ aboutLabel }}</div>
+          <div style="color:{{ navStrong }}; text-transform:none; letter-spacing:.04em; cursor:default;">yzoo2@naver.com</div>
+        </div>
+        <div style="display:flex; gap:8px; font-size:11px; letter-spacing:.12em; color:{{ navMuted }}; white-space:nowrap;">
+          <div onClick="{{ setEn }}" style="cursor:pointer; color:{{ langEn }}; font-weight:600;">EN</div>
+          <div onClick="{{ setKo }}" style="cursor:pointer; color:{{ langKo }};">KO</div>
+          <div onClick="{{ setJa }}" style="cursor:pointer; color:{{ langJa }};">JA</div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="border-top:1px solid {{ headerLine }}; padding:14px 18px 20px; display:flex; flex-direction:column; gap:1px; background:{{ headerLine }};">
+        <sc-for list="{{ navItemsFull }}" as="n" hint-placeholder-count="5">
+          <div onClick="{{ n.open }}" style="background:{{ menuItemBg }}; padding:14px 4px; display:flex; align-items:baseline; gap:10px; cursor:pointer;">
+            <div style="font-size:10px; letter-spacing:.18em; color:{{ navMuted }};">{{ n.no }}</div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:19px; letter-spacing:-.015em; color:{{ n.color }};">{{ n.title }}</div>
+          </div>
+        </sc-for>
+        <div style="background:{{ menuItemBg }}; padding:14px 4px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+          <div style="display:flex; gap:16px; font-size:11px; letter-spacing:.14em; color:{{ navMuted }}; align-items:center; flex-wrap:wrap;">
+            <div onClick="{{ goAbout }}" style="cursor:pointer; text-transform:uppercase; letter-spacing:.18em;">About</div>
+            <div style="color:{{ navStrong }}; cursor:default;">yzoo2@naver.com</div>
+          </div>
+          <div style="display:flex; gap:9px; font-size:11px; letter-spacing:.14em; color:{{ navMuted }};">
+            <div onClick="{{ setEn }}" style="cursor:pointer; color:{{ langEn }}; font-weight:600;">EN</div>
+            <div onClick="{{ setKo }}" style="cursor:pointer; color:{{ langKo }};">KO</div>
+            <div onClick="{{ setJa }}" style="cursor:pointer; color:{{ langJa }};">JA</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
   </div>
+
+  <!-- ============ HOME ============ -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div style="position:relative; height:{{ homeH }}; min-height:0; overflow:hidden; background:#F8F8F6; display:flex; flex-direction:column;">
+      <canvas ref="{{ meshA }}" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></canvas>
+      <div style="position:absolute; inset:0; background:radial-gradient(120% 82% at 50% 42%, rgba(248,248,246,0) 26%, rgba(248,248,246,.9) 76%);"></div>
+
+      <div style="position:relative; flex:1 1 auto; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; padding:0 56px;">
+        <img src="uploads/StudioCats_wordmark_transparent.png" alt="StudioCats" style="width:480px; max-width:{{ heroMax }}; max-height:34%; height:auto; object-fit:contain;">
+        <div style="font-size:16px; letter-spacing:.02em; color:#22375A; text-align:center;">{{ tagline }}</div>
+      </div>
+
+      <div style="position:relative; flex:0 0 auto; display:grid; grid-template-columns:{{ homeGrid }}; gap:1px; background:#DCD9D1; border-top:1px solid #DCD9D1;">
+        <sc-for list="{{ sections }}" as="s" hint-placeholder-count="5">
+          <div onClick="{{ s.open }}" style="background:#F8F8F6; padding:15px 20px 17px; display:flex; flex-direction:column; gap:16px; cursor:pointer;" style-hover="background:#F1F0EB;">
+            <div style="font-size:10.5px; letter-spacing:.2em; color:#A9A493;">{{ s.no }}</div>
+            <div>
+              <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:16.5px; letter-spacing:-.01em; color:#102848;">{{ s.title }}</div>
+              <div style="font-size:11.5px; color:#5C6A82; margin-top:5px; letter-spacing:.02em;">{{ s.meta }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ 01 ANIMATION STYLE — outfit sets ============ -->
+<!-- ===================== COMING SOON ===================== -->
+<sc-if value="{{ isSoon }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#F8F8F6; max-width:1400px; margin:0 auto; padding:{{ pad }};">
+    <div style="min-height:58vh; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; gap:22px; border-bottom:1px solid #DCD9D1; padding-bottom:70px;">
+      <div style="font-size:11px; letter-spacing:.24em; color:#A9A493;">{{ soonKicker }}</div>
+      <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:{{ h1 }}; line-height:.96; letter-spacing:-.03em; color:#102848;">{{ soonHead }}</div>
+      <div style="font-size:14.5px; line-height:1.75; color:#33465F; max-width:520px; text-wrap:pretty;">{{ soonBody }}</div>
+      <div onclick="{{ goHome }}" style="cursor:pointer; margin-top:8px; display:inline-flex; align-items:center; gap:9px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#102848; border-bottom:1px solid #102848; padding-bottom:3px;">
+        {{ soonBack }}
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+  <sc-if value="{{ isAnim }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F8F8F6; max-width:1400px; margin:0 auto; padding:{{ pad }};">
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; flex-wrap:wrap; border-bottom:1px solid #102848; padding-bottom:18px;">
+        <div style="min-width:0;">
+          <div style="font-size:11px; letter-spacing:.24em; color:#A9A493;">01 / SECTION</div>
+          <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:{{ h1 }}; line-height:.96; letter-spacing:-.03em; color:#102848; margin-top:10px;">{{ secTitle }}</div>
+          <div style="font-size:14px; color:#33465F; margin-top:12px; max-width:600px; text-wrap:pretty;">{{ secDesc }}</div>
+        </div>
+        <div style="display:flex; gap:38px; flex:0 0 auto;">
+          <div><div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:28px; color:#102848; letter-spacing:-.02em;">14</div><div style="font-size:10.5px; letter-spacing:.2em; color:#8C8778; margin-top:4px;">SETS</div></div>
+          <div><div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:28px; color:#102848; letter-spacing:-.02em;">31</div><div style="font-size:10.5px; letter-spacing:.2em; color:#8C8778; margin-top:4px;">AVATARS FITTED</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; padding:16px 0 22px;">
+        <div style="display:flex; gap:7px; flex-wrap:wrap;">
+          <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; padding:7px 13px; background:#102848; color:#F8F8F6;">All sets 14</div>
+          <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; padding:7px 13px; border:1px solid #DCD9D1; color:#33465F; cursor:pointer;" style-hover="border-color:#102848;">Full set</div>
+          <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; padding:7px 13px; border:1px solid #DCD9D1; color:#33465F; cursor:pointer;" style-hover="border-color:#102848;">Outfit only</div>
+          <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; padding:7px 13px; border:1px solid #DCD9D1; color:#33465F; cursor:pointer;" style-hover="border-color:#102848;">Hair</div>
+          <div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; padding:7px 13px; border:1px solid #DCD9D1; color:#33465F; cursor:pointer;" style-hover="border-color:#102848;">Accessory</div>
+        </div>
+        <div style="display:flex; gap:20px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8C8778;">
+          <div style="color:#102848;">Latest</div><div style="cursor:pointer;">Set name A–Z</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:{{ featGrid }}; gap:22px 18px;">
+        <div onClick="{{ openFeatured }}" style="grid-column:{{ featSpan }}; display:flex; flex-direction:column; gap:11px; cursor:pointer; min-width:0;">
+          <div style="position:relative; aspect-ratio:4/3; background:#E9E7E1; border:1px solid #DCD9D1;">
+            <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10.5px; letter-spacing:.2em; color:#B4AF9E;">3D RENDER — SET SHOT</div>
+            <div style="position:absolute; left:12px; top:12px; font-size:10px; letter-spacing:.18em; color:#F8F8F6; background:#102848; padding:4px 8px;">LATEST RELEASE</div>
+            <div style="position:absolute; right:12px; bottom:12px; font-size:10px; letter-spacing:.16em; color:#102848; background:#F8F8F6; border:1px solid #DCD9D1; padding:4px 8px;">▶ TURNTABLE ON HOVER</div>
+          </div>
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+            <div style="min-width:0;">
+              <div style="display:flex; align-items:baseline; gap:9px;">
+                <div style="font-size:10.5px; letter-spacing:.2em; color:#A9A493;">No.06</div>
+                <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:20px; letter-spacing:-.015em; color:#102848;">SUGAR REBEL</div>
+              </div>
+              <div style="font-size:12.5px; color:#33465F; margin-top:5px;">Corset · Layered skirt · Arm warmers · Platform shoes &nbsp;/&nbsp; 8 colorways &nbsp;/&nbsp; 6 avatars</div>
+            </div>
+            <div style="font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#B06A18; white-space:nowrap; border-bottom:1px solid #D88830; padding-bottom:2px;">BOOTH ↗</div>
+          </div>
+        </div>
+        <sc-for list="{{ setsTop }}" as="s" hint-placeholder-count="2">
+          <div onClick="{{ s.open }}" style="display:flex; flex-direction:column; gap:9px; cursor:pointer; min-width:0;">
+            <div style="position:relative; aspect-ratio:1; background:#E9E7E1; border:1px solid #DCD9D1;">
+              <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; letter-spacing:.18em; color:#B4AF9E;">3D RENDER</div>
+              <sc-if value="{{ s.video }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute; right:9px; bottom:9px; font-size:10px; letter-spacing:.16em; color:#102848; background:#F8F8F6; border:1px solid #DCD9D1; padding:3px 6px;">▶</div>
+              </sc-if>
+            </div>
+            <div>
+              <div style="display:flex; align-items:baseline; gap:7px;">
+                <div style="font-size:10px; letter-spacing:.18em; color:#A9A493;">{{ s.no }}</div>
+                <div style="font-family:'Archivo',sans-serif; font-weight:600; font-size:14px; color:#102848; letter-spacing:-.01em;">{{ s.name }}</div>
+              </div>
+              <div style="font-size:11px; color:#5C6A82; margin-top:3px;">{{ s.meta }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:22px 18px; margin-top:26px;">
+        <sc-for list="{{ setsRest }}" as="s" hint-placeholder-count="11">
+          <div onClick="{{ s.open }}" style="display:flex; flex-direction:column; gap:9px; cursor:pointer; min-width:0;">
+            <div style="position:relative; aspect-ratio:1; background:#E9E7E1; border:1px solid #DCD9D1;">
+              <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; letter-spacing:.18em; color:#B4AF9E;">3D RENDER</div>
+              <sc-if value="{{ s.video }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute; right:9px; bottom:9px; font-size:10px; letter-spacing:.16em; color:#102848; background:#F8F8F6; border:1px solid #DCD9D1; padding:3px 6px;">▶</div>
+              </sc-if>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:3px;">
+              <div style="display:flex; align-items:baseline; gap:7px;">
+                <div style="font-size:10px; letter-spacing:.18em; color:#A9A493;">{{ s.no }}</div>
+                <div style="font-family:'Archivo',sans-serif; font-weight:600; font-size:14px; color:#102848; letter-spacing:-.01em;">{{ s.name }}</div>
+              </div>
+              <div style="font-size:11px; color:#5C6A82;">{{ s.meta }}</div>
+              <div style="font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:#B06A18;">BOOTH</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex; justify-content:center; padding:40px 0 68px;">
+        <div style="font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:#102848; border:1px solid #102848; padding:13px 34px; cursor:pointer;" style-hover="background:#102848; color:#F8F8F6;">Load more sets</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ SET DETAIL ============ -->
+  <sc-if value="{{ isSet }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F8F8F6; max-width:1400px; margin:0 auto; padding:{{ padTight }};">
+      <div style="display:flex; align-items:center; gap:10px; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">
+        <div onClick="{{ goAnim }}" style="cursor:pointer;">01 Animation Style</div><div>/</div><div style="color:#102848;">{{ setName }}</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:{{ col2 }}; gap:{{ gap2 }}; margin-top:20px; align-items:start;">
+        <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+          <div style="position:relative; aspect-ratio:4/3; background:#E9E7E1; border:1px solid #DCD9D1;">
+            <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:#B4AF9E;">
+              <div style="width:44px; height:44px; border:1px solid #C6C1B0; display:flex; align-items:center; justify-content:center; font-size:13px; color:#8C8778;">▶</div>
+              <div style="font-size:10.5px; letter-spacing:.2em;">3D RENDER / TURNTABLE</div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:8px;">
+            <sc-for list="{{ setThumbs }}" as="t" hint-placeholder-count="6">
+              <div style="position:relative; aspect-ratio:1; background:#E9E7E1; border:1px solid {{ t.line }}; cursor:pointer;">
+                <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.14em; color:#B4AF9E;">{{ t.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:22px; min-width:0;">
+          <div>
+            <div style="font-size:11px; letter-spacing:.22em; color:#A9A493;">{{ setNo }} — OUTFIT SET</div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:38px; line-height:1.02; letter-spacing:-.03em; color:#102848; margin-top:8px;">{{ setName }}</div>
+            <div style="font-size:14px; line-height:1.6; color:#33465F; margin-top:12px; text-wrap:pretty;">{{ setDesc }}</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:1px; background:#DCD9D1; border-top:1px solid #DCD9D1; border-bottom:1px solid #DCD9D1;">
+            <sc-for list="{{ setSpecs }}" as="r" hint-placeholder-count="6">
+              <div style="display:grid; grid-template-columns:104px 1fr; gap:14px; background:#F8F8F6; padding:10px 0;">
+                <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C8778;">{{ r.k }}</div>
+                <div style="font-size:12.5px; color:#102848;">{{ r.v }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; background:#102848; color:#F8F8F6; padding:14px 17px; cursor:pointer; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;" style-hover="background:#0B1D36;">
+              <div>Buy on BOOTH</div><div>↗</div>
+            </div>
+            <div style="font-size:11px; color:#5C6A82;">Modular Avatar prefab, lilToon materials and PSD source included. Personal + commercial use.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- colorways -->
+      <div style="margin-top:52px; border-top:1px solid #DCD9D1; padding-top:18px;">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px;">
+          <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; color:#102848; letter-spacing:-.01em;">Colorways</div>
+          <div style="font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">8 included</div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px; margin-top:14px;">
+          <sc-for list="{{ colorways }}" as="c" hint-placeholder-count="8">
+            <div style="display:flex; flex-direction:column; gap:7px; min-width:0;">
+              <div style="aspect-ratio:1; background:#E9E7E1; border:1px solid #DCD9D1; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.16em; color:#B4AF9E;">RENDER</div>
+              <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#33465F;">{{ c }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- worn shots -->
+      <div style="margin-top:44px; border-top:1px solid #DCD9D1; padding-top:18px; padding-bottom:64px;">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+          <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; color:#102848; letter-spacing:-.01em;">Worn shots</div>
+          <div style="font-size:11px; color:#5C6A82;">Added whenever models and photos come in — the block grows, the layout stays.</div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; margin-top:14px;">
+          <sc-for list="{{ wornShots }}" as="w" hint-placeholder-count="5">
+            <div style="display:flex; flex-direction:column; gap:7px; min-width:0;">
+              <div style="aspect-ratio:3/4; background:#E9E7E1; border:1px solid #DCD9D1; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.16em; color:#B4AF9E;">{{ w.slot }}</div>
+              <div style="font-size:11px; color:#5C6A82;">{{ w.credit }}</div>
+            </div>
+          </sc-for>
+          <div style="aspect-ratio:3/4; border:1px dashed #C9C4B4; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:#A9A493;">
+            <div style="font-size:18px; font-weight:300;">+</div>
+            <div style="font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;">Empty slot</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ 02 VIRTUAL FASHION — portfolio list ============ -->
+  <sc-if value="{{ isFashion }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#0B1526; color:#F1EFEA;">
+      <div style="max-width:1400px; margin:0 auto; padding:{{ pad }};">
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; flex-wrap:wrap; border-bottom:1px solid rgba(241,239,234,.18); padding-bottom:18px;">
+          <div style="min-width:0;">
+            <div style="font-size:11px; letter-spacing:.24em; color:#D88830;">02 / SECTION</div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:{{ h1 }}; line-height:.96; letter-spacing:-.03em; margin-top:10px;">{{ secTitle }}</div>
+            <div style="font-size:14px; line-height:1.6; color:rgba(241,239,234,.72); margin-top:12px; max-width:600px; text-wrap:pretty;">{{ secDesc }}</div>
+          </div>
+          <div style="display:flex; gap:8px; flex:0 0 auto; flex-wrap:wrap;">
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:7px 13px; background:#F1EFEA; color:#0B1526;">All</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:7px 13px; border:1px solid rgba(241,239,234,.3); cursor:pointer;">Film</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:7px 13px; border:1px solid rgba(241,239,234,.3); cursor:pointer;">3D render</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:7px 13px; border:1px solid rgba(241,239,234,.3); cursor:pointer;">CLO 3D</div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+          <sc-for list="{{ portfolio }}" as="w" hint-placeholder-count="6">
+            <div style="display:grid; grid-template-columns:{{ col2 }}; gap:{{ gap2 }}; padding:30px 0; border-bottom:1px solid rgba(241,239,234,.14); align-items:start; flex:0 0 auto;">
+              <div style="min-width:0;">
+                <div style="position:relative; aspect-ratio:{{ w.ar }}; background:#132540; border:1px solid rgba(241,239,234,.14); overflow:hidden;">
+                  <sc-if value="{{ w.playing }}" hint-placeholder-val="{{ false }}">
+                    <iframe src="{{ w.embed }}" title="Collection film" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen="true" style="position:absolute; inset:0; width:100%; height:100%; border:0;"></iframe>
+                  </sc-if>
+                  <sc-if value="{{ w.idle }}" hint-placeholder-val="{{ true }}">
+                    <div onClick="{{ w.play }}" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:11px; cursor:{{ w.cursor }};">
+                      <sc-if value="{{ w.isFilm }}" hint-placeholder-val="{{ true }}">
+                        <div style="width:46px; height:46px; border:1px solid rgba(241,239,234,.45); display:flex; align-items:center; justify-content:center; font-size:13px; color:#F1EFEA;">▶</div>
+                      </sc-if>
+                      <div style="font-size:10.5px; letter-spacing:.2em; color:rgba(241,239,234,.42);">{{ w.slot }}</div>
+                    </div>
+                  </sc-if>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                <div style="display:flex; align-items:center; gap:11px; flex-wrap:wrap;">
+                  <div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#0B1526; background:#D88830; padding:4px 8px;">{{ w.type }}</div>
+                  <div style="font-size:10.5px; letter-spacing:.18em; color:rgba(241,239,234,.5);">{{ w.date }}</div>
+                </div>
+                <div onClick="{{ w.open }}" style="font-family:'Archivo',sans-serif; font-weight:700; font-size:26px; line-height:1.06; letter-spacing:-.025em; cursor:pointer;" style-hover="color:#D88830">{{ w.title }}</div>
+                <div style="font-size:13.5px; line-height:1.65; color:rgba(241,239,234,.7); max-width:520px; text-wrap:pretty;">{{ w.desc }}</div>
+                <div style="display:flex; flex-direction:column; gap:1px; background:rgba(241,239,234,.14); border-top:1px solid rgba(241,239,234,.14); border-bottom:1px solid rgba(241,239,234,.14); margin-top:2px;">
+                  <sc-for list="{{ w.specs }}" as="r" hint-placeholder-count="3">
+                    <div style="display:grid; grid-template-columns:92px 1fr; gap:12px; background:#0B1526; padding:9px 0;">
+                      <div style="font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:rgba(241,239,234,.5);">{{ r.k }}</div>
+                      <div style="font-size:12px; color:#F1EFEA;">{{ r.v }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div onClick="{{ w.open }}" style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#D88830; cursor:pointer;">Open project ↗</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="height:68px;"></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ 03 3D WORKS — dated archive ============ -->
+  <sc-if value="{{ isWorks }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F1F0EB;">
+      <div style="max-width:1400px; margin:0 auto; padding:{{ pad }};">
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; flex-wrap:wrap; border-bottom:1px solid #102848; padding-bottom:18px;">
+          <div style="min-width:0;">
+            <div style="font-size:11px; letter-spacing:.24em; color:#A9A493;">03 / SECTION</div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:{{ h1 }}; line-height:.96; letter-spacing:-.03em; color:#102848; margin-top:10px;">{{ secTitle }}</div>
+            <div style="font-size:14px; color:#33465F; margin-top:12px; max-width:600px;">{{ secDesc }}</div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; flex:0 0 auto;">
+            <div style="font-size:10.5px; letter-spacing:.16em; padding:7px 12px; background:#102848; color:#F8F8F6;">2026</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; padding:7px 12px; border:1px solid #D6D3CA; color:#33465F; cursor:pointer;">2025</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; padding:7px 12px; border:1px solid #D6D3CA; color:#33465F; cursor:pointer;">2024</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; padding:7px 12px; border:1px solid #D6D3CA; color:#33465F; cursor:pointer;">2023</div>
+          </div>
+        </div>
+
+        <sc-for list="{{ archive }}" as="m" hint-placeholder-count="3">
+          <div style="margin-top:32px;">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px; border-bottom:1px solid #D6D3CA; padding-bottom:9px;">
+              <div style="display:flex; align-items:baseline; gap:12px;">
+                <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:22px; letter-spacing:-.02em; color:#102848;">{{ m.month }}</div>
+                <div style="font-size:10.5px; letter-spacing:.2em; color:#A9A493;">{{ m.year }}</div>
+              </div>
+              <div style="font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">{{ m.count }}</div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; margin-top:16px;">
+              <sc-for list="{{ m.items }}" as="i" hint-placeholder-count="6">
+                <div onClick="{{ i.open }}" style="display:flex; flex-direction:column; gap:7px; min-width:0; cursor:pointer;">
+                  <div style="aspect-ratio:{{ i.ar }}; background:#E4E2DA; border:1px solid #D6D3CA; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.18em; color:#AFAA99;">{{ i.slot }}</div>
+                  <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px;">
+                    <div style="font-size:12px; color:#102848;">{{ i.note }}</div>
+                    <div style="font-size:10.5px; color:#7A8496; white-space:nowrap;">{{ i.day }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+
+        <div style="display:flex; justify-content:center; padding:40px 0 68px;">
+          <div style="font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:#102848; border:1px solid #102848; padding:13px 34px; cursor:pointer;" style-hover="background:#102848; color:#F8F8F6;">Earlier months</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ 04 APPS — list ============ -->
+  <sc-if value="{{ isApps }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F8F8F6; max-width:1400px; margin:0 auto; padding:{{ pad }};">
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; flex-wrap:wrap; border-bottom:1px solid #102848; padding-bottom:18px;">
+        <div style="min-width:0;">
+          <div style="font-size:11px; letter-spacing:.24em; color:#A9A493;">04 / SECTION</div>
+          <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:{{ h1 }}; line-height:.96; letter-spacing:-.03em; color:#102848; margin-top:10px;">{{ secTitle }}</div>
+          <div style="font-size:14px; color:#33465F; margin-top:12px; max-width:640px;">{{ secDesc }}</div>
+        </div>
+        <div style="font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:#8C8778; text-align:right; flex:0 0 auto;">
+          <div>9 tools</div><div style="margin-top:5px;">Superhive · GitHub</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:1px; background:#DCD9D1; margin-top:22px; flex-wrap:wrap;">
+        <sc-for list="{{ appTabs }}" as="t" hint-placeholder-count="4">
+          <div onClick="{{ t.select }}" style="background:{{ t.bg }}; color:{{ t.fg }}; padding:11px 24px; font-size:11px; letter-spacing:.16em; text-transform:uppercase; cursor:pointer; display:flex; align-items:center; gap:9px;">
+            <div>{{ t.label }}</div><div style="font-size:10px; opacity:.6;">{{ t.count }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:1px; background:#DCD9D1; border:1px solid #DCD9D1; border-top:0;">
+        <sc-for list="{{ appList }}" as="a" hint-placeholder-count="2">
+          <div onClick="{{ a.open }}" style="background:#F8F8F6; display:grid; grid-template-columns:{{ col3 }}; gap:{{ gap3 }}; padding:22px; align-items:start; flex:0 0 auto; cursor:pointer;" style-hover="background:#F1F0EB;">
+            <div style="aspect-ratio:16/10; background:#E9E7E1; border:1px solid #DCD9D1; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.18em; color:#B4AF9E; min-width:0;">{{ a.thumbSlot }}</div>
+            <div style="display:flex; flex-direction:column; gap:9px; min-width:0;">
+              <div style="display:flex; align-items:baseline; gap:11px; flex-wrap:wrap;">
+                <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:19px; letter-spacing:-.015em; color:#102848;">{{ a.name }}</div>
+                <div style="font-size:10.5px; letter-spacing:.14em; color:#B06A18;">{{ a.version }}</div>
+                <div style="font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:#8C8778;">{{ a.platform }}</div>
+              </div>
+              <div style="font-size:13px; line-height:1.6; color:#33465F; max-width:620px; text-wrap:pretty;">{{ a.desc }}</div>
+              <div style="display:flex; gap:7px; flex-wrap:wrap;">
+                <sc-for list="{{ a.tags }}" as="tag" hint-placeholder-count="3">
+                  <div style="font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#33465F; border:1px solid #DCD9D1; padding:4px 8px;">{{ tag }}</div>
+                </sc-for>
+              </div>
+              <div style="font-size:11px; color:#5C6A82;">{{ a.changelog }}</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:7px; min-width:0;">
+              <div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:{{ a.priceColor }};">{{ a.price }}</div>
+              <div style="display:flex; align-items:center; justify-content:space-between; background:#102848; color:#F8F8F6; padding:12px 15px; cursor:pointer; font-size:11px; letter-spacing:.16em; text-transform:uppercase;" style-hover="background:#0B1D36;">
+                <div>{{ a.cta }}</div><div>{{ a.ctaIcon }}</div>
+              </div>
+              <div style="font-size:10.5px; color:#5C6A82;">{{ a.meta }}</div>
+              <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#B06A18; margin-top:4px;">Details ↗</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="height:68px;"></div>
+    </div>
+  </sc-if>
+
+  <!-- ============ APP DETAIL ============ -->
+  <sc-if value="{{ isAppDetail }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F8F8F6; max-width:1400px; margin:0 auto; padding:{{ padTight }};">
+      <div style="display:flex; align-items:center; gap:10px; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">
+        <div onClick="{{ goApps }}" style="cursor:pointer;">04 Apps</div><div>/</div><div style="color:#102848;">{{ app.name }}</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:{{ col2 }}; gap:{{ gap2 }}; margin-top:20px; align-items:start;">
+        <div style="display:flex; flex-direction:column; gap:24px; min-width:0;">
+          <div style="position:relative; aspect-ratio:16/9; background:#E9E7E1; border:1px solid #DCD9D1; overflow:hidden; max-width:720px;">
+            <sc-if value="{{ appVideoPlaying }}" hint-placeholder-val="{{ false }}">
+              <iframe src="{{ appEmbed }}" title="Tool intro" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen="true" style="position:absolute; inset:0; width:100%; height:100%; border:0;"></iframe>
+            </sc-if>
+            <sc-if value="{{ appVideoIdle }}" hint-placeholder-val="{{ true }}">
+              <div onClick="{{ playAppVideo }}" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; cursor:pointer;">
+                <div style="width:46px; height:46px; border:1px solid #C6C1B0; display:flex; align-items:center; justify-content:center; font-size:13px; color:#8C8778;">▶</div>
+                <div style="font-size:10.5px; letter-spacing:.2em; color:#B4AF9E;">{{ appMediaLabel }}</div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div>
+            <div style="font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:#8C8778;">Screenshots</div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:14px; margin-top:12px; max-width:720px;">
+              <sc-for list="{{ appShots }}" as="s" hint-placeholder-count="4">
+                <div style="aspect-ratio:16/10; background:#E9E7E1; border:1px solid #DCD9D1; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.16em; color:#B4AF9E;">{{ s }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid #DCD9D1; padding-top:18px;">
+            <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; color:#102848; letter-spacing:-.01em;">How to use</div>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:14px; max-width:680px;">
+              <sc-for list="{{ appSteps }}" as="s" hint-placeholder-count="4">
+                <div style="display:grid; grid-template-columns:28px 1fr; gap:12px;">
+                  <div style="font-size:10.5px; letter-spacing:.16em; color:#A9A493; padding-top:2px;">{{ s.no }}</div>
+                  <div style="font-size:13px; line-height:1.6; color:#33465F;">{{ s.t }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid #DCD9D1; padding-top:18px; padding-bottom:64px;">
+            <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; color:#102848; letter-spacing:-.01em;">FAQ</div>
+            <div style="display:flex; flex-direction:column; gap:1px; background:#DCD9D1; border-top:1px solid #DCD9D1; border-bottom:1px solid #DCD9D1; margin-top:14px; max-width:680px;">
+              <sc-for list="{{ appFaq }}" as="f" hint-placeholder-count="4">
+                <div style="background:#F8F8F6; padding:14px 0; display:flex; flex-direction:column; gap:6px;">
+                  <div style="font-size:13px; font-weight:600; color:#102848;">{{ f.q }}</div>
+                  <div style="font-size:12.5px; line-height:1.6; color:#33465F;">{{ f.a }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:20px; min-width:0;">
+          <div>
+            <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;">
+              <div style="font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:#8C8778;">{{ app.platform }}</div>
+              <div style="font-size:10.5px; letter-spacing:.14em; color:#B06A18;">{{ app.version }}</div>
+            </div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:34px; line-height:1.04; letter-spacing:-.03em; color:#102848; margin-top:8px;">{{ app.name }}</div>
+            <div style="font-size:13.5px; line-height:1.6; color:#33465F; margin-top:12px;">{{ app.desc }}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:7px;">
+            <div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:{{ app.priceColor }};">{{ app.price }}</div>
+            <div style="display:flex; align-items:center; justify-content:space-between; background:#102848; color:#F8F8F6; padding:14px 16px; cursor:pointer; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;" style-hover="background:#0B1D36;">
+              <div>{{ app.cta }}</div><div>{{ app.ctaIcon }}</div>
+            </div>
+            <div style="font-size:10.5px; color:#5C6A82;">{{ app.meta }}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1px; background:#DCD9D1; border-top:1px solid #DCD9D1; border-bottom:1px solid #DCD9D1;">
+            <sc-for list="{{ appSpecs }}" as="r" hint-placeholder-count="4">
+              <div style="display:grid; grid-template-columns:96px 1fr; gap:14px; background:#F8F8F6; padding:10px 0;">
+                <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C8778;">{{ r.k }}</div>
+                <div style="font-size:12.5px; color:#102848;">{{ r.v }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ 05 AI & AUTOMATION — journal ============ -->
+  <sc-if value="{{ isAi }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F1F0EB;">
+      <div style="max-width:1400px; margin:0 auto; padding:{{ pad }};">
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; flex-wrap:wrap; border-bottom:1px solid #102848; padding-bottom:18px;">
+          <div style="min-width:0;">
+            <div style="font-size:11px; letter-spacing:.24em; color:#A9A493;">05 / SECTION</div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:{{ h1 }}; line-height:.96; letter-spacing:-.03em; color:#102848; margin-top:10px;">{{ secTitle }}</div>
+            <div style="font-size:14px; line-height:1.6; color:#33465F; margin-top:12px; max-width:640px; text-wrap:pretty;">{{ secDesc }}</div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; flex:0 0 auto;">
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:7px 12px; background:#102848; color:#F8F8F6;">All entries</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:7px 12px; border:1px solid #D6D3CA; color:#33465F; cursor:pointer;">MCP</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:7px 12px; border:1px solid #D6D3CA; color:#33465F; cursor:pointer;">ComfyUI</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:7px 12px; border:1px solid #D6D3CA; color:#33465F; cursor:pointer;">Teaching</div>
+          </div>
+        </div>
+
+        <!-- lead entry -->
+        <div onClick="{{ openLeadPost }}" style="display:grid; grid-template-columns:{{ col2 }}; gap:{{ gap2 }}; padding:30px 0; border-bottom:1px solid #D6D3CA; align-items:start; cursor:pointer;">
+          <div style="aspect-ratio:16/10; background:#E4E2DA; border:1px solid #D6D3CA; display:flex; align-items:center; justify-content:center; font-size:10px; letter-spacing:.18em; color:#AFAA99; min-width:0;">MCP SESSION CAPTURE</div>
+          <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+            <div style="display:flex; align-items:center; gap:11px; flex-wrap:wrap;">
+              <div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#F8F8F6; background:#102848; padding:4px 8px;">LATEST</div>
+              <div style="font-size:10.5px; letter-spacing:.18em; color:#A9A493;">2026.07 · MCP · 12 min read</div>
+            </div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:30px; line-height:1.06; letter-spacing:-.028em; color:#102848;">Letting an agent drive Blender without losing the tailoring</div>
+            <div style="font-size:13.5px; line-height:1.7; color:#33465F; max-width:560px; text-wrap:pretty;">What I expose through an MCP server and what I deliberately keep manual. The full sequence for taking a finished garment to a packed Unity prefab, the failure cases worth knowing, and the point where a pattern decision has to stay with a person.</div>
+            <div style="display:flex; gap:7px; flex-wrap:wrap;">
+              <div style="font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#33465F; border:1px solid #D6D3CA; padding:4px 8px;">MCP</div>
+              <div style="font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#33465F; border:1px solid #D6D3CA; padding:4px 8px;">Blender</div>
+              <div style="font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#33465F; border:1px solid #D6D3CA; padding:4px 8px;">Unity</div>
+            </div>
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#B06A18; cursor:pointer;">Read entry ↗</div>
+          </div>
+        </div>
+
+        <!-- entry list -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:26px 24px; margin-top:30px;">
+          <sc-for list="{{ journal }}" as="e" hint-placeholder-count="6">
+            <div onClick="{{ e.open }}" style="display:flex; flex-direction:column; gap:11px; cursor:pointer; min-width:0;">
+              <div style="aspect-ratio:16/10; background:#E4E2DA; border:1px solid #D6D3CA; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.18em; color:#AFAA99;">{{ e.slot }}</div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#B06A18;">{{ e.tag }}</div>
+                <div style="font-size:10.5px; letter-spacing:.14em; color:#A9A493;">{{ e.date }}</div>
+              </div>
+              <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; line-height:1.2; letter-spacing:-.018em; color:#102848;">{{ e.title }}</div>
+              <div style="font-size:12.5px; line-height:1.6; color:#33465F;">{{ e.excerpt }}</div>
+              <div style="font-size:10.5px; color:#7A8496;">{{ e.read }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; padding:40px 0 26px;">
+          <div style="font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:#102848; border:1px solid #102848; padding:13px 34px; cursor:pointer;" style-hover="background:#102848; color:#F8F8F6;">Older entries</div>
+          <div style="font-size:11px; color:#5C6A82; max-width:520px;">The moving mesh on the home screen is generated in code — a Canvas 2D lattice displaced by two sine fields, no video file and no rendered footage. It stops when reduced-motion is set.</div>
+        </div>
+        <div style="height:42px;"></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ ABOUT / CONTACT ============ -->
+  <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F8F8F6; max-width:1400px; margin:0 auto; padding:{{ pad }};">
+      <div style="display:grid; grid-template-columns:{{ col2 }}; gap:{{ gap2 }}; align-items:start;">
+        <div style="min-width:0;">
+          <div style="font-size:11px; letter-spacing:.24em; color:#A9A493;">{{ abKicker }}</div>
+          <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:46px; line-height:1.08; letter-spacing:-.03em; color:#102848; margin-top:10px;">
+            <sc-for list="{{ abHead }}" as="l" hint-placeholder-count="3">
+              <div>{{ l }}</div>
+            </sc-for>
+          </div>
+          <div style="font-size:14.5px; line-height:1.7; color:#33465F; margin-top:18px; max-width:620px; text-wrap:pretty;">{{ abBody }}</div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:24px; margin-top:34px; border-top:1px solid #DCD9D1; padding-top:18px;">
+            <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="3">
+              <div style="min-width:0;">
+                <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#8C8778;">{{ g.title }}</div>
+                <div style="display:flex; flex-direction:column; gap:5px; margin-top:10px;">
+                  <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="4">
+                    <div style="font-size:12.5px; color:#102848;">{{ i }}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:34px; margin-top:40px; border-top:1px solid #102848; padding-top:18px; padding-bottom:64px;">
+            <div style="min-width:0;">
+              <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; color:#102848; letter-spacing:-.01em;">{{ careerT }}</div>
+              <div style="display:flex; flex-direction:column; gap:1px; background:#DCD9D1; border-top:1px solid #DCD9D1; border-bottom:1px solid #DCD9D1; margin-top:14px;">
+                <sc-for list="{{ career }}" as="c" hint-placeholder-count="5">
+                  <div style="background:#F8F8F6; padding:12px 0; font-size:13px; color:#102848;">{{ c }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="min-width:0;">
+              <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; color:#102848; letter-spacing:-.01em;">{{ fieldsT }}</div>
+              <div style="display:flex; flex-direction:column; gap:1px; background:#DCD9D1; border-top:1px solid #DCD9D1; border-bottom:1px solid #DCD9D1; margin-top:14px;">
+                <sc-for list="{{ fields }}" as="f" hint-placeholder-count="4">
+                  <div style="background:#F8F8F6; padding:12px 0; font-size:13px; color:#102848;">{{ f }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:18px; min-width:0;">
+          <div style="aspect-ratio:4/5; max-width:420px; background:#F1F0EB; border:1px solid #DCD9D1; display:flex; align-items:center; justify-content:center; padding:26px;">
+            <img src="uploads/StudioCats_combined_logo_vertical_v2.png" alt="StudioCats — 3D Art &amp; Design" style="width:100%; height:auto; max-height:100%; object-fit:contain; display:block;">
+          </div>
+          <div style="border:1px solid #102848; padding:22px; max-width:400px;">
+            <div style="font-size:11px; letter-spacing:.24em; color:#A9A493;">{{ contactKicker }}</div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:30px; letter-spacing:-.025em; color:#102848; margin-top:8px;">{{ contactHead }}</div>
+            <div style="font-size:13px; line-height:1.6; color:#33465F; margin-top:9px;">{{ contactBody }}</div>
+            <div style="display:flex; flex-direction:column; gap:1px; background:#DCD9D1; margin-top:16px; border-top:1px solid #DCD9D1;">
+              <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="7">
+                <div style="background:#F8F8F6; display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0;">
+                  <div style="min-width:0;">
+                    <div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">{{ c.k }}</div>
+                    <div style="font-size:12.5px; color:#102848; margin-top:4px; word-break:break-all;">{{ c.v }}</div>
+                  </div>
+                  <sc-if value="{{ c.hasLink }}" hint-placeholder-val="{{ true }}">
+                    <a href="{{ c.url }}" target="_blank" rel="noopener" style="flex:0 0 auto; display:flex; align-items:center; gap:7px; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#B06A18; border:1px solid #DCD9D1; padding:7px 10px;" style-hover="border-color:#D88830">
+                      <div>{{ openLabel }}</div><div>↗</div>
+                    </a>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <a href="mailto:yzoo2@naver.com" style="display:flex; align-items:center; justify-content:space-between; background:#102848; color:#F8F8F6; padding:14px 16px; margin-top:16px; font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;" style-hover="background:#0B1D36;">
+              <div>{{ mailLabel }}</div><div>↗</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ 3D WORKS — ITEM DETAIL ============ -->
+  <sc-if value="{{ isWorkItem }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F1F0EB;">
+      <div style="max-width:1400px; margin:0 auto; padding:{{ padTight }};">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:10px; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">
+            <div onClick="{{ goWorks }}" style="cursor:pointer;">03 3D Works</div><div>/</div>
+            <div style="color:#102848;">{{ work.date }}</div>
+          </div>
+          <div style="display:flex; gap:16px; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">
+            <div onClick="{{ workPrev }}" style="cursor:pointer;">← Prev</div>
+            <div onClick="{{ workNext }}" style="cursor:pointer;">Next →</div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:{{ col2 }}; gap:{{ gap2 }}; margin-top:20px; align-items:start;">
+          <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+            <div style="position:relative; aspect-ratio:{{ work.ar }}; background:#E4E2DA; border:1px solid #D6D3CA;">
+              <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10.5px; letter-spacing:.2em; color:#AFAA99;">{{ work.bigSlot }}</div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px;">
+              <sc-for list="{{ workViews }}" as="v" hint-placeholder-count="5">
+                <div style="aspect-ratio:1; background:#E4E2DA; border:1px solid {{ v.line }}; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.14em; color:#AFAA99; cursor:pointer;">{{ v.label }}</div>
+              </sc-for>
+            </div>
+            <div style="position:relative; aspect-ratio:16/9; background:#E4E2DA; border:1px solid #D6D3CA; margin-top:18px;">
+              <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
+                <div style="width:44px; height:44px; border:1px solid #C6C1B0; display:flex; align-items:center; justify-content:center; font-size:13px; color:#8C8778;">▶</div>
+                <div style="font-size:10.5px; letter-spacing:.2em; color:#AFAA99;">TURNTABLE / CLIP — OPTIONAL</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:20px; min-width:0;">
+            <div>
+              <div style="font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:#A9A493;">{{ work.date }}</div>
+              <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:34px; line-height:1.04; letter-spacing:-.03em; color:#102848; margin-top:8px;">{{ work.note }}</div>
+              <div style="font-size:13.5px; line-height:1.7; color:#33465F; margin-top:12px; text-wrap:pretty;">A personal study, posted as it was finished. No client, no listing — kept here so the month has a record.</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:1px; background:#D6D3CA; border-top:1px solid #D6D3CA; border-bottom:1px solid #D6D3CA;">
+              <sc-for list="{{ workSpecs }}" as="r" hint-placeholder-count="4">
+                <div style="display:grid; grid-template-columns:88px 1fr; gap:14px; background:#F1F0EB; padding:10px 0;">
+                  <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C8778;">{{ r.k }}</div>
+                  <div style="font-size:12.5px; color:#102848;">{{ r.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:52px; border-top:1px solid #D6D3CA; padding-top:18px; padding-bottom:64px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px;">
+            <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; color:#102848; letter-spacing:-.01em;">Same month</div>
+            <div onClick="{{ goWorks }}" style="font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:#B06A18; cursor:pointer;">Back to archive ↗</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:14px; margin-top:14px;">
+            <sc-for list="{{ workSiblings }}" as="i" hint-placeholder-count="6">
+              <div onClick="{{ i.open }}" style="display:flex; flex-direction:column; gap:7px; min-width:0; cursor:pointer;">
+                <div style="aspect-ratio:{{ i.ar }}; background:#E4E2DA; border:1px solid #D6D3CA; display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.16em; color:#AFAA99;">{{ i.slot }}</div>
+                <div style="font-size:11.5px; color:#33465F;">{{ i.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ VIRTUAL FASHION — PROJECT DETAIL ============ -->
+  <sc-if value="{{ isFashionItem }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#0B1526; color:#F1EFEA;">
+      <div style="max-width:1400px; margin:0 auto; padding:{{ padTight }};">
+        <div style="display:flex; align-items:center; gap:10px; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:rgba(241,239,234,.55);">
+          <div onClick="{{ goFashion }}" style="cursor:pointer;">02 Virtual Fashion</div><div>/</div>
+          <div style="color:#F1EFEA;">{{ fash.type }}</div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:{{ col2 }}; gap:{{ gap2 }}; margin-top:20px; align-items:start;">
+          <div style="display:flex; flex-direction:column; gap:14px; min-width:0;">
+            <div style="position:relative; aspect-ratio:{{ fash.ar }}; background:#132540; border:1px solid rgba(241,239,234,.14); overflow:hidden;">
+              <sc-if value="{{ fashPlaying }}" hint-placeholder-val="{{ false }}">
+                <iframe src="{{ fashEmbed }}" title="Project film" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen="true" style="position:absolute; inset:0; width:100%; height:100%; border:0;"></iframe>
+              </sc-if>
+              <sc-if value="{{ fashIdle }}" hint-placeholder-val="{{ true }}">
+                <div onClick="{{ playFash }}" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:11px; cursor:{{ fash.cursor }};">
+                  <sc-if value="{{ fash.isFilm }}" hint-placeholder-val="{{ true }}">
+                    <div style="width:52px; height:52px; border:1px solid rgba(241,239,234,.45); display:flex; align-items:center; justify-content:center; font-size:14px; color:#F1EFEA;">▶</div>
+                  </sc-if>
+                  <div style="font-size:10.5px; letter-spacing:.2em; color:rgba(241,239,234,.42);">{{ fash.slot }}</div>
+                </div>
+              </sc-if>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px;">
+              <sc-for list="{{ fashStills }}" as="s" hint-placeholder-count="6">
+                <div style="aspect-ratio:{{ s.ar }}; background:#132540; border:1px solid rgba(241,239,234,.14); display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.16em; color:rgba(241,239,234,.4);">{{ s.label }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:22px; min-width:0;">
+            <div>
+              <div style="display:flex; align-items:center; gap:11px; flex-wrap:wrap;">
+                <div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#0B1526; background:#D88830; padding:4px 8px;">{{ fash.type }}</div>
+                <div style="font-size:10.5px; letter-spacing:.18em; color:rgba(241,239,234,.5);">{{ fash.date }}</div>
+              </div>
+              <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:34px; line-height:1.05; letter-spacing:-.03em; margin-top:10px;">{{ fash.title }}</div>
+              <div style="font-size:13.5px; line-height:1.7; color:rgba(241,239,234,.72); margin-top:12px; text-wrap:pretty;">{{ fash.desc }}</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:1px; background:rgba(241,239,234,.14); border-top:1px solid rgba(241,239,234,.14); border-bottom:1px solid rgba(241,239,234,.14);">
+              <sc-for list="{{ fash.specs }}" as="r" hint-placeholder-count="3">
+                <div style="display:grid; grid-template-columns:92px 1fr; gap:12px; background:#0B1526; padding:10px 0;">
+                  <div style="font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:rgba(241,239,234,.5);">{{ r.k }}</div>
+                  <div style="font-size:12.5px; color:#F1EFEA;">{{ r.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:13px; line-height:1.7; color:rgba(241,239,234,.66);">Process: patterns drafted flat, fabric properties tuned per panel, then relaxed on the avatar. Grooming and lighting last, so the silhouette is judged before the mood.</div>
+            <div style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#D88830; cursor:pointer;">{{ fash.link }}</div>
+          </div>
+        </div>
+
+        <div style="margin-top:52px; border-top:1px solid rgba(241,239,234,.14); padding-top:18px; padding-bottom:64px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px;">
+            <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:18px; letter-spacing:-.01em;">Other projects</div>
+            <div onClick="{{ goFashion }}" style="font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:#D88830; cursor:pointer;">Full list ↗</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; margin-top:14px;">
+            <sc-for list="{{ fashOthers }}" as="o" hint-placeholder-count="4">
+              <div onClick="{{ o.open }}" style="display:flex; flex-direction:column; gap:9px; min-width:0; cursor:pointer;">
+                <div style="aspect-ratio:16/9; background:#132540; border:1px solid rgba(241,239,234,.14); display:flex; align-items:center; justify-content:center; font-size:9.5px; letter-spacing:.16em; color:rgba(241,239,234,.4);">{{ o.slot }}</div>
+                <div style="font-size:12.5px; color:#F1EFEA;">{{ o.title }}</div>
+                <div style="font-size:10.5px; letter-spacing:.14em; color:rgba(241,239,234,.5);">{{ o.date }} · {{ o.type }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ AI JOURNAL — POST ============ -->
+  <sc-if value="{{ isPost }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#F1F0EB;">
+      <div style="max-width:1400px; margin:0 auto; padding:{{ padTight }};">
+        <div style="display:flex; align-items:center; gap:10px; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">
+          <div onClick="{{ goAi }}" style="cursor:pointer;">05 AI &amp; Automation</div><div>/</div><div style="color:#102848;">{{ post.tag }}</div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:{{ col2 }}; gap:{{ gap2 }}; margin-top:22px; align-items:start;">
+          <div style="min-width:0;">
+            <div style="display:flex; align-items:center; gap:11px; flex-wrap:wrap;">
+              <div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#B06A18;">{{ post.tag }}</div>
+              <div style="font-size:10.5px; letter-spacing:.16em; color:#A9A493;">{{ post.date }} · {{ post.read }}</div>
+            </div>
+            <div style="font-family:'Archivo',sans-serif; font-weight:800; font-size:42px; line-height:1.06; letter-spacing:-.032em; color:#102848; margin-top:12px; max-width:640px;">{{ post.title }}</div>
+            <div style="font-size:16px; line-height:1.7; color:#33465F; margin-top:16px; max-width:620px; text-wrap:pretty;">{{ post.excerpt }}</div>
+
+            <div style="aspect-ratio:16/9; background:#E4E2DA; border:1px solid #D6D3CA; display:flex; align-items:center; justify-content:center; font-size:10px; letter-spacing:.18em; color:#AFAA99; margin-top:26px;">{{ post.slot }}</div>
+
+            <div style="display:flex; flex-direction:column; gap:20px; margin-top:26px; max-width:620px;">
+              <sc-for list="{{ postBody }}" as="b" hint-placeholder-count="5">
+                <div>
+                  <sc-if value="{{ b.isHead }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-family:'Archivo',sans-serif; font-weight:700; font-size:19px; letter-spacing:-.015em; color:#102848; margin-top:12px;">{{ b.text }}</div>
+                  </sc-if>
+                  <sc-if value="{{ b.isText }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size:14.5px; line-height:1.8; color:#33465F; text-wrap:pretty;">{{ b.text }}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+
+              <div style="aspect-ratio:16/10; background:#E4E2DA; border:1px solid #D6D3CA; display:flex; align-items:center; justify-content:center; font-size:10px; letter-spacing:.18em; color:#AFAA99;">WORKFLOW CAPTURE</div>
+              <div style="font-size:11.5px; color:#7A8496;">Above — the tool call sequence as it ran, unedited.</div>
+
+              <div style="position:relative; aspect-ratio:16/9; background:#E4E2DA; border:1px solid #D6D3CA;">
+                <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
+                  <div style="width:44px; height:44px; border:1px solid #C6C1B0; display:flex; align-items:center; justify-content:center; font-size:13px; color:#8C8778;">▶</div>
+                  <div style="font-size:10.5px; letter-spacing:.2em; color:#AFAA99;">SCREEN RECORDING — OPTIONAL</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:7px; flex-wrap:wrap; margin-top:30px; border-top:1px solid #D6D3CA; padding-top:18px;">
+              <sc-for list="{{ post.tags }}" as="t" hint-placeholder-count="3">
+                <div style="font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#33465F; border:1px solid #D6D3CA; padding:4px 8px;">{{ t }}</div>
+              </sc-for>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:26px; padding-bottom:64px;">
+              <sc-for list="{{ postNav }}" as="n" hint-placeholder-count="2">
+                <div onClick="{{ n.open }}" style="border:1px solid #D6D3CA; background:#F8F8F6; padding:16px; cursor:pointer; min-width:0;" style-hover="border-color:#102848">
+                  <div style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#A9A493;">{{ n.dir }}</div>
+                  <div style="font-family:'Archivo',sans-serif; font-weight:600; font-size:15px; color:#102848; margin-top:8px; letter-spacing:-.01em;">{{ n.title }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:22px; min-width:0;">
+            <div style="border:1px solid #D6D3CA; background:#F8F8F6; padding:18px;">
+              <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#8C8778;">Stack in this entry</div>
+              <div style="display:flex; flex-direction:column; gap:6px; margin-top:12px;">
+                <sc-for list="{{ post.stack }}" as="s" hint-placeholder-count="4">
+                  <div style="font-size:12.5px; color:#102848;">{{ s }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="border-top:1px solid #D6D3CA; padding-top:14px;">
+              <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#8C8778;">More entries</div>
+              <div style="display:flex; flex-direction:column; gap:1px; background:#D6D3CA; border-top:1px solid #D6D3CA; border-bottom:1px solid #D6D3CA; margin-top:12px;">
+                <sc-for list="{{ postSide }}" as="e" hint-placeholder-count="5">
+                  <div onClick="{{ e.open }}" style="background:#F1F0EB; padding:11px 0; cursor:pointer;">
+                    <div style="font-size:10px; letter-spacing:.14em; color:#A9A493;">{{ e.date }} · {{ e.tag }}</div>
+                    <div style="font-size:12.5px; color:#102848; margin-top:4px;">{{ e.title }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ FOOTER ============ -->
+  <div style="background:#F1F0EB; color:#102848; border-top:1px solid #D6D3CA;">
+    <div style="max-width:1400px; margin:0 auto; padding:{{ padFooter }}; display:flex; flex-direction:column; gap:22px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:30px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:20px;">
+          <img onClick="{{ goHome }}" src="uploads/StudioCats_combined_logo_vertical_v2.png" alt="StudioCats — 3D Art &amp; Design" style="height:{{ footLogoH }}; width:auto; display:block; cursor:pointer;">
+          <div style="font-size:13px; letter-spacing:.06em; color:#102848; border-bottom:1px solid #D88830; padding-bottom:2px; line-height:1; cursor:default;">yzoo2@naver.com</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:22px; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:#5C6A82; flex-wrap:wrap; line-height:1;">
+          <sc-for list="{{ footerNav }}" as="f" hint-placeholder-count="6">
+            <div onClick="{{ f.open }}" style="cursor:pointer;">{{ f.label }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; font-size:10.5px; letter-spacing:.16em; color:#8C8778; line-height:1;">
+          <div onClick="{{ setEn }}" style="cursor:pointer; color:{{ fLangEn }};">EN</div>
+          <div onClick="{{ setKo }}" style="cursor:pointer; color:{{ fLangKo }};">KO</div>
+          <div onClick="{{ setJa }}" style="cursor:pointer; color:{{ fLangJa }};">JA</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #D6D3CA; padding-top:16px; text-align:center; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#8C8778;">© 2026 StudioCats · Since 2026 · All rights reserved</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = {
+      page: 'home', appTab: 'blender', playing: {}, appVideo: false,
+      set: 'SUGAR REBEL', menu: false, lang: 'en', app: null, work: null, workIdx: 0, fash: null, fashPlay: false, post: null,
+      vw: typeof window !== 'undefined' ? window.innerWidth : 1440
+    };
+    this.meshA = React.createRef();
+    this._stop = [];
+    this._onVw = () => { if (Math.abs(window.innerWidth - this.state.vw) > 8) this.setState({ vw: window.innerWidth }); };
+  }
+
+  componentDidMount() { this.mountMesh(); window.addEventListener('resize', this._onVw); }
+  componentDidUpdate() { this.mountMesh(); }
+  componentWillUnmount() { this._stop.forEach(f => f()); window.removeEventListener('resize', this._onVw); }
+
+  go(page, extra) {
+    this.setState(Object.assign({ page: page }, extra || {}), () => this.toTop());
+  }
+
+  toTop() {
+    window.scrollTo(0, 0);
+    if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  mountMesh() {
+    const cv = this.meshA.current;
+    if (!cv || cv._scInit) return;
+    cv._scInit = true;
+    const ctx = cv.getContext('2d');
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.innerWidth < 768;
+    let raf = null, alive = true;
+    const o = { stroke: '16,40,72', base: 0.16, peak: 0.38, lw: 0.7, cols: 40, rows: 22, amp: 16, speed: 0.00055 };
+
+    const size = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const r = cv.getBoundingClientRect();
+      cv.width = Math.max(1, Math.round(r.width * dpr));
+      cv.height = Math.max(1, Math.round(r.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { w: r.width, h: r.height };
+    };
+    let dim = size();
+
+    // non-uniform spacing: gaps compress in places and open in others, like proportional editing
+    let accX = [], accY = [];
+    const buildSpacing = (t, env) => {
+      const dx = (dim.w * 1.24) / o.cols, dy = (dim.h * 1.3) / o.rows;
+      const k = 0.62 * env;
+      accX = [0]; accY = [0];
+      for (let i = 0; i < o.cols; i++) {
+        const f = 1 + k * (Math.sin(i * 0.63 + t * 0.74) * 0.7 + Math.sin(i * 0.21 - t * 0.43) * 0.5);
+        accX.push(accX[i] + dx * Math.max(0.18, f));
+      }
+      for (let j = 0; j < o.rows; j++) {
+        const f = 1 + k * (Math.sin(j * 0.81 - t * 0.66) * 0.7 + Math.sin(j * 0.29 + t * 0.37) * 0.5);
+        accY.push(accY[j] + dy * Math.max(0.18, f));
+      }
+      // renormalise so the sheet keeps covering the frame
+      const sx = (dim.w * 1.24) / accX[o.cols], sy = (dim.h * 1.3) / accY[o.rows];
+      accX = accX.map(v => v * sx);
+      accY = accY.map(v => v * sy);
+    };
+
+    const pt = (i, j, t, env) => {
+      const a = o.amp * env;
+      // three fields at incommensurate frequencies + a travelling diagonal swell
+      const sx = Math.sin(j * 0.42 + t * 1.07) * 0.55
+               + Math.sin(j * 0.19 - i * 0.11 + t * 0.61) * 0.75
+               + Math.sin((i * 0.07 + j * 0.31) * 1.7 + t * 1.53) * 0.3;
+      const sy = Math.sin(i * 0.36 + t * 0.93) * 0.6
+               + Math.sin((i + j) * 0.24 + t * 0.71) * 0.5
+               + Math.sin(i * 0.13 + j * 0.08 - t * 1.31) * 0.8
+               + Math.sin((i - j) * 0.46 + t * 1.9) * 0.22;
+      return [
+        -dim.w * 0.12 + accX[i] + sx * a,
+        -dim.h * 0.15 + accY[j] + sy * a
+      ];
+    };
+
+    const draw = (ms) => {
+      const t = still ? 1.7 : ms * o.speed;
+      // slow envelope: the weave loosens, then settles back to an even grid
+      const e = 0.5 + 0.5 * Math.sin(t * 0.19 - 1.2);
+      const env = still ? 0.5 : 0.14 + 0.86 * e * e;
+      buildSpacing(t, env);
+      ctx.clearRect(0, 0, dim.w, dim.h);
+      ctx.lineWidth = o.lw;
+      for (let j = 0; j <= o.rows; j++) {
+        const s = 0.5 + 0.5 * Math.sin(j * 0.5 + t * 0.8);
+        ctx.strokeStyle = 'rgba(' + o.stroke + ',' + (o.base + (o.peak - o.base) * s).toFixed(3) + ')';
+        ctx.beginPath();
+        for (let i = 0; i <= o.cols; i++) { const q = pt(i, j, t, env); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+        ctx.stroke();
+      }
+      for (let i = 0; i <= o.cols; i++) {
+        const s = 0.5 + 0.5 * Math.sin(i * 0.4 - t * 0.6);
+        ctx.strokeStyle = 'rgba(' + o.stroke + ',' + (o.base * 0.8 + (o.peak - o.base) * s).toFixed(3) + ')';
+        ctx.beginPath();
+        for (let j = 0; j <= o.rows; j++) { const q = pt(i, j, t, env); j ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+        ctx.stroke();
+      }
+      if (!still && alive) raf = requestAnimationFrame(draw);
+    };
+
+    const onResize = () => { dim = size(); if (still) draw(0); };
+    window.addEventListener('resize', onResize);
+    still ? draw(0) : (raf = requestAnimationFrame(draw));
+    this._stop.push(() => { alive = false; if (raf) cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); });
+  }
+
+  renderVals() {
+    const p = this.state.page;
+    const dark = p === 'fashion' || p === 'fashionItem';
+    const navy = '#102848', ocher = '#D88830', cream = '#F8F8F6';
+    const compact = this.state.vw < 1160;
+    const mobile = this.state.vw < 760;
+    const lang = this.state.lang || 'en';
+    const T = {
+      en: {
+        tagline: 'Garments cut for bodies that exist only in render.',
+      soonKicker: 'IN PREPARATION',
+      soonHead: 'Coming soon',
+      soonBody: 'This section is being put together. Work is being selected and written up, and it will open here as it is ready.',
+      soonBack: 'Back to home',
+      nav: ['Animation Style', 'Virtual Fashion', '3D Works', 'Apps', 'Journal'],
+      navShort: ['Anim', 'Fashion', '3D', 'Apps', 'Journal'],
+        about: 'About',
+        ab: {
+          kicker: 'ABOUT',
+          head: 'StudioCats is a<br>one-person digital<br>fashion studio.',
+          body: 'Outfit sets for VRChat avatars, sold on BOOTH. Virtual collections drafted in CLO 3D and staged on MetaHumans in Unreal Engine. Teaching virtual fashion at university level, alongside a shelf of tools built for people doing the same work.',
+          groups: ['3D Fashion', '3D Graphics', 'Engine', 'Shops'],
+          careerT: 'Career',
+          career: ['Yonsei University, Korea — graduate', 'Yeonsung University, Korea — lecturer, Fashion Design & Business', 'ZEPETO — official creator', 'Epic Games Fortnite — map creator', 'BOOTH — shop creator'],
+          fieldsT: 'Fields of work',
+          fields: ['3D assets — outfits, hair, accessories', '3D environment work in Unreal Engine', 'CLO to Unreal animation pipeline, MetaHuman included', 'AI-assisted development, automation, data science'],
+          contactKicker: 'CONTACT',
+          contactHead: 'Business &amp; commissions',
+          contactBody: 'Commission work, collection development, brand collaboration, lecturing and staff training. Korean or English.',
+          enquiries: 'Commission · Collaboration · Lecture',
+          keys: { email: 'Email', enquiries: 'Enquiries' },
+          mail: 'Email the studio',
+          open: 'Open'
+        },
+      meta: ['14 outfit sets · VRChat', 'Film · Render · CLO 3D', 'Monthly render archive', 'Blender · Unity · Windows · ComfyUI', '3D · AI · Pipeline'],
+        sec: {
+          anim: ['ANIMATION STYLE', 'Outfit sets released under a set name. Each set has its own silhouette, colorway range and fitted avatar list — Blender · Marvelous Designer · Substance Painter · Unity.'],
+          fashion: ['VIRTUAL FASHION', 'A portfolio list — runway films, 3D renders and CLO 3D collection work, each with a short note on what it was and how it was made.'],
+          works: ['3D WORKS', 'A dated archive of personal renders, posted freely by month. Newest first — no product framing.'],
+          apps: ['APPS', 'Add-ons and desktop tools built while producing garments. Each item is either a free download or a paid listing — open one for the intro video, screenshots, usage and FAQ.'],
+      ai: ['JOURNAL', 'A working journal. Notes on 3D production, AI-assisted pipelines and teaching — what worked, what did not, and why.'],
+        }
+      },
+      ko: {
+        tagline: '렌더 안에만 존재하는 몸을 위한 재단.',
+      soonKicker: '준비 중',
+      soonHead: '준비하고 있습니다',
+      soonBody: '이 섹션은 정리하는 중입니다. 작업을 선별하고 설명을 붙이는 대로 이곳에 열립니다.',
+      soonBack: '처음으로',
+      nav: ['애니메이션 스타일', '버추얼 패션', '3D 작업', '앱', '작업일지'],
+      navShort: ['애니', '패션', '3D', '앱', '일지'],
+        about: '소개',
+        ab: {
+          kicker: '소개',
+          head: 'StudioCats는<br>1인 디지털 패션<br>스튜디오입니다.',
+          body: 'VRChat 아바타용 아웃핏 세트를 제작해 BOOTH에서 판매합니다. CLO 3D로 작업한 버추얼 컬렉션을 Unreal Engine의 MetaHuman에 올려 연출하고, 대학에서 버추얼 패션을 강의하며, 같은 일을 하는 사람들을 위한 도구를 만들어 배포합니다.',
+          groups: ['3D 패션', '3D 그래픽', '엔진', '샵'],
+          careerT: '경력',
+          career: ['연세대학교 졸업', '연성대학교 패션디자인비즈니스 강의', 'ZEPETO 공식 크리에이터', 'Epic Games Fortnite 맵 크리에이터', 'BOOTH 샵 크리에이터'],
+          fieldsT: '작업 분야',
+          fields: ['3D 에셋 — 의상, 헤어, 액세서리', 'Unreal Engine 3D 배경 제작', 'CLO–Unreal 애니메이션 연계 작업 (MetaHuman 포함)', 'AI-assisted development, 자동화, 데이터 사이언스'],
+          contactKicker: '컨택트',
+          contactHead: '비즈니스 &amp; 커미션',
+          contactBody: '커미션 작업, 컬렉션 개발, 브랜드 협업, 강의 및 실무 교육 문의. 한국어·영어로 가능합니다.',
+          enquiries: '커미션 · 협업 · 강의',
+          keys: { email: '이메일', enquiries: '문의' },
+          mail: '메일 보내기',
+          open: '열기'
+        },
+      meta: ['아웃핏 세트 14종 · VRChat', '영상 · 렌더 · CLO 3D', '월별 렌더 아카이브', 'Blender · Unity · Windows · ComfyUI', '3D · AI · 파이프라인'],
+        sec: {
+          anim: ['ANIMATION STYLE', '세트 네이밍 단위로 발매하는 아웃핏 세트. 세트마다 실루엣과 컬러웨이 구성, 대응 아바타가 다릅니다 — Blender · Marvelous Designer · Substance Painter · Unity.'],
+          fashion: ['VIRTUAL FASHION', '포트폴리오 목록 — 런웨이 영상, 3D 렌더, CLO 3D 컬렉션 작업. 각 항목에 무엇을 어떻게 만들었는지 짧은 설명을 붙였습니다.'],
+          works: ['3D WORKS', '개인 렌더 작업의 연·월 아카이브. 최신 월이 먼저 오고, 판매용 프레임 없이 자유롭게 올립니다.'],
+          apps: ['APPS', '의상을 만들며 함께 만든 애드온과 데스크톱 툴. 무료 배포 또는 판매 페이지로 연결되고, 항목을 열면 소개 영상·스크린샷·사용법·FAQ가 있습니다.'],
+      ai: ['작업일지', '작업 기록. 3D 제작, AI 협업 파이프라인, 강의에 대한 노트 — 무엇이 되고 무엇이 안 됐는지, 그 이유까지.'],
+        }
+      },
+      ja: {
+        tagline: 'レンダーの中にしか存在しない身体のための仕立て。',
+      soonKicker: '準備中',
+      soonHead: '準備しています',
+      soonBody: 'このセクションは整理中です。作品を選び、説明を添えたうえで順次公開します。',
+      soonBack: 'ホームへ',
+      nav: ['アニメスタイル', 'バーチャルファッション', '3Dワークス', 'アプリ', '作業日誌'],
+      navShort: ['アニメ', 'ファッション', '3D', 'アプリ', '日誌'],
+        about: 'アバウト',
+        ab: {
+          kicker: 'アバウト',
+          head: 'StudioCatsは<br>一人のデジタル<br>ファッションスタジオです。',
+          body: 'VRChatアバター用の衣装セットを制作し、BOOTHで販売しています。CLO 3Dで制作したバーチャルコレクションをUnreal EngineのMetaHumanで演出し、大学でバーチャルファッションを教えながら、同じ仕事をする人のためのツールを作って配布しています。',
+          groups: ['3Dファッション', '3Dグラフィック', 'エンジン', 'ショップ'],
+          careerT: '経歴',
+          career: ['延世大学校 卒業', '延成大学校 ファッションデザインビジネス 講師', 'ZEPETO 公式クリエイター', 'Epic Games Fortnite マップクリエイター', 'BOOTH ショップクリエイター'],
+          fieldsT: '制作分野',
+          fields: ['3Dアセット — 衣装、ヘア、アクセサリー', 'Unreal Engineでの3D背景制作', 'CLO–Unreal アニメーション連携（MetaHuman含む）', 'AI-assisted development、自動化、データサイエンス'],
+          contactKicker: 'コンタクト',
+          contactHead: 'ビジネス &amp; コミッション',
+          contactBody: 'コミッション、コレクション開発、ブランドコラボ、講義・研修のお問い合わせ。韓国語・英語で対応いたします。',
+          enquiries: 'コミッション · コラボ · 講義',
+          keys: { email: 'メール', enquiries: 'お問い合わせ' },
+          mail: 'メールを送る',
+          open: '開く'
+        },
+      meta: ['アウトフィット14セット · VRChat', '映像 · レンダー · CLO 3D', '月別レンダーアーカイブ', 'Blender · Unity · Windows · ComfyUI', '3D · AI · パイプライン'],
+        sec: {
+          anim: ['ANIMATION STYLE', 'セット名ごとにリリースする衣装セット。セットごとにシルエット、カラーウェイ、対応アバターが異なります — Blender · Marvelous Designer · Substance Painter · Unity.'],
+          fashion: ['VIRTUAL FASHION', 'ポートフォリオ一覧 — ランウェイ映像、3Dレンダー、CLO 3Dのコレクション制作。各項目に制作内容の短い説明を添えています。'],
+          works: ['3D WORKS', '個人制作レンダーの年月アーカイブ。新しい月から順に、販売用の枠組みなしで自由に掲載します。'],
+          apps: ['APPS', '衣装制作の過程で作ったアドオンとデスクトップツール。無料配布または販売ページへ。項目を開くと紹介動画・スクリーンショット・使い方・FAQがあります。'],
+      ai: ['作業日誌', '制作の記録。3D制作、AI協働パイプライン、講義についてのノート — 何がうまくいき、何がだめだったか、その理由まで。'],
+        }
+      }
+    }[lang];
+    const secKey = { anim: 'anim', set: 'anim', fashion: 'fashion', fashionItem: 'fashion', works: 'works', workItem: 'works', apps: 'apps', appDetail: 'apps', ai: 'ai', post: 'ai' }[p] || 'anim';
+    const on = (k) => p === k || (k === 'anim' && p === 'set') || (k === 'apps' && p === 'appDetail')
+      || (k === 'works' && p === 'workItem') || (k === 'fashion' && p === 'fashionItem') || (k === 'ai' && p === 'post');
+    const navColor = (k) => dark ? (on(k) ? '#F1EFEA' : 'rgba(241,239,234,.55)') : (on(k) ? navy : '#5C6A82');
+    const navLine = (k) => on(k) ? ocher : 'transparent';
+
+    // ---- outfit sets ----
+    const setDefs = [
+      ['No.06', 'SUGAR REBEL', '8 colorways · 6 avatars', true],
+      ['No.05', 'FRILLY', '6 colorways · 4 avatars', true],
+      ['No.04', 'NOCTURNE', '5 colorways · 4 avatars', false],
+      ['No.03', 'MILK TEA', '6 colorways · 5 avatars', true],
+      ['No.02', 'PAPER DOLL', '4 colorways · 3 avatars', false],
+      ['No.01', 'SNOW LETTER', '5 colorways · 4 avatars', false],
+      ['HAIR 03', 'LONG VEIL', '8 colorways · 6 avatars', true],
+      ['HAIR 02', 'SHORT BOB', '8 colorways · 6 avatars', false],
+      ['ACC 04', 'PEARL LINE', '3 colorways · 9 avatars', false],
+      ['ACC 03', 'RIBBON HEELS', '4 colorways · 7 avatars', true],
+      ['ACC 02', 'LACE SOCKS', '3 colorways · 9 avatars', false],
+      ['ACC 01', 'CHOKER SET', '3 colorways · 9 avatars', false],
+      ['HAIR 01', 'TWIN TAIL', '8 colorways · 5 avatars', false]
+    ].map(([no, name, meta, video]) => ({
+      no: no, name: name, meta: meta, video: video,
+      open: () => this.go('set', { set: name })
+    }));
+
+    // ---- apps ----
+    const appData = {
+      blender: [
+        { name: 'Ruffle Rig', version: 'v2.4.1', platform: 'Blender 4.2+', free: false, price: 'Paid — Superhive', cta: 'View listing', ctaIcon: '↗', desc: 'Generates layered ruffle geometry along any edge loop with even gathering, then bakes weights for physics bones. Built for skirt hems and sleeve cuffs.', tags: ['Add-on', 'Geometry Nodes', 'Commercial'], changelog: 'Latest — per-layer gather falloff, faster bake on dense hems.', meta: 'Superhive listing · updated 3 weeks ago', video: true },
+        { name: 'Weight Transfer Kit', version: 'v1.8', platform: 'Blender 4.1+', free: true, price: 'Free download', cta: 'Download .zip', ctaIcon: '↓', desc: 'Transfers vertex weights between avatar bases with per-bone remapping presets, so one garment can be fitted across a whole avatar family.', tags: ['Add-on', 'Rigging', 'GPL-3.0'], changelog: 'Latest — presets for 6 additional avatar bases.', meta: '2,780 downloads · updated 2 months ago', video: false }
+      ],
+      unity: [
+        { name: 'Prefab Packer', version: 'v3.0', platform: 'Unity 2022.3 LTS', free: true, price: 'Free download', cta: 'Download package', ctaIcon: '↓', desc: 'Packs a garment into a distributable Modular Avatar prefab: material variants, colorway toggles, menu icons and a version stamp in one pass.', tags: ['Editor tool', 'Modular Avatar', 'MIT'], changelog: 'Latest — colorway menu auto-generation.', meta: '5,340 downloads · updated 5 weeks ago', video: true },
+        { name: 'lilToon Preset Sync', version: 'v1.2', platform: 'Unity 2022.3 LTS', free: true, price: 'Free download', cta: 'Download package', ctaIcon: '↓', desc: 'Keeps shader presets consistent across colorways and writes a diff report when a material drifts from the reference setup.', tags: ['Editor tool', 'Shaders', 'MIT'], changelog: 'Latest — diff report export as CSV.', meta: '1,090 downloads · updated 4 months ago', video: false }
+      ],
+      windows: [
+        { name: 'Colorway Sheeter', version: 'v2.1', platform: 'Windows 10 / 11', free: false, price: 'Paid — Superhive', cta: 'View listing', ctaIcon: '↗', desc: 'Assembles store-ready colorway sheets from a render folder — consistent margins, name plates and export sizes for every listing.', tags: ['Desktop app', 'Batch export', 'Commercial'], changelog: 'Latest — BOOTH sheet templates.', meta: 'Superhive listing · updated 6 weeks ago', video: true },
+        { name: 'Texture Watchdog', version: 'v1.0.3', platform: 'Windows 10 / 11', free: true, price: 'Free download', cta: 'Download installer', ctaIcon: '↓', desc: 'Watches a texture folder and flags naming, resolution and colour-space mistakes before they reach a build.', tags: ['Desktop app', 'QA', 'Freeware'], changelog: 'Latest — configurable naming rules.', meta: '430 downloads · updated 3 months ago', video: false }
+      ],
+      comfyui: [
+        { name: 'Reference Board Nodes', version: 'v0.9', platform: 'ComfyUI', free: true, price: 'Free download', cta: 'Download nodes', ctaIcon: '↓', desc: 'Custom nodes that assemble internal reference boards for silhouette exploration — fixed seeds, fixed layout, notes baked into the output.', tags: ['Custom nodes', 'Workflow', 'MIT'], changelog: 'Latest — batch board export with note overlays.', meta: '1,520 downloads · updated 7 weeks ago', video: false },
+        { name: 'Pipeline Bridge', version: 'v0.6', platform: 'ComfyUI', free: true, price: 'Free download', cta: 'Download nodes', ctaIcon: '↓', desc: 'Passes graph outputs into the Blender and Unity steps of the pipeline with a manifest, so a run can be reproduced later.', tags: ['Custom nodes', 'Pipeline', 'MIT'], changelog: 'Latest — manifest versioning.', meta: '640 downloads · updated 2 months ago', video: true }
+      ]
+    };
+    const tabKeys = [['blender', 'Blender'], ['unity', 'Unity'], ['windows', 'Windows'], ['comfyui', 'ComfyUI']];
+    const decorate = (a) => Object.assign({}, a, {
+      priceColor: a.free ? '#B06A18' : '#102848',
+      thumbSlot: a.video ? 'VIDEO / UI CAPTURE' : 'UI CAPTURE',
+      open: () => this.go('appDetail', { app: a, appVideo: false })
+    });
+    const currentApp = this.state.app || appData.blender[0];
+
+    // ---- virtual fashion portfolio ----
+    const pf = [
+      { type: 'Film', date: '2026.05', title: 'SS26 Tension — virtual runway', ar: '16/9', vid: 'P62xR9CwhAs', desc: 'Twelve looks walked in a single unbroken camera move. Bias-cut satin with a layered mesh underskirt, simulated in CLO 3D and retargeted across MetaHuman body scales.', specs: [{ k: 'Tools', v: 'CLO 3D · Unreal Engine 5' }, { k: 'Length', v: '2:14 · 4K 24fps' }, { k: 'Role', v: 'Pattern, simulation, lighting, edit' }], link: 'Watch on YouTube ↗' },
+      { type: 'Film', date: '2025.11', title: 'FW25 Sediment — collection film', ar: '16/9', vid: 'wnY0xhngGPM', desc: 'A slower study of heavy wool and coated cotton. Shot as three long takes with practical lighting only.', specs: [{ k: 'Tools', v: 'CLO 3D · Unreal Engine 5' }, { k: 'Length', v: '3:38 · 4K 24fps' }, { k: 'Role', v: 'Full production' }], link: 'Watch on YouTube ↗' },
+      { type: '3D render', date: '2025.08', title: 'Atelier stills — coat block series', ar: '4/5', desc: 'Six still frames used as the collection lookbook. MetaHuman base, two-key studio set, no environment tricks.', specs: [{ k: 'Tools', v: 'Unreal Engine 5 · MetaHuman' }, { k: 'Output', v: '6 stills · 4K' }, { k: 'Role', v: 'Grooming, lighting, render' }], link: 'View stills ↗' },
+      { type: 'CLO 3D', date: '2025.04', title: 'Pattern set — draped evening line', ar: '4/3', desc: 'Flat patterns drafted from real blocks, with fabric properties tuned per panel. Shared as a teaching reference in the university studio.', specs: [{ k: 'Tools', v: 'CLO 3D · Marvelous Designer' }, { k: 'Output', v: '9 garments · pattern files' }, { k: 'Role', v: 'Drafting, simulation' }], link: 'Process notes ↗' },
+      { type: '3D render', date: '2024.10', title: 'Fabric library — 24 material tests', ar: '1', desc: 'A reference library of scanned and authored materials used across collections, rendered on the same swatch geometry for comparison.', specs: [{ k: 'Tools', v: 'Substance Painter · Unreal Engine 5' }, { k: 'Output', v: '24 materials' }, { k: 'Role', v: 'Authoring, calibration' }], link: 'View library ↗' },
+      { type: 'CLO 3D', date: '2024.03', title: 'Brand collaboration — capsule of 5', ar: '4/3', desc: 'A capsule developed with an independent label: digital fits first, physical sampling after, with the digital set kept as the campaign asset.', specs: [{ k: 'Tools', v: 'CLO 3D · Unreal Engine 5' }, { k: 'Output', v: '5 looks · film + stills' }, { k: 'Role', v: 'Digital garment lead' }], link: 'Case notes ↗' }
+    ].map((w, i) => {
+      const isFilm = !!w.vid;
+      const key = w.vid || ('s' + i);
+      return Object.assign({}, w, {
+        isFilm: isFilm,
+        playing: isFilm && !!this.state.playing[key],
+        idle: !(isFilm && this.state.playing[key]),
+        cursor: isFilm ? 'pointer' : 'default',
+        slot: isFilm ? 'YOUTUBE — CLICK TO PLAY' : (w.type === 'CLO 3D' ? 'CLO 3D CAPTURE' : '3D RENDER'),
+        embed: isFilm ? 'https://www.youtube-nocookie.com/embed/' + w.vid + '?autoplay=1&rel=0&modestbranding=1' : '',
+        play: isFilm ? () => this.setState(s => ({ playing: Object.assign({}, s.playing, { [key]: true }) })) : () => {},
+        open: null
+      });
+    });
+    pf.forEach(w => { w.open = () => this.go('fashionItem', { fash: w, fashPlay: false }); });
+    const fashCur = this.state.fash || pf[0];
+
+    // ---- journal ----
+    const posts = [
+      { slot: 'MCP SESSION CAPTURE', tag: 'MCP', date: '2026.07', title: 'Letting an agent drive Blender without losing the tailoring', excerpt: 'What I expose through an MCP server and what I deliberately keep manual — the full sequence from a finished garment to a packed Unity prefab.', read: '12 min read', stack: ['Claude + MCP', 'Blender 4.2', 'Unity 2022.3 LTS', 'Modular Avatar'], tags: ['MCP', 'Blender', 'Unity'] },
+      { slot: 'COMFYUI GRAPH', tag: 'ComfyUI', date: '2026.05', title: 'A reference graph I can hand to a student', excerpt: 'Fixed seeds, named nodes and a manifest, so a run is reproducible a semester later.', read: '9 min read', stack: ['ComfyUI', 'Custom nodes', 'Manifest export'], tags: ['ComfyUI', 'Teaching'] },
+      { slot: 'UEFN CAPTURE', tag: 'UEFN', date: '2026.03', title: 'Building a Fortnite island as a teaching case', excerpt: 'How much of the setup can be described in language and executed by tools — and where Verse still needs hands.', read: '14 min read', stack: ['UEFN', 'Verse', 'MCP'], tags: ['UEFN', 'MCP'] },
+      { slot: 'ROBLOX CAPTURE', tag: 'Roblox', date: '2026.01', title: 'Layered clothing prep in Roblox Studio', excerpt: 'Cage and layer checks scripted through an MCP server, publish steps run with a manifest per version.', read: '11 min read', stack: ['Roblox Studio', 'MCP', 'Luau'], tags: ['Roblox', 'MCP'] },
+      { slot: 'PIPELINE DIAGRAM', tag: 'MCP', date: '2025.11', title: 'What I refuse to automate', excerpt: 'A short list of decisions that stay manual, and the reasoning behind each one.', read: '6 min read', stack: ['Notes', 'Pipeline audit'], tags: ['MCP', 'Method'] },
+      { slot: 'SUBSTANCE CAPTURE', tag: 'MCP', date: '2025.09', title: 'Texture sets on request', excerpt: 'Driving Substance Painter through a server: channel exports, naming rules, and the QA pass that follows.', read: '8 min read', stack: ['Substance Painter', 'MCP', 'Texture Watchdog'], tags: ['MCP', 'Textures'] },
+      { slot: 'CLASSROOM', tag: 'Teaching', date: '2025.06', title: 'Notes from the first staff workshop', excerpt: 'What the room actually asked about — mostly reproducibility, licensing, and where the work goes.', read: '7 min read', stack: ['Workshop', 'Curriculum'], tags: ['Teaching'] }
+    ];
+    posts.forEach((e, i) => { e.idx = i; e.open = () => this.go('post', { post: e }); });
+    const postCur = this.state.post || posts[0];
+
+    // ---- archive ----
+    const flat = [];
+    const archive = [
+      { month: 'JULY', year: '2026', count: '8 renders', n: 8 },
+      { month: 'JUNE', year: '2026', count: '6 renders', n: 6 },
+      { month: 'MAY', year: '2026', count: '5 renders', n: 5 }
+    ].map(m => {
+      const items = Array.from({ length: m.n }, (_, i) => {
+        const it = {
+          ar: i % 4 === 0 ? '4/5' : (i % 3 === 0 ? '4/3' : '1'),
+          slot: i % 4 === 0 ? 'PORTRAIT' : 'RENDER',
+          bigSlot: i % 4 === 0 ? 'PORTRAIT RENDER' : '3D RENDER',
+          note: ['Silk drape', 'Boot last', 'Pearl clasp', 'Lace test', 'Coat block', 'Hairpin', 'Corset boning', 'Satin shader'][i % 8],
+          day: (i * 3 + 2) + ' ' + m.month.slice(0, 3).toLowerCase(),
+          date: m.month + ' ' + m.year,
+          month: m.month
+        };
+        it.idx = flat.length;
+        it.open = () => this.go('workItem', { work: it, workIdx: it.idx });
+        flat.push(it);
+        return it;
+      });
+      return Object.assign({}, m, { items: items });
+    });
+    const workCur = this.state.work || flat[0];
+    const workAt = (n) => flat[(n + flat.length) % flat.length];
+
+    return {
+      headerBg: dark ? 'rgba(11,21,38,.94)' : 'rgba(248,248,246,.94)',
+      headerLine: dark ? 'rgba(241,239,234,.18)' : '#DCD9D1',
+      markPlate: dark ? '#152C4B' : '#DFE3E6',
+      markPlateLine: dark ? 'rgba(241,239,234,.22)' : '#C9CED3',
+      navMuted: dark ? 'rgba(241,239,234,.55)' : '#5C6A82',
+      navStrong: dark ? '#F1EFEA' : navy,
+      navItems: [
+        ['anim', '01', '01 Anim', () => this.go('anim')],
+        ['fashion', '02', '02 Fashion', () => this.go('fashion')],
+        ['works', '03', '03 3D', () => this.go('works')],
+        ['apps', '04', '04 Apps', () => this.go('apps')],
+        ['ai', '05', '05 AI', () => this.go('ai')]
+      ].map(([k, no, short, open], i) => ({
+        label: no + ' ' + (compact ? T.navShort[i] : T.nav[i]), color: navColor(k), line: navLine(k), open: open
+      })),
+      footerNav: ['anim', 'fashion', 'works', 'apps', 'ai'].map((k, i) => ({
+        label: T.nav[i], open: () => this.go(k)
+      })).concat([{ label: T.about, open: () => this.go('about') }]),
+      secTitle: T.sec[secKey][0],
+      secDesc: T.sec[secKey][1],
+      tagline: T.tagline,
+      setEn: () => this.setState({ lang: 'en' }),
+      setKo: () => this.setState({ lang: 'ko' }),
+      setJa: () => this.setState({ lang: 'ja' }),
+      langEn: lang === 'en' ? (dark ? '#F1EFEA' : navy) : (dark ? 'rgba(241,239,234,.5)' : '#8C8778'),
+      langKo: lang === 'ko' ? (dark ? '#F1EFEA' : navy) : (dark ? 'rgba(241,239,234,.5)' : '#8C8778'),
+      langJa: lang === 'ja' ? (dark ? '#F1EFEA' : navy) : (dark ? 'rgba(241,239,234,.5)' : '#8C8778'),
+      fLangEn: lang === 'en' ? navy : '#8C8778',
+      fLangKo: lang === 'ko' ? navy : '#8C8778',
+      fLangJa: lang === 'ja' ? navy : '#8C8778',
+      isMobile: mobile,
+      deskNavDisplay: mobile ? 'none' : 'flex',
+      menuOpen: mobile && this.state.menu,
+      menuLabel: this.state.menu ? 'Close' : 'Menu',
+      menuItemBg: dark ? '#0B1526' : cream,
+      toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
+      navItemsFull: ['anim', 'fashion', 'works', 'apps', 'ai'].map((k, i) => ({
+        no: '0' + (i + 1), title: T.nav[i], color: navColor(k),
+        open: () => { this.setState({ menu: false }); this.go(k); }
+      })),
+      padHeader: mobile ? '11px 18px' : '11px 36px',
+      padFooter: mobile ? '24px 18px 30px' : '24px 36px 30px',
+      pad: mobile ? '26px 18px 0' : '40px 36px 0',
+      padTight: mobile ? '18px 18px 0' : '24px 36px 0',
+      h1: mobile ? '34px' : '58px',
+      col2: mobile ? '1fr' : 'minmax(300px,1fr) minmax(260px,360px)',
+      gap2: mobile ? '26px' : '44px',
+      col3: mobile ? '1fr' : 'minmax(160px,220px) minmax(240px,1fr) minmax(170px,190px)',
+      gap3: mobile ? '16px' : '26px',
+      featGrid: mobile ? '1fr' : '1.4fr 1fr 1fr 1fr',
+      featSpan: mobile ? 'span 1' : 'span 2',
+      homeGrid: mobile ? '1fr 1fr' : 'repeat(5,1fr)',
+      heroMax: mobile ? '78vw' : '44vw',
+      headGap: compact ? '18px' : '28px',
+      navGap: compact ? '14px' : '22px',
+      navSize: compact ? '10.5px' : '11.5px',
+      navTrack: compact ? '.1em' : '.16em',
+      aboutLabel: T.about,
+      contactLabel: compact ? 'Mail' : 'Contact',
+      footerBg: dark ? '#0B1526' : navy,
+      footerFg: dark ? '#F1EFEA' : cream,
+      footerLine: dark ? 'rgba(241,239,234,.18)' : 'transparent',
+
+      isHome: p === 'home',
+      isSoon: !(p === 'home' || p === 'about' || p === 'contact'),
+      // HOME 은 한 화면에 푸터까지 들어오게 높이를 제한한다
+      // (헤더 71px + 컴팩트 푸터 약 150px)
+      homeH: p === 'home' ? 'calc(100vh - 221px)' : 'calc(100vh - 71px)',
+      footLogoH: p === 'home' ? '62px' : '104px',
+      soonKicker: T.soonKicker, soonHead: T.soonHead,
+      soonBody: T.soonBody, soonBack: T.soonBack,
+      isAnim: false, isSet: false, isFashion: false,
+      isWorks: false, isApps: false, isAppDetail: false, isAi: false,
+      isAbout: p === 'about' || p === 'contact',
+      goHome: () => this.go('home'), goAnim: () => this.go('anim'), goFashion: () => this.go('fashion'),
+      goWorks: () => this.go('works'), goApps: () => this.go('apps'), goAi: () => this.go('ai'),
+      goAbout: () => this.go('about'), goContact: () => this.go('contact'),
+      openFeatured: () => this.go('set', { set: 'SUGAR REBEL' }),
+      meshA: this.meshA,
+
+      sections: ['anim', 'fashion', 'works', 'apps', 'ai'].map((k, i) => ({
+        no: '0' + (i + 1), title: T.nav[i], meta: T.meta[i], open: () => this.go(k)
+      })),
+      navItemsFullTitles: T.nav,
+
+      setsTop: setDefs.slice(1, 3),
+      setsRest: setDefs.slice(3),
+      setsRelated: setDefs.slice(1, 6),
+      setName: this.state.set,
+      setNo: (setDefs.find(s => s.name === this.state.set) || setDefs[0]).no,
+      setDesc: 'A layered set drafted flat, then fitted per avatar. Skirt and sleeves carry separate physics bones; the corset keeps a hard silhouette so the ruffles read at distance.',
+      setThumbs: [
+        { label: 'RENDER', line: '#102848' }, { label: 'RENDER', line: '#DCD9D1' }, { label: 'BACK', line: '#DCD9D1' },
+        { label: 'DETAIL', line: '#DCD9D1' }, { label: '▶', line: '#DCD9D1' }, { label: '+ 4', line: '#DCD9D1' }
+      ],
+      setSpecs: [
+        { k: 'Type', v: 'Full set — outfit, arm warmers, shoes' },
+        { k: 'Avatars', v: 'Manuka · Selestia · Rindo · Kikyo · Lime · Moe' },
+        { k: 'Colorways', v: '8' },
+        { k: 'Includes', v: 'FBX · Unity package · PSD source' },
+        { k: 'Made with', v: 'Blender · Marvelous Designer · Substance Painter · Unity' },
+        { k: 'Released', v: 'June 2026' }
+      ],
+      colorways: ['Snow', 'Blush', 'Rose', 'Ink', 'Nocturne', 'Frost', 'Cream', 'Sable'],
+      wornShots: [
+        { slot: 'WORN SHOT', credit: '@model_a · Manuka' },
+        { slot: 'WORN SHOT', credit: '@model_b · Selestia' },
+        { slot: 'WORN SHOT', credit: '@model_c · Rindo' },
+        { slot: 'WORN SHOT', credit: 'Studio shot · Kikyo' },
+        { slot: 'WORN SHOT', credit: '@model_d · Lime' }
+      ],
+
+      portfolio: pf,
+      archive: archive,
+
+      appTabs: tabKeys.map(([k, label]) => ({
+        label: label, count: appData[k].length,
+        bg: this.state.appTab === k ? navy : cream,
+        fg: this.state.appTab === k ? cream : '#33465F',
+        select: () => this.setState({ appTab: k })
+      })),
+      appList: appData[this.state.appTab].map(decorate),
+      app: decorate(currentApp),
+      appMediaLabel: currentApp.video ? 'YOUTUBE INTRO — CLICK TO PLAY' : 'NO VIDEO — SCREENSHOT ONLY',
+      appVideoPlaying: !!currentApp.video && this.state.appVideo,
+      appVideoIdle: !(currentApp.video && this.state.appVideo),
+      appEmbed: 'https://www.youtube-nocookie.com/embed/wnY0xhngGPM?autoplay=1&rel=0&modestbranding=1',
+      playAppVideo: () => { if (currentApp.video) this.setState({ appVideo: true }); },
+      appShots: ['UI — MAIN PANEL', 'UI — SETTINGS', 'RESULT', 'BEFORE / AFTER'],
+      appSteps: [
+        { no: '01', t: 'Install from the downloaded archive — no external dependencies.' },
+        { no: '02', t: 'Select the target geometry, then open the tool panel from the sidebar.' },
+        { no: '03', t: 'Set layer count and gather falloff; preview updates without baking.' },
+        { no: '04', t: 'Bake when the silhouette is right — weights and bones are written in place.' }
+      ],
+      appFaq: [
+        { q: 'Can I use the output in paid assets?', a: 'Yes. Anything the tool produces is yours, including for commercial listings.' },
+        { q: 'Does it work on older versions?', a: 'One version back is supported. Older builds are kept in the release archive.' },
+        { q: 'Where do I report a bug?', a: 'GitHub issues, or the studio mail if you would rather not open an account.' },
+        { q: 'Will there be a Mac build?', a: 'Blender and Unity tools already run everywhere. Desktop utilities are Windows only for now.' }
+      ],
+      appSpecs: [
+        { k: 'License', v: 'See listing' },
+        { k: 'Updated', v: 'July 2026' },
+        { k: 'Support', v: 'GitHub issues' },
+        { k: 'Docs', v: 'Included in archive' }
+      ],
+
+      journal: posts.slice(1),
+      openLeadPost: () => this.go('post', { post: posts[0] }),
+
+      isWorkItem: false, isFashionItem: false, isPost: false,
+      work: workCur,
+      workViews: [
+        { label: 'MAIN', line: '#102848' }, { label: 'ANGLE', line: '#D6D3CA' }, { label: 'DETAIL', line: '#D6D3CA' },
+        { label: 'WIRE', line: '#D6D3CA' }, { label: 'CLAY', line: '#D6D3CA' }
+      ],
+      workSpecs: [
+        { k: 'Posted', v: workCur.date },
+        { k: 'Type', v: 'Personal study' },
+        { k: 'Tools', v: 'Blender · Substance Painter' },
+        { k: 'Output', v: 'Stills + optional turntable' }
+      ],
+      workSiblings: flat.filter(i => i.month === workCur.month && i.idx !== workCur.idx).slice(0, 6),
+      workPrev: () => { const it = workAt(workCur.idx - 1); this.go('workItem', { work: it, workIdx: it.idx }); },
+      workNext: () => { const it = workAt(workCur.idx + 1); this.go('workItem', { work: it, workIdx: it.idx }); },
+
+      fash: fashCur,
+      fashPlaying: !!fashCur.isFilm && this.state.fashPlay,
+      fashIdle: !(fashCur.isFilm && this.state.fashPlay),
+      fashEmbed: fashCur.embed,
+      playFash: () => { if (fashCur.isFilm) this.setState({ fashPlay: true }); },
+      fashStills: [
+        { label: 'LOOK 01', ar: '4/5' }, { label: 'LOOK 04', ar: '4/5' }, { label: 'DETAIL', ar: '1' },
+        { label: 'FABRIC', ar: '1' }, { label: 'BACK', ar: '4/5' }, { label: 'SET', ar: '16/9' }
+      ],
+      fashOthers: pf.filter(w => w.title !== fashCur.title).slice(0, 4),
+
+      post: postCur,
+      postBody: [
+        { isText: true, isHead: false, text: 'The first version of this setup did too much. An agent could open a file, run modifiers, export, and pack a prefab, and the result was technically correct and quietly wrong — hems gathered evenly where they should have fallen, seams straight where the body needed ease.' },
+        { isText: false, isHead: true, text: 'What the server exposes' },
+        { isText: true, isHead: false, text: 'Only operations with a single obvious outcome: cleanup passes, weight transfer between known bases, export with a fixed naming rule, prefab assembly with a version stamp. Each one is reversible and each one writes a line to the log so the run can be read afterwards.' },
+        { isText: false, isHead: true, text: 'What stays in my hands' },
+        { isText: true, isHead: false, text: 'Pattern decisions, fabric properties, and anything to do with silhouette. Those are judgements about how cloth should behave, and they are the reason someone buys the set rather than generating one.' },
+        { isText: true, isHead: false, text: 'The practical outcome is a shorter tail: the last hour of a garment — the export, the packing, the checks — stopped being an hour. The first two days did not change at all, and I would not want them to.' }
+      ],
+      postSide: posts.filter(e => e.idx !== postCur.idx).slice(0, 5),
+      postNav: [
+        { dir: 'Previous entry', title: posts[(postCur.idx + posts.length - 1) % posts.length].title, open: posts[(postCur.idx + posts.length - 1) % posts.length].open },
+        { dir: 'Next entry', title: posts[(postCur.idx + 1) % posts.length].title, open: posts[(postCur.idx + 1) % posts.length].open }
+      ],
+
+      abKicker: T.ab.kicker,
+      abHead: T.ab.head.split('<br>'),
+      abBody: T.ab.body,
+      careerT: T.ab.careerT,
+      career: T.ab.career,
+      fieldsT: T.ab.fieldsT,
+      fields: T.ab.fields,
+      contactKicker: T.ab.contactKicker,
+      contactHead: T.ab.contactHead.replace('&amp;', '&'),
+      contactBody: T.ab.contactBody,
+      openLabel: T.ab.open,
+      mailLabel: T.ab.mail,
+      toolGroups: [
+        { title: T.ab.groups[0], items: ['CLO 3D', 'Marvelous Designer'] },
+        { title: T.ab.groups[1], items: ['Blender', 'Photoshop', 'Substance Painter', '3ds Max', 'ZBrush', 'DaVinci Resolve'] },
+        { title: T.ab.groups[2], items: ['Unreal Engine', 'Unity', 'MetaHuman'] },
+        { title: T.ab.groups[3], items: ['BOOTH', 'Superhive', 'GitHub', 'ZEPETO Creator'] }
+      ],
+      contacts: [
+        { k: T.ab.keys.email, v: 'yzoo2@naver.com', url: 'mailto:yzoo2@naver.com', hasLink: false },
+        { k: T.ab.keys.enquiries, v: T.ab.enquiries, url: 'mailto:yzoo2@naver.com', hasLink: false },
+        { k: 'BOOTH', v: 'https://studiocats.booth.pm/', url: 'https://studiocats.booth.pm/', hasLink: true },
+        { k: 'Superhive', v: 'https://superhivemarket.com/creators/studiocats', url: 'https://superhivemarket.com/creators/studiocats', hasLink: true },
+        { k: 'X', v: 'https://x.com/StudioCats_Elle', url: 'https://x.com/StudioCats_Elle', hasLink: true },
+        { k: 'YouTube', v: 'https://www.youtube.com/@elliezu', url: 'https://www.youtube.com/@elliezu', hasLink: true },
+        { k: 'YouTube', v: 'https://www.youtube.com/@StudioCats_Elle', url: 'https://www.youtube.com/@StudioCats_Elle', hasLink: true }
+      ]
+    };
+  }
+}
+</script>
 </body>
 </html>

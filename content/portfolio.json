@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-22T00:00:00.000Z",
+  "projects": [
+    {
+      "id": "cloud-layer-dress",
+      "demo": true,
+      "title": "Cloud Layer Dress",
+      "slug": "cloud-layer-dress",
+      "category": "Virtual Fashion",
+      "date": "2026.08.21",
+      "status": "초안",
+      "summary": "CLO 3D에서 완성한 레이어드 드레스와 리깅 과정을 정리하는 가상 패션 프로젝트입니다.",
+      "tags": [
+        "CLO 3D",
+        "Virtual Fashion",
+        "Render"
+      ],
+      "boothUrl": "https://studiocats.booth.pm/",
+      "youtubeUrl": "",
+      "gallery": [
+        {
+          "id": "cloud-cover",
+          "src": "/demo/portfolio-01.png",
+          "name": "cloud-layer-cover.png"
+        },
+        {
+          "id": "cloud-02",
+          "src": "/demo/portfolio-02.png",
+          "name": "cloud-layer-detail.png"
+        },
+        {
+          "id": "cloud-03",
+          "src": "/demo/portfolio-03.png",
+          "name": "cloud-layer-pattern.png"
+        },
+        {
+          "id": "cloud-04",
+          "src": "/demo/portfolio-04.png",
+          "name": "cloud-layer-render.png"
+        }
+      ],
+      "coverId": "cloud-cover"
+    },
+    {
+      "id": "softform-collection",
+      "demo": true,
+      "title": "Softform Collection",
+      "slug": "softform-collection",
+      "category": "Virtual Fashion",
+      "date": "2026.08.10",
+      "status": "초안",
+      "summary": "부드러운 구조감과 실루엣을 탐구한 버추얼 컬렉션입니다.",
+      "tags": [
+        "CLO 3D",
+        "Unreal Engine"
+      ],
+      "boothUrl": "",
+      "youtubeUrl": "",
+      "gallery": [
+        {
+          "id": "softform-cover",
+          "src": "/demo/portfolio-02.png",
+          "name": "softform-cover.png"
+        }
+      ],
+      "coverId": "softform-cover"
+    },
+    {
+      "id": "signal-accessory-set",
+      "demo": true,
+      "title": "Signal Accessory Set",
+      "slug": "signal-accessory-set",
+      "category": "Anime Style",
+      "date": "2026.07.28",
+      "status": "초안",
+      "summary": "VRChat 아바타를 위한 액세서리 세트입니다.",
+      "tags": [
+        "VRChat",
+        "Blender"
+      ],
+      "boothUrl": "https://studiocats.booth.pm/",
+      "youtubeUrl": "",
+      "gallery": [
+        {
+          "id": "signal-cover",
+          "src": "/demo/portfolio-05.png",
+          "name": "signal-cover.png"
+        }
+      ],
+      "coverId": "signal-cover"
+    }
+  ]
+}

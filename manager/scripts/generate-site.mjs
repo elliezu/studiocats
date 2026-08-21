@@ -1,0 +1,112 @@
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const managerRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const siteRoot = resolve(managerRoot, '..')
+const contentRoot = join(siteRoot, 'content')
+const portfolioPath = join(contentRoot, 'portfolio.json')
+const manifestPath = join(contentRoot, '.generated-portfolio.json')
+const domain = 'https://studiocats.kr'
+const sections = [
+  { name: 'Anime Style', slug: 'animation-style', number: '01', subtitle: 'VRChat' },
+  { name: 'Virtual Fashion', slug: 'virtual-fashion', number: '02', subtitle: 'Film · Render · CLO 3D' },
+  { name: '3D Works', slug: '3d-works', number: '03', subtitle: 'Monthly Archive' },
+]
+
+const css = `*{box-sizing:border-box}html,body{margin:0}body{background:#F8F8F6;color:#102848;font-family:Arial,'Pretendard',sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}a:hover{color:#D88830}img{display:block;max-width:100%}h1,h2,h3{margin:0;font-family:Arial,'Pretendard',sans-serif;letter-spacing:-.045em}.wrap{max-width:1400px;margin:0 auto;padding:0 36px}header{position:sticky;top:0;z-index:10;background:rgba(248,248,246,.96);border-bottom:1px solid #DCD9D1}.hd{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:26px}.mark img{width:40px;height:40px;object-fit:contain}.main,footer nav{display:flex;align-items:center;gap:18px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.main a[aria-current=page]{color:#D88830}.sub{font-size:11px;letter-spacing:.08em}.page{padding:48px 0 76px}.kicker{font-size:10px;letter-spacing:.2em;color:#8C8778;text-transform:uppercase}.heading{display:flex;justify-content:space-between;align-items:end;gap:24px;border-bottom:1px solid #102848;padding-bottom:22px}.heading h1{font-size:52px;line-height:1}.heading p{max-width:560px;margin:14px 0 0;color:#526078;font-size:14px;line-height:1.6}.count{font-size:11px;letter-spacing:.14em;color:#8C8778;text-transform:uppercase;white-space:nowrap}.project-list{border-top:1px solid #DCD9D1}.project{display:grid;grid-template-columns:minmax(230px,360px) minmax(260px,1fr) 150px;gap:28px;padding:25px 0;border-bottom:1px solid #DCD9D1;align-items:start}.project-cover{aspect-ratio:4/3;width:100%;object-fit:cover;background:#F1F0EB;border:1px solid #DCD9D1}.project h2{font-size:25px;line-height:1.1}.project .date{display:block;margin-top:9px;font-size:10px;letter-spacing:.16em;color:#8C8778}.project .summary{font-size:14px;line-height:1.65;color:#33465F;margin:12px 0 0;max-width:600px}.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}.tag{font-size:10px;letter-spacing:.08em;padding:5px 7px;background:#ECEAE5;color:#59667C}.open{border:1px solid #102848;display:flex;align-items:center;justify-content:space-between;padding:11px 13px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}.open:hover{border-color:#D88830}.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:46px;align-items:start}.hero-cover{width:100%;aspect-ratio:4/3;object-fit:cover;background:#F1F0EB;border:1px solid #DCD9D1}.detail-copy h1{font-size:52px;line-height:1.02;margin-top:11px}.detail-copy .date{display:block;margin-top:15px;font-size:11px;letter-spacing:.15em;color:#8C8778}.detail-copy .summary{margin:28px 0 0;color:#33465F;font-size:15px;line-height:1.75;white-space:pre-wrap}.actions{display:grid;gap:10px;margin-top:28px}.youtube{margin-top:50px;border-top:1px solid #DCD9D1;padding-top:18px}.youtube h2,.gallery h2{font-size:19px}.video{margin-top:15px;aspect-ratio:16/9;width:100%;border:0;background:#111}.gallery{margin-top:50px;border-top:1px solid #DCD9D1;padding-top:18px}.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.gallery-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#F1F0EB;border:1px solid #DCD9D1}.empty{min-height:48vh;display:grid;align-content:center;gap:16px;border-bottom:1px solid #DCD9D1}.empty h1{font-size:50px}.empty p{color:#526078;font-size:14px;line-height:1.6}footer{border-top:1px solid #DCD9D1}.footer{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:21px 0}.footer img{height:46px;width:auto}.footer small{font-size:10px;letter-spacing:.12em;color:#8C8778}@media(max-width:860px){.wrap{padding:0 20px}.hd{min-height:70px}.main{gap:11px;font-size:9px;overflow:auto}.sub{display:none}.page{padding:33px 0 55px}.heading{display:block}.heading h1,.detail-copy h1,.empty h1{font-size:38px}.count{display:block;margin-top:16px}.project{grid-template-columns:120px 1fr;gap:16px}.project .open{grid-column:2}.project-cover{min-height:90px}.project h2{font-size:19px}.project .summary{font-size:12px}.hero{grid-template-columns:1fr;gap:25px}.gallery-grid{grid-template-columns:repeat(2,1fr)}footer nav{display:none}.footer{align-items:flex-start;flex-direction:column}}`
+
+const esc = (value = '') => String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character])
+const attr = (value = '') => esc(value).replace(/`/g, '&#96;')
+const toPath = (source, depth) => source.startsWith('http') ? source : `${'../'.repeat(depth)}${source.replace(/^\//, '')}`
+const coverOf = (project) => project.gallery.find((image) => image.id === project.coverId) ?? project.gallery[0]
+const youtubeId = (url = '') => {
+  try {
+    const parsed = new URL(url)
+    if (parsed.hostname.includes('youtu.be')) return parsed.pathname.slice(1)
+    if (parsed.hostname.includes('youtube.com')) return parsed.searchParams.get('v') || parsed.pathname.split('/').pop()
+  } catch {}
+  return ''
+}
+
+function navigation(prefix, active) {
+  return `<header><div class="wrap hd"><a class="mark" href="${prefix}" aria-label="StudioCats home"><img src="${prefix}uploads/logo_img.png" alt="StudioCats"></a><div style="display:flex;align-items:center;gap:26px"><nav class="main" aria-label="Sections">${sections.map((section) => `<a href="${prefix}${section.slug}/"${active === section.slug ? ' aria-current="page"' : ''}>${section.number} ${section.name}</a>`).join('')}<a href="${prefix}apps/">04 Apps</a><a href="${prefix}ai-automation/">05 Journal</a></nav><div class="sub"><a href="${prefix}about/">About</a></div></div></div></header>`
+}
+
+function footer(prefix) {
+  return `<footer><div class="wrap footer"><a href="${prefix}" aria-label="StudioCats home"><img src="${prefix}uploads/StudioCats_combined_logo_vertical_v2.png" alt="StudioCats"></a><nav aria-label="Footer">${sections.map((section) => `<a href="${prefix}${section.slug}/">${section.name}</a>`).join('')}<a href="${prefix}apps/">Apps</a><a href="${prefix}ai-automation/">Journal</a><a href="${prefix}about/">About</a></nav><small>© 2026 StudioCats · All rights reserved</small></div></footer>`
+}
+
+function document({ title, description, canonical, prefix, active, body }) {
+  return `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} — StudioCats</title><meta name="description" content="${attr(description)}"><link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:site_name" content="StudioCats"><meta property="og:title" content="${attr(title)}"><meta property="og:description" content="${attr(description)}"><meta property="og:url" content="${canonical}"><link rel="icon" href="${prefix}uploads/logo_img.png"><style>${css}</style></head><body>${navigation(prefix, active)}<main>${body}</main>${footer(prefix)}</body></html>`
+}
+
+function renderSection(section, projects) {
+  const prefix = '../'
+  const list = projects.length ? projects.map((project) => {
+    const cover = coverOf(project)
+    return `<article class="project"><img class="project-cover" src="${toPath(cover.src, 1)}" alt="${attr(project.title)}"><div><div class="kicker">${section.number} / ${esc(project.category)}</div><h2><a href="./${attr(project.slug)}/">${esc(project.title)}</a></h2><span class="date">${esc(project.date)}</span><p class="summary">${esc(project.summary)}</p><div class="tags">${project.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}</div></div><a class="open" href="./${attr(project.slug)}/"><span>자세히 보기</span><span>→</span></a></article>`
+  }).join('') : `<section class="empty"><div class="kicker">${section.number} / 준비 중</div><h1>${esc(section.name)}</h1><p>작업을 선별하고 설명을 붙이는 대로 이곳에 열립니다.</p></section>`
+  const body = `<div class="wrap page"><section class="heading"><div><div class="kicker">${section.number} / SECTION</div><h1>${esc(section.name)}</h1><p>${projects.length ? '선별한 프로젝트와 제작 기록을 정리합니다.' : section.subtitle}</p></div><span class="count">${projects.length} PROJECT${projects.length === 1 ? '' : 'S'}</span></section><div class="project-list">${list}</div></div>`
+  return document({ title: section.name, description: `${section.name} — StudioCats 포트폴리오`, canonical: `${domain}/${section.slug}/`, prefix, active: section.slug, body })
+}
+
+function renderDetail(section, project) {
+  const prefix = '../../'
+  const cover = coverOf(project)
+  const videoId = youtubeId(project.youtubeUrl)
+  const actions = [project.boothUrl && `<a class="open" href="${attr(project.boothUrl)}" target="_blank" rel="noopener"><span>BOOTH에서 보기</span><span>↗</span></a>`, project.youtubeUrl && `<a class="open" href="${attr(project.youtubeUrl)}" target="_blank" rel="noopener"><span>YouTube에서 보기</span><span>↗</span></a>`].filter(Boolean).join('')
+  const gallery = project.gallery.length > 1 ? `<section class="gallery"><h2>Gallery</h2><div class="gallery-grid">${project.gallery.map((image) => `<img src="${toPath(image.src, 2)}" alt="${attr(project.title)}">`).join('')}</div></section>` : ''
+  const video = videoId ? `<section class="youtube"><h2>Video</h2><iframe class="video" title="${attr(project.title)} YouTube video" src="https://www.youtube-nocookie.com/embed/${attr(videoId)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></section>` : ''
+  const body = `<div class="wrap page"><article class="hero"><img class="hero-cover" src="${toPath(cover.src, 2)}" alt="${attr(project.title)}"><div class="detail-copy"><div class="kicker">${section.number} / ${esc(project.category)}</div><h1>${esc(project.title)}</h1><span class="date">${esc(project.date)}</span><div class="tags">${project.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}</div><p class="summary">${esc(project.summary)}</p><div class="actions">${actions}</div></div></article>${video}${gallery}</div>`
+  return document({ title: project.title, description: project.summary || `${project.title} — StudioCats`, canonical: `${domain}/${section.slug}/${project.slug}/`, prefix, active: section.slug, body })
+}
+
+async function write(relativePath, contents) {
+  const destination = join(siteRoot, relativePath)
+  await mkdir(dirname(destination), { recursive: true })
+  await writeFile(destination, contents, 'utf8')
+}
+
+async function previousManifest() {
+  try { return JSON.parse(await readFile(manifestPath, 'utf8')) } catch { return { files: [] } }
+}
+
+const source = JSON.parse(await readFile(portfolioPath, 'utf8'))
+const publicProjects = (source.projects ?? []).filter((project) => project.status === '공개됨' && !project.demo)
+const previous = await previousManifest()
+const files = new Set()
+for (const section of sections) {
+  const projects = publicProjects.filter((project) => project.category === section.name)
+  const listPath = `${section.slug}/index.html`
+  const wasGenerated = (previous.files ?? []).includes(listPath)
+  if (!projects.length && !wasGenerated) continue
+  await write(listPath, renderSection(section, projects))
+  files.add(listPath)
+  for (const project of projects) {
+    const detailPath = `${section.slug}/${project.slug}/index.html`
+    await write(detailPath, renderDetail(section, project))
+    files.add(detailPath)
+  }
+}
+
+const today = new Date().toISOString().slice(0, 10)
+const basePages = ['', 'apps/', 'about/', ...sections.map((section) => `${section.slug}/`)]
+const detailPages = publicProjects.map((project) => {
+  const section = sections.find((item) => item.name === project.category)
+  return `${section.slug}/${project.slug}/`
+})
+const sitemapPages = [...basePages, ...detailPages]
+if (publicProjects.length || (previous.files ?? []).includes('sitemap.xml')) {
+  await write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPages.map((page) => `  <url><loc>${domain}/${page}</loc><lastmod>${today}</lastmod><priority>${page === '' ? '1.0' : page.includes('/') && page.split('/').length > 2 ? '0.7' : '0.8'}</priority></url>`).join('\n')}\n</urlset>\n`)
+  files.add('sitemap.xml')
+}
+
+for (const stale of previous.files ?? []) {
+  if (!files.has(stale) && stale.includes('/')) {
+    const destination = resolve(siteRoot, stale)
+    if (destination.startsWith(siteRoot)) await rm(destination, { force: true })
+  }
+}
+if (files.size || (previous.files ?? []).length) await writeFile(manifestPath, JSON.stringify({ files: [...files].sort(), generatedAt: new Date().toISOString() }, null, 2) + '\n', 'utf8')
+console.log(JSON.stringify({ generated: [...files].sort(), publishedProjects: publicProjects.length }))

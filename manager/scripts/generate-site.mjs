@@ -6,6 +6,8 @@ const managerRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const siteRoot = resolve(managerRoot, '..')
 const contentRoot = join(siteRoot, 'content')
 const portfolioPath = join(contentRoot, 'portfolio.json')
+const appsPath = join(contentRoot, 'apps.json')
+const journalPath = join(contentRoot, 'journal.json')
 const manifestPath = join(contentRoot, '.generated-portfolio.json')
 const domain = 'https://studiocats.kr'
 const sections = [
@@ -30,7 +32,7 @@ const youtubeId = (url = '') => {
 }
 
 function navigation(prefix, active) {
-  return `<header><div class="wrap hd"><a class="mark" href="${prefix}" aria-label="StudioCats home"><img src="${prefix}uploads/logo_img.png" alt="StudioCats"></a><div style="display:flex;align-items:center;gap:26px"><nav class="main" aria-label="Sections">${sections.map((section) => `<a href="${prefix}${section.slug}/"${active === section.slug ? ' aria-current="page"' : ''}>${section.number} ${section.name}</a>`).join('')}<a href="${prefix}apps/">04 Apps</a><a href="${prefix}ai-automation/">05 Journal</a></nav><div class="sub"><a href="${prefix}about/">About</a></div></div></div></header>`
+  return `<header><div class="wrap hd"><a class="mark" href="${prefix}" aria-label="StudioCats home"><img src="${prefix}uploads/logo_img.png" alt="StudioCats"></a><div style="display:flex;align-items:center;gap:26px"><nav class="main" aria-label="Sections">${sections.map((section) => `<a href="${prefix}${section.slug}/"${active === section.slug ? ' aria-current="page"' : ''}>${section.number} ${section.name}</a>`).join('')}<a href="${prefix}apps/"${active === 'apps' ? ' aria-current="page"' : ''}>04 Apps</a><a href="${prefix}ai-automation/"${active === 'journal' ? ' aria-current="page"' : ''}>05 Journal</a></nav><div class="sub"><a href="${prefix}about/">About</a></div></div></div></header>`
 }
 
 function footer(prefix) {
@@ -62,6 +64,39 @@ function renderDetail(section, project) {
   return document({ title: project.title, description: project.summary || `${project.title} — StudioCats`, canonical: `${domain}/${section.slug}/${project.slug}/`, prefix, active: section.slug, body })
 }
 
+function renderApps(apps) {
+  const prefix = '../'
+  const list = apps.length ? apps.map((app) => {
+    const visual = app.image ? `<img class="project-cover" src="${toPath(app.image, 1)}" alt="${attr(app.title)}">` : `<div class="project-cover" style="display:grid;place-items:center;background:#102848;color:#F8F8F6;font-size:12px;letter-spacing:.12em">${esc(app.distribution || 'APP')}</div>`
+    const meta = [app.version, app.platform].filter(Boolean).join(' · ')
+    const price = [app.price, app.license].filter(Boolean).join(' · ')
+    return `<article class="project">${visual}<div><div class="kicker">${esc(app.category)}</div><h2>${esc(app.title)}</h2><span class="date">${esc(meta)}</span><p class="summary">${esc(app.summary)}</p><div class="tags">${[app.distribution, app.details].filter(Boolean).map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}</div></div><div><span class="date">${esc(price)}</span>${app.externalUrl ? `<a class="open" href="${attr(app.externalUrl)}" target="_blank" rel="noopener" style="margin-top:14px"><span>${esc(app.buttonLabel)}</span><span>↗</span></a>` : ''}</div></article>`
+  }).join('') : `<section class="empty"><div class="kicker">04 / 준비 중</div><h1>Apps</h1><p>도구를 정리하는 대로 이곳에 열립니다.</p></section>`
+  const body = `<div class="wrap page"><section class="heading"><div><div class="kicker">04 / SECTION</div><h1>Apps</h1><p>3D 에셋을 만들며 필요해서 함께 만든 애드온과 데스크톱 도구입니다.</p></div><span class="count">${apps.length} TOOL${apps.length === 1 ? '' : 'S'}</span></section><div class="project-list">${list}</div></div>`
+  return document({ title: 'Apps', description: 'StudioCats 도구와 애드온', canonical: `${domain}/apps/`, prefix, active: 'apps', body })
+}
+
+function renderJournalList(posts) {
+  const prefix = '../'
+  const list = posts.length ? posts.map((post) => `<article class="project">${post.hero ? `<img class="project-cover" src="${toPath(post.hero, 1)}" alt="${attr(post.title)}">` : `<div class="project-cover" style="background:#ECEAE5"></div>`}<div><div class="kicker">05 / JOURNAL</div><h2><a href="./${attr(post.slug)}/">${esc(post.title)}</a></h2><span class="date">${esc(post.date)}</span><p class="summary">${esc(post.summary)}</p><div class="tags">${post.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}</div></div><a class="open" href="./${attr(post.slug)}/"><span>읽기</span><span>→</span></a></article>`).join('') : `<section class="empty"><div class="kicker">05 / 준비 중</div><h1>Journal</h1><p>작업을 선별하고 설명을 붙이는 대로 이곳에 열립니다.</p></section>`
+  const body = `<div class="wrap page"><section class="heading"><div><div class="kicker">05 / JOURNAL</div><h1>Journal</h1><p>작업 과정과 도구, 생각을 기록합니다.</p></div><span class="count">${posts.length} POST${posts.length === 1 ? '' : 'S'}</span></section><div class="project-list">${list}</div></div>`
+  return document({ title: 'Journal', description: 'StudioCats 작업 기록', canonical: `${domain}/ai-automation/`, prefix, active: 'journal', body })
+}
+
+function renderJournalDetail(post) {
+  const prefix = '../../'
+  const block = (item) => {
+    if (item.type === 'heading') return `<h2 style="font-size:25px;margin-top:42px">${esc(item.value)}</h2>`
+    if (item.type === 'image') return `<figure style="margin:34px 0"><img class="hero-cover" src="${toPath(item.value, 2)}" alt="${attr(item.caption || post.title)}"><figcaption class="date" style="margin-top:10px">${esc(item.caption)}</figcaption></figure>`
+    if (item.type === 'youtube') { const id = youtubeId(item.value); return id ? `<section class="youtube"><iframe class="video" title="${attr(post.title)} video" src="https://www.youtube-nocookie.com/embed/${attr(id)}" loading="lazy" allowfullscreen></iframe></section>` : '' }
+    if (item.type === 'link') return `<a class="open" href="${attr(item.value)}" target="_blank" rel="noopener" style="margin-top:22px"><span>${esc(item.caption || item.value)}</span><span>↗</span></a>`
+    if (item.type === 'code') return `<pre style="overflow:auto;background:#102848;color:#F8F8F6;padding:20px;font-size:12px;line-height:1.6;margin-top:26px"><code>${esc(item.value)}</code></pre>`
+    return `<p class="summary" style="white-space:pre-wrap;max-width:760px;margin-top:24px">${esc(item.value)}</p>`
+  }
+  const body = `<div class="wrap page"><article style="max-width:820px"><div class="kicker">05 / JOURNAL</div><h1 style="font-size:52px;line-height:1.05;margin-top:14px">${esc(post.title)}</h1><span class="date" style="display:block;margin-top:17px">${esc(post.date)}</span><div class="tags">${post.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}</div>${post.hero ? `<img class="hero-cover" src="${toPath(post.hero, 2)}" alt="${attr(post.title)}" style="margin-top:30px">` : ''}<p class="summary" style="font-size:17px;white-space:pre-wrap;margin-top:28px">${esc(post.summary)}</p>${post.blocks.map(block).join('')}</article></div>`
+  return document({ title: post.title, description: post.summary || post.title, canonical: `${domain}/ai-automation/${post.slug}/`, prefix, active: 'journal', body })
+}
+
 async function write(relativePath, contents) {
   const destination = join(siteRoot, relativePath)
   await mkdir(dirname(destination), { recursive: true })
@@ -73,7 +108,11 @@ async function previousManifest() {
 }
 
 const source = JSON.parse(await readFile(portfolioPath, 'utf8'))
+const appsSource = JSON.parse(await readFile(appsPath, 'utf8'))
+const journalSource = JSON.parse(await readFile(journalPath, 'utf8'))
 const publicProjects = (source.projects ?? []).filter((project) => project.status === '공개됨' && !project.demo)
+const publicApps = (appsSource.apps ?? []).filter((app) => app.status === '공개됨').toSorted((a, b) => a.order - b.order)
+const publicPosts = (journalSource.posts ?? []).filter((post) => post.status === '공개됨').toSorted((a, b) => String(b.date).localeCompare(String(a.date)))
 const previous = await previousManifest()
 const files = new Set()
 for (const section of sections) {
@@ -90,15 +129,31 @@ for (const section of sections) {
   }
 }
 
+await write('apps/index.html', renderApps(publicApps))
+files.add('apps/index.html')
+const journalIndex = 'ai-automation/index.html'
+const hadJournal = (previous.files ?? []).includes(journalIndex)
+if (publicPosts.length || hadJournal) {
+  await write(journalIndex, renderJournalList(publicPosts))
+  files.add(journalIndex)
+  for (const post of publicPosts) {
+    const detailPath = `ai-automation/${post.slug}/index.html`
+    await write(detailPath, renderJournalDetail(post))
+    files.add(detailPath)
+  }
+}
+
 const today = new Date().toISOString().slice(0, 10)
-const basePages = ['', 'apps/', 'about/', ...sections.map((section) => `${section.slug}/`)]
+const basePages = ['', 'apps/', 'ai-automation/', 'about/', ...sections.map((section) => `${section.slug}/`)]
 const detailPages = publicProjects.map((project) => {
   const section = sections.find((item) => item.name === project.category)
   return `${section.slug}/${project.slug}/`
 })
 const sitemapPages = [...basePages, ...detailPages]
-if (publicProjects.length || (previous.files ?? []).includes('sitemap.xml')) {
-  await write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPages.map((page) => `  <url><loc>${domain}/${page}</loc><lastmod>${today}</lastmod><priority>${page === '' ? '1.0' : page.includes('/') && page.split('/').length > 2 ? '0.7' : '0.8'}</priority></url>`).join('\n')}\n</urlset>\n`)
+const journalPages = publicPosts.map((post) => `ai-automation/${post.slug}/`)
+const allSitemapPages = [...sitemapPages, ...journalPages]
+if (publicProjects.length || publicApps.length || publicPosts.length || (previous.files ?? []).includes('sitemap.xml')) {
+  await write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${allSitemapPages.map((page) => `  <url><loc>${domain}/${page}</loc><lastmod>${today}</lastmod><priority>${page === '' ? '1.0' : page.includes('/') && page.split('/').length > 2 ? '0.7' : '0.8'}</priority></url>`).join('\n')}\n</urlset>\n`)
   files.add('sitemap.xml')
 }
 
@@ -109,4 +164,4 @@ for (const stale of previous.files ?? []) {
   }
 }
 if (files.size || (previous.files ?? []).length) await writeFile(manifestPath, JSON.stringify({ files: [...files].sort(), generatedAt: new Date().toISOString() }, null, 2) + '\n', 'utf8')
-console.log(JSON.stringify({ generated: [...files].sort(), publishedProjects: publicProjects.length }))
+console.log(JSON.stringify({ generated: [...files].sort(), publishedProjects: publicProjects.length, publishedApps: publicApps.length, publishedPosts: publicPosts.length }))

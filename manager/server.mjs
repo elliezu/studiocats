@@ -9,11 +9,16 @@ import { spawn } from 'node:child_process'
 const managerRoot = dirname(fileURLToPath(import.meta.url))
 const siteRoot = resolve(managerRoot, '..')
 const contentFile = join(siteRoot, 'content', 'portfolio.json')
+const appsFile = join(siteRoot, 'content', 'apps.json')
+const journalFile = join(siteRoot, 'content', 'journal.json')
 const uploadRoot = join(siteRoot, 'uploads', 'portfolio')
+const mediaRoots = { portfolio: uploadRoot, apps: join(siteRoot, 'uploads', 'apps'), journal: join(siteRoot, 'uploads', 'journal') }
 const generator = join(managerRoot, 'scripts', 'generate-site.mjs')
 const port = Number(process.env.MANAGER_API_PORT ?? 5174)
 const allowedCategories = new Set(['Anime Style', 'Virtual Fashion', '3D Works'])
 const allowedStatuses = new Set(['초안', '공개 준비', '공개됨'])
+const allowedAppCategories = new Set(['Windows', 'Blender', 'Unity', 'ComfyUI', 'AI Tools'])
+const allowedBlockTypes = new Set(['text', 'heading', 'image', 'youtube', 'link', 'code'])
 const imageExtensions = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/gif': 'gif' }
 
 function send(response, statusCode, body, headers = {}) {
@@ -97,6 +102,94 @@ async function writePortfolio(projects) {
   return JSON.parse(payload)
 }
 
+async function readContent(file, collection) {
+  try {
+    const raw = JSON.parse(await readFile(file, 'utf8'))
+    return { version: 1, updatedAt: raw.updatedAt ?? null, [collection]: Array.isArray(raw[collection]) ? raw[collection] : [] }
+  } catch (error) {
+    if (error.code === 'ENOENT') return { version: 1, updatedAt: null, [collection]: [] }
+    throw error
+  }
+}
+
+async function writeContent(file, collection, entries) {
+  await mkdir(dirname(file), { recursive: true })
+  const payload = JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), [collection]: entries }, null, 2) + '\n'
+  const temporary = `${file}.tmp`
+  await writeFile(temporary, payload, 'utf8')
+  await rename(temporary, file)
+  return JSON.parse(payload)
+}
+
+function normalizeApp(app, index) {
+  const fallback = `app-${index + 1}`
+  const status = allowedStatuses.has(app.status) ? app.status : '초안'
+  const image = cleanText(app.image, 500)
+  if (image && !image.startsWith('/uploads/')) throw new Error('앱 이미지는 홈페이지 uploads 폴더 안의 경로여야 해.')
+  return {
+    id: cleanText(app.id, 120) || fallback,
+    title: cleanText(app.title, 120) || '이름 없는 앱',
+    slug: cleanSlug(app.slug, fallback),
+    category: allowedAppCategories.has(app.category) ? app.category : 'AI Tools',
+    status,
+    version: cleanText(app.version, 120),
+    platform: cleanText(app.platform, 120),
+    summary: cleanText(app.summary, 1200),
+    details: cleanText(app.details, 240),
+    distribution: cleanText(app.distribution, 80),
+    license: cleanText(app.license, 120),
+    price: cleanText(app.price, 80),
+    externalUrl: cleanText(app.externalUrl, 500),
+    buttonLabel: cleanText(app.buttonLabel, 60) || '열기',
+    image,
+    order: Number.isFinite(Number(app.order)) ? Number(app.order) : (index + 1) * 10,
+  }
+}
+
+async function writeApps(apps) {
+  const normalized = apps.map(normalizeApp)
+  const ids = new Set(); const slugs = new Set()
+  for (const app of normalized) {
+    if (ids.has(app.id) || slugs.has(app.slug)) throw new Error('앱 ID 또는 슬러그가 중복돼.')
+    ids.add(app.id); slugs.add(app.slug)
+  }
+  return writeContent(appsFile, 'apps', normalized)
+}
+
+function normalizePost(post, index) {
+  const fallback = `post-${index + 1}`
+  const status = allowedStatuses.has(post.status) ? post.status : '초안'
+  const blocks = Array.isArray(post.blocks) ? post.blocks.slice(0, 80).map((block) => ({
+    id: cleanText(block.id, 120) || `block-${index + 1}`,
+    type: allowedBlockTypes.has(block.type) ? block.type : 'text',
+    value: cleanText(block.value, 8000),
+    caption: cleanText(block.caption, 500),
+  })).filter((block) => block.value) : []
+  const hero = cleanText(post.hero, 500)
+  if (hero && !hero.startsWith('/uploads/')) throw new Error('저널 이미지는 홈페이지 uploads 폴더 안의 경로여야 해.')
+  return {
+    id: cleanText(post.id, 120) || fallback,
+    title: cleanText(post.title, 160) || '제목 없는 글',
+    slug: cleanSlug(post.slug, fallback),
+    status,
+    date: cleanText(post.date, 20),
+    summary: cleanText(post.summary, 800),
+    tags: Array.isArray(post.tags) ? [...new Set(post.tags.map((tag) => cleanText(tag, 50)).filter(Boolean))].slice(0, 20) : [],
+    hero,
+    blocks,
+  }
+}
+
+async function writeJournal(posts) {
+  const normalized = posts.map(normalizePost)
+  const ids = new Set(); const slugs = new Set()
+  for (const post of normalized) {
+    if (ids.has(post.id) || slugs.has(post.slug)) throw new Error('저널 글 ID 또는 슬러그가 중복돼.')
+    ids.add(post.id); slugs.add(post.slug)
+  }
+  return writeContent(journalFile, 'posts', normalized)
+}
+
 function runCommand(command, args) {
   return new Promise((resolveRun, rejectRun) => {
     const child = spawn(command, args, { cwd: siteRoot, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] })
@@ -123,7 +216,7 @@ async function runGit(args) {
 
 async function publishToGit(message) {
   await runNode(generator)
-  const managedPaths = ['content/portfolio.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'animation-style', 'virtual-fashion', '3d-works', 'sitemap.xml']
+  const managedPaths = ['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'sitemap.xml']
   const before = await runGit(['status', '--porcelain', '--', ...managedPaths])
   if (!before.stdout.trim()) {
     const branch = (await runGit(['branch', '--show-current'])).stdout.trim()
@@ -145,9 +238,10 @@ function mediaType(pathname) {
 }
 
 async function serveMedia(request, response, pathname) {
-  const relativePath = decodeURIComponent(pathname.slice('/uploads/portfolio/'.length))
-  const target = resolve(uploadRoot, relativePath)
-  const pathWithinUploads = relative(uploadRoot, target)
+  const mediaRoot = join(siteRoot, 'uploads')
+  const relativePath = decodeURIComponent(pathname.slice('/uploads/'.length))
+  const target = resolve(mediaRoot, relativePath)
+  const pathWithinUploads = relative(mediaRoot, target)
   if (!relativePath || pathWithinUploads.startsWith('..') || pathWithinUploads === '') return send(response, 403, { error: '허용되지 않은 경로예요.' })
   try {
     const file = await stat(target)
@@ -159,10 +253,12 @@ async function serveMedia(request, response, pathname) {
   }
 }
 
-async function importMedia(files) {
+async function importMedia(files, collection = 'portfolio') {
   if (!Array.isArray(files) || !files.length) throw new Error('가져올 이미지가 없어요.')
   if (files.length > 12) throw new Error('한 번에 최대 12장까지 추가할 수 있어요.')
-  await mkdir(uploadRoot, { recursive: true })
+  const mediaRoot = mediaRoots[collection]
+  if (!mediaRoot) throw new Error('알 수 없는 이미지 보관함이야.')
+  await mkdir(mediaRoot, { recursive: true })
   const imported = []
   for (const file of files) {
     const match = /^data:(image\/(?:png|jpeg|webp|gif));base64,([A-Za-z0-9+/=]+)$/.exec(file.dataUrl ?? '')
@@ -172,8 +268,8 @@ async function importMedia(files) {
     const base = cleanSlug(parse(cleanText(file.name, 180) || 'portfolio-image').name, 'portfolio-image').slice(0, 56)
     const hash = createHash('sha256').update(buffer).digest('hex').slice(0, 10)
     const filename = `${base}-${hash}.${imageExtensions[match[1]]}`
-    await writeFile(join(uploadRoot, filename), buffer, { flag: 'w' })
-    imported.push({ id: `image-${hash}`, src: `/uploads/portfolio/${filename}`, name: filename })
+    await writeFile(join(mediaRoot, filename), buffer, { flag: 'w' })
+    imported.push({ id: `image-${hash}`, src: `/uploads/${collection}/${filename}`, name: filename })
   }
   return imported
 }
@@ -186,9 +282,19 @@ const server = createServer(async (request, response) => {
       const body = await readBody(request)
       return send(response, 200, await writePortfolio(Array.isArray(body.projects) ? body.projects : []))
     }
+    if (request.method === 'GET' && url.pathname === '/api/apps') return send(response, 200, await readContent(appsFile, 'apps'))
+    if (request.method === 'PUT' && url.pathname === '/api/apps') {
+      const body = await readBody(request)
+      return send(response, 200, await writeApps(Array.isArray(body.apps) ? body.apps : []))
+    }
+    if (request.method === 'GET' && url.pathname === '/api/journal') return send(response, 200, await readContent(journalFile, 'posts'))
+    if (request.method === 'PUT' && url.pathname === '/api/journal') {
+      const body = await readBody(request)
+      return send(response, 200, await writeJournal(Array.isArray(body.posts) ? body.posts : []))
+    }
     if (request.method === 'POST' && url.pathname === '/api/media') {
       const body = await readBody(request)
-      return send(response, 201, { images: await importMedia(body.files) })
+      return send(response, 201, { images: await importMedia(body.files, cleanText(body.collection, 20) || 'portfolio') })
     }
     if (request.method === 'POST' && url.pathname === '/api/generate') {
       const result = await runNode(generator)
@@ -198,7 +304,7 @@ const server = createServer(async (request, response) => {
       const body = await readBody(request, 256 * 1024)
       return send(response, 200, await publishToGit(body.message))
     }
-    if (request.method === 'GET' && url.pathname.startsWith('/uploads/portfolio/')) return serveMedia(request, response, url.pathname)
+    if (request.method === 'GET' && url.pathname.startsWith('/uploads/')) return serveMedia(request, response, url.pathname)
     return send(response, 404, { error: '알 수 없는 Manager API 요청이에요.' })
   } catch (error) {
     return send(response, 400, { error: error.message || '요청 처리 중 오류가 났어요.' })

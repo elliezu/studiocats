@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { createReadStream } from 'node:fs'
-import { mkdir, readFile, rename, stat, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, readdir, rename, stat, writeFile } from 'node:fs/promises'
 import { createServer } from 'node:http'
 import { fileURLToPath } from 'node:url'
 import { dirname, extname, join, parse, relative, resolve } from 'node:path'
@@ -11,6 +11,7 @@ const siteRoot = resolve(managerRoot, '..')
 const contentFile = join(siteRoot, 'content', 'portfolio.json')
 const appsFile = join(siteRoot, 'content', 'apps.json')
 const journalFile = join(siteRoot, 'content', 'journal.json')
+const siteFile = join(siteRoot, 'content', 'site.json')
 const uploadRoot = join(siteRoot, 'uploads', 'portfolio')
 const mediaRoots = { portfolio: uploadRoot, apps: join(siteRoot, 'uploads', 'apps'), journal: join(siteRoot, 'uploads', 'journal') }
 const generator = join(managerRoot, 'scripts', 'generate-site.mjs')
@@ -190,6 +191,43 @@ async function writeJournal(posts) {
   return writeContent(journalFile, 'posts', normalized)
 }
 
+function cleanList(values, limit = 20, itemLimit = 200) {
+  return Array.isArray(values) ? values.map((value) => cleanText(value, itemLimit)).filter(Boolean).slice(0, limit) : []
+}
+
+function normalizeSite(site = {}) {
+  const domain = cleanText(site.domain, 300).replace(/\/$/, '') || 'https://studiocats.kr'
+  if (!/^https:\/\//.test(domain)) throw new Error('사이트 주소는 https://로 시작해야 해.')
+  return {
+    version: 1,
+    updatedAt: new Date().toISOString(),
+    domain,
+    brand: cleanText(site.brand, 100) || 'StudioCats',
+    email: cleanText(site.email, 200),
+    aboutTitle: cleanText(site.aboutTitle, 500),
+    aboutIntro: cleanText(site.aboutIntro, 3000),
+    contactText: cleanText(site.contactText, 1500),
+    skills: Array.isArray(site.skills) ? site.skills.slice(0, 8).map((group) => ({ title: cleanText(group.title, 80), items: cleanList(group.items, 20, 80) })).filter((group) => group.title) : [],
+    career: cleanList(site.career, 30, 300),
+    services: cleanList(site.services, 30, 300),
+    links: Array.isArray(site.links) ? site.links.slice(0, 16).map((link) => ({ label: cleanText(link.label, 80), url: cleanText(link.url, 500) })).filter((link) => link.label && link.url) : [],
+  }
+}
+
+async function readSite() {
+  try { return JSON.parse(await readFile(siteFile, 'utf8')) } catch (error) { if (error.code === 'ENOENT') return normalizeSite(); throw error }
+}
+
+async function writeSite(site) {
+  const normalized = normalizeSite(site)
+  await mkdir(dirname(siteFile), { recursive: true })
+  const payload = JSON.stringify(normalized, null, 2) + '\n'
+  const temporary = `${siteFile}.tmp`
+  await writeFile(temporary, payload, 'utf8')
+  await rename(temporary, siteFile)
+  return normalized
+}
+
 function runCommand(command, args) {
   return new Promise((resolveRun, rejectRun) => {
     const child = spawn(command, args, { cwd: siteRoot, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] })
@@ -216,7 +254,7 @@ async function runGit(args) {
 
 async function publishToGit(message) {
   await runNode(generator)
-  const managedPaths = ['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'sitemap.xml']
+  const managedPaths = ['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'about', 'sitemap.xml']
   const before = await runGit(['status', '--porcelain', '--', ...managedPaths])
   if (!before.stdout.trim()) {
     const branch = (await runGit(['branch', '--show-current'])).stdout.trim()
@@ -274,6 +312,18 @@ async function importMedia(files, collection = 'portfolio') {
   return imported
 }
 
+async function listMedia(collection = 'portfolio') {
+  const mediaRoot = mediaRoots[collection]
+  if (!mediaRoot) throw new Error('알 수 없는 이미지 보관함이야.')
+  try {
+    const entries = await readdir(mediaRoot, { withFileTypes: true })
+    return entries.filter((entry) => entry.isFile() && imageExtensions[mediaType(entry.name)]).map((entry) => ({ name: entry.name, src: `/uploads/${collection}/${entry.name}` })).toSorted((a, b) => a.name.localeCompare(b.name))
+  } catch (error) {
+    if (error.code === 'ENOENT') return []
+    throw error
+  }
+}
+
 const server = createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host ?? '127.0.0.1'}`)
   try {
@@ -292,10 +342,16 @@ const server = createServer(async (request, response) => {
       const body = await readBody(request)
       return send(response, 200, await writeJournal(Array.isArray(body.posts) ? body.posts : []))
     }
+    if (request.method === 'GET' && url.pathname === '/api/site') return send(response, 200, await readSite())
+    if (request.method === 'PUT' && url.pathname === '/api/site') {
+      const body = await readBody(request)
+      return send(response, 200, await writeSite(body))
+    }
     if (request.method === 'POST' && url.pathname === '/api/media') {
       const body = await readBody(request)
       return send(response, 201, { images: await importMedia(body.files, cleanText(body.collection, 20) || 'portfolio') })
     }
+    if (request.method === 'GET' && url.pathname === '/api/media') return send(response, 200, { images: await listMedia(cleanText(url.searchParams.get('collection'), 20) || 'portfolio') })
     if (request.method === 'POST' && url.pathname === '/api/generate') {
       const result = await runNode(generator)
       return send(response, 200, JSON.parse(result.stdout))

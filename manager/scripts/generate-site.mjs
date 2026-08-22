@@ -9,7 +9,7 @@ const portfolioPath = join(contentRoot, 'portfolio.json')
 const appsPath = join(contentRoot, 'apps.json')
 const journalPath = join(contentRoot, 'journal.json')
 const manifestPath = join(contentRoot, '.generated-portfolio.json')
-const domain = 'https://studiocats.kr'
+let domain = 'https://studiocats.kr'
 const sections = [
   { name: 'Anime Style', slug: 'animation-style', number: '01', subtitle: 'VRChat' },
   { name: 'Virtual Fashion', slug: 'virtual-fashion', number: '02', subtitle: 'Film · Render · CLO 3D' },
@@ -97,6 +97,15 @@ function renderJournalDetail(post) {
   return document({ title: post.title, description: post.summary || post.title, canonical: `${domain}/ai-automation/${post.slug}/`, prefix, active: 'journal', body })
 }
 
+function renderAbout(site) {
+  const prefix = '../'
+  const skills = site.skills.map((group) => `<div><div class="kicker">${esc(group.title)}</div><div class="tags">${group.items.map((item) => `<span class="tag">${esc(item)}</span>`).join('')}</div></div>`).join('')
+  const list = (title, items) => items.length ? `<section class="gallery"><h2>${esc(title)}</h2><div class="tags" style="display:grid;gap:8px">${items.map((item) => `<span class="tag" style="font-size:13px;padding:10px">${esc(item)}</span>`).join('')}</div></section>` : ''
+  const links = site.links.map((link) => `<a class="open" href="${attr(link.url)}" target="_blank" rel="noopener"><span>${esc(link.label)}</span><span>↗</span></a>`).join('')
+  const body = `<div class="wrap page"><article class="hero"><div><div class="kicker">ABOUT</div><h1 style="font-size:52px;line-height:1.08;margin-top:14px;white-space:pre-wrap">${esc(site.aboutTitle)}</h1><p class="summary" style="font-size:16px;white-space:pre-wrap;margin-top:26px">${esc(site.aboutIntro)}</p><section class="gallery"><h2>Tools & Skills</h2><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:18px">${skills}</div></section>${list('경력', site.career)}${list('작업 분야', site.services)}</div><aside class="detail-copy"><div class="kicker">CONTACT</div><h2 style="font-size:34px;margin-top:12px">문의</h2><p class="summary">${esc(site.contactText)}</p><div class="actions"><a class="open" href="mailto:${attr(site.email)}"><span>${esc(site.email || 'Email')}</span><span>↗</span></a>${links}</div></aside></article></div>`
+  return document({ title: `About ${site.brand}`, description: site.aboutIntro || `${site.brand} 소개`, canonical: `${domain}/about/`, prefix, active: 'about', body })
+}
+
 async function write(relativePath, contents) {
   const destination = join(siteRoot, relativePath)
   await mkdir(dirname(destination), { recursive: true })
@@ -110,6 +119,8 @@ async function previousManifest() {
 const source = JSON.parse(await readFile(portfolioPath, 'utf8'))
 const appsSource = JSON.parse(await readFile(appsPath, 'utf8'))
 const journalSource = JSON.parse(await readFile(journalPath, 'utf8'))
+const siteSource = JSON.parse(await readFile(join(contentRoot, 'site.json'), 'utf8'))
+domain = String(siteSource.domain || domain).replace(/\/$/, '')
 const publicProjects = (source.projects ?? []).filter((project) => project.status === '공개됨' && !project.demo)
 const publicApps = (appsSource.apps ?? []).filter((app) => app.status === '공개됨').toSorted((a, b) => a.order - b.order)
 const publicPosts = (journalSource.posts ?? []).filter((post) => post.status === '공개됨').toSorted((a, b) => String(b.date).localeCompare(String(a.date)))
@@ -131,6 +142,8 @@ for (const section of sections) {
 
 await write('apps/index.html', renderApps(publicApps))
 files.add('apps/index.html')
+await write('about/index.html', renderAbout(siteSource))
+files.add('about/index.html')
 const journalIndex = 'ai-automation/index.html'
 const hadJournal = (previous.files ?? []).includes(journalIndex)
 if (publicPosts.length || hadJournal) {

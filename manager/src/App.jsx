@@ -140,8 +140,8 @@ function AppsScreen({ activeNav, onNavigate, notify, toast }) {
       setApps(saved.apps)
       const response = await fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: `Publish app: ${selected.title}` }) })
       const result = await response.json(); if (!response.ok) throw new Error(result.error)
-      setState(result.committed ? `${result.branch}에 반영됨` : '반영할 변경 없음')
-      notify(result.committed ? `${result.branch}에 커밋하고 push했어.` : result.message)
+      setState(result.pushed ? `${result.branch}에 반영됨` : '반영할 변경 없음')
+      notify(result.pushed ? (result.retried ? `${result.branch}의 미반영 커밋을 GitHub에 반영했어.` : `${result.branch}에 커밋하고 push했어.`) : result.message)
     } catch (error) {
       setState('GitHub 반영 실패')
       notify(error.message || 'GitHub 반영에 실패했어.')
@@ -183,8 +183,8 @@ function JournalScreen({ activeNav, onNavigate, notify, toast }) {
       setPosts(saved.posts)
       const response = await fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: `Publish journal: ${selected.title}` }) })
       const result = await response.json(); if (!response.ok) throw new Error(result.error)
-      setState(result.committed ? `${result.branch}에 반영됨` : '반영할 변경 없음')
-      notify(result.committed ? `${result.branch}에 커밋하고 push했어.` : result.message)
+      setState(result.pushed ? `${result.branch}에 반영됨` : '반영할 변경 없음')
+      notify(result.pushed ? (result.retried ? `${result.branch}의 미반영 커밋을 GitHub에 반영했어.` : `${result.branch}에 커밋하고 push했어.`) : result.message)
     } catch (error) {
       setState('GitHub 반영 실패')
       notify(error.message || 'GitHub 반영에 실패했어.')
@@ -203,7 +203,7 @@ function DashboardScreen({ activeNav, onNavigate, notify, toast }) {
   const [publishing, setPublishing] = useState(false)
   useEffect(() => { Promise.all(['/api/portfolio', '/api/apps', '/api/journal', '/api/site'].map((url) => fetch(url).then((response) => response.json()))).then(([portfolio, apps, journal, site]) => setCounts({ projects: portfolio.projects.length, apps: apps.apps.length, posts: journal.posts.length, domain: site.domain })).catch(() => setCounts({ projects: 0, apps: 0, posts: 0, domain: '연결 실패' })) }, [])
   const cards = counts ? [['포트폴리오', counts.projects, 'Portfolio'], ['Apps', counts.apps, 'Apps'], ['저널', counts.posts, 'Journal']] : []
-  async function publish() { if (!window.confirm('생성된 콘텐츠 파일을 현재 브랜치에 커밋하고 GitHub로 push할까?')) return; setPublishing(true); try { const response = await fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'Publish StudioCats content' }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error); notify(data.committed ? `${data.branch}에 커밋하고 push했어.` : data.message) } catch (error) { notify(error.message || 'GitHub 반영에 실패했어.') } finally { setPublishing(false) } }
+  async function publish() { if (!window.confirm('생성된 콘텐츠 파일을 현재 브랜치에 커밋하고 GitHub로 push할까?')) return; setPublishing(true); try { const response = await fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'Publish StudioCats content' }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error); notify(data.pushed ? (data.retried ? `${data.branch}의 미반영 커밋을 GitHub에 반영했어.` : `${data.branch}에 커밋하고 push했어.`) : data.message) } catch (error) { notify(error.message || 'GitHub 반영에 실패했어.') } finally { setPublishing(false) } }
   return <SimpleShell activeNav={activeNav} onNavigate={onNavigate} state="저장소 연결됨" toast={toast}><section className="dashboard"><div className="dash-head"><div><span className="rail-title">STUDIOCATS MANAGER</span><h1>콘텐츠 현황</h1><p>{counts?.domain || '저장소 연결 중'}</p></div></div><div className="dash-cards">{cards.map(([label, count, target]) => <button className="dash-card" key={target} onClick={() => onNavigate(target)}><span>{label}</span><strong>{count}</strong><small>관리하기 →</small></button>)}</div><section className="dash-guide"><h2>공개 흐름</h2><p>내용 저장 → 사이트 파일 생성 → GitHub에 커밋 및 push. 마지막 단계 전에는 공개 사이트가 바뀌지 않아.</p><button className="publish-button" disabled={publishing} onClick={publish}>{publishing ? 'GitHub 반영 중…' : 'GitHub에 전체 반영'}</button></section></section><aside className="preview-rail"><span className="rail-title">바로가기</span><button className="outline-button dash-action" onClick={() => onNavigate('About')}>소개 / 연락처</button><button className="outline-button dash-action" onClick={() => onNavigate('Media')}>미디어 보관함</button><button className="outline-button dash-action" onClick={() => onNavigate('Settings')}>사이트 설정</button></aside></SimpleShell>
 }
 
@@ -311,7 +311,7 @@ function App() {
     try {
       const response = await fetch('/api/publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: `Publish portfolio: ${selected.title}` }) })
       const body = await response.json(); if (!response.ok) throw new Error(body.error)
-      setRepositoryState(body.committed ? `${body.branch}에 반영됨` : '반영할 변경 없음'); setIsPublishOpen(false); setToast(body.committed ? `${body.branch} 브랜치에 커밋하고 push했어.` : body.message)
+      setRepositoryState(body.pushed ? `${body.branch}에 반영됨` : '반영할 변경 없음'); setIsPublishOpen(false); setToast(body.pushed ? (body.retried ? `${body.branch}의 미반영 커밋을 GitHub에 반영했어.` : `${body.branch} 브랜치에 커밋하고 push했어.`) : body.message)
     } catch (error) { setRepositoryState('GitHub 반영 실패'); setToast(error.message || 'GitHub 반영에 실패했어.') } finally { setIsPublishing(false) }
   }
 

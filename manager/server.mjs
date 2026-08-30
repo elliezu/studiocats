@@ -277,20 +277,26 @@ async function existingPaths(paths) {
 async function publishToGit(message) {
   await runNode(generator)
   const managedPaths = await existingPaths(['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'about', 'sitemap.xml'])
-  const before = await runGit(['status', '--porcelain', '--', ...managedPaths])
-  if (!before.stdout.trim()) {
-    const branch = (await runGit(['branch', '--show-current'])).stdout.trim()
-    return { committed: false, branch, message: '공개할 변경이 없어요.' }
-  }
-  await runGit(['add', '--', ...managedPaths])
-  const staged = await runGit(['diff', '--cached', '--name-only', '--', ...managedPaths])
-  if (!staged.stdout.trim()) return { committed: false, message: '관리 대상 파일에 커밋할 변경이 없어요.' }
-  const commitMessage = cleanText(message, 160) || 'Publish StudioCats portfolio'
-  await runGit(['commit', '-m', commitMessage, '--', ...managedPaths])
   const branch = (await runGit(['branch', '--show-current'])).stdout.trim()
   if (!branch) throw new Error('현재 Git 브랜치를 찾을 수 없어요.')
+  const before = await runGit(['status', '--porcelain', '--', ...managedPaths])
+  let committed = false
+  let files = []
+  if (before.stdout.trim()) {
+    await runGit(['add', '--', ...managedPaths])
+    const staged = await runGit(['diff', '--cached', '--name-only', '--', ...managedPaths])
+    if (staged.stdout.trim()) {
+      const commitMessage = cleanText(message, 160) || 'Publish StudioCats portfolio'
+      await runGit(['commit', '-m', commitMessage, '--', ...managedPaths])
+      committed = true
+      files = staged.stdout.trim().split(/\r?\n/)
+    }
+  }
+
+  const unpushed = Number((await runGit(['rev-list', '--count', '@{u}..HEAD'])).stdout.trim())
+  if (!unpushed) return { committed: false, pushed: false, branch, message: 'GitHub에 반영할 변경이 없어요.' }
   await runGit(['push', 'origin', branch])
-  return { committed: true, branch, files: staged.stdout.trim().split(/\r?\n/) }
+  return { committed, pushed: true, branch, files, retried: !committed }
 }
 
 function mediaType(pathname) {

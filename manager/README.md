@@ -23,6 +23,7 @@ npm run dev
 - Media 보관함에서 포트폴리오/Apps/Journal별 업로드 이미지 확인과 추가
 - 갤러리 순서 변경과 대표 썸네일 한 장 지정
 - BOOTH 외부 링크와 YouTube URL 저장
+- YouTube 링크의 썸네일을 홈페이지 폴더로 가져와 대표 이미지로 지정, Manager 안에서 영상 재생 미리보기
 - “사이트 파일 생성”으로 카테고리 목록, 프로젝트 상세 HTML, sitemap.xml 생성
 - 데스크톱/모바일 카드 미리보기
 

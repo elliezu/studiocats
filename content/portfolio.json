@@ -1,5 +1,26 @@
 {
   "version": 1,
   "updatedAt": "2026-08-30T00:00:00.000Z",
-  "projects": []
+  "projects": [
+    {
+      "id": "yeonseong-unframed-2025",
+      "title": "연성대학교 2025 졸업작품전 Unframed",
+      "slug": "yeonseong-unframed-2025",
+      "category": "Virtual Fashion",
+      "date": "2026.11",
+      "status": "초안",
+      "summary": "연성대학교 학생들의 버츄얼 런웨이 졸업작품입니다. 3D를 전혀 몰라도 CLO와 Unreal을 사용해 디지털 런웨이를 제작할 수 있도록 구성된 강의입니다.",
+      "tags": ["digital runway", "virtual fashion", "unreal", "clo"],
+      "boothUrl": "",
+      "youtubeUrl": "https://youtu.be/P62xR9CwhAs?si=_hKzUVrh8oCaxzHN",
+      "gallery": [
+        {
+          "id": "image-2d47f6c78b",
+          "src": "/uploads/portfolio/youtube-P62xR9CwhAs-2d47f6c78b.jpg",
+          "name": "youtube-P62xR9CwhAs-2d47f6c78b.jpg"
+        }
+      ],
+      "coverId": "image-2d47f6c78b"
+    }
+  ]
 }

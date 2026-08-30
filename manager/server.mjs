@@ -321,6 +321,44 @@ async function importMedia(files, collection = 'portfolio') {
   return imported
 }
 
+function youtubeVideoId(value) {
+  try {
+    const url = new URL(cleanText(value, 500))
+    if (url.hostname === 'youtu.be') return /^[A-Za-z0-9_-]{11}$/.test(url.pathname.slice(1)) ? url.pathname.slice(1) : ''
+    if (!['youtube.com', 'www.youtube.com', 'm.youtube.com'].includes(url.hostname)) return ''
+    const candidate = url.pathname.startsWith('/embed/') || url.pathname.startsWith('/shorts/') ? url.pathname.split('/')[2] : url.searchParams.get('v')
+    return /^[A-Za-z0-9_-]{11}$/.test(candidate ?? '') ? candidate : ''
+  } catch {
+    return ''
+  }
+}
+
+async function importYoutubeThumbnail(youtubeUrl) {
+  const videoId = youtubeVideoId(youtubeUrl)
+  if (!videoId) throw new Error('YouTube 영상 주소를 다시 확인해줘.')
+  const mediaRoot = mediaRoots.portfolio
+  await mkdir(mediaRoot, { recursive: true })
+  let lastError = null
+  for (const variant of ['maxresdefault.jpg', 'sddefault.jpg', 'hqdefault.jpg']) {
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 12000)
+      const response = await fetch(`https://i.ytimg.com/vi/${videoId}/${variant}`, { signal: controller.signal })
+      clearTimeout(timeout)
+      if (!response.ok) continue
+      const buffer = Buffer.from(await response.arrayBuffer())
+      if (!buffer.length || buffer.length > 5 * 1024 * 1024) throw new Error('YouTube 썸네일 파일 크기를 확인할 수 없어요.')
+      const hash = createHash('sha256').update(buffer).digest('hex').slice(0, 10)
+      const filename = `youtube-${videoId}-${hash}.jpg`
+      await writeFile(join(mediaRoot, filename), buffer, { flag: 'w' })
+      return { id: `image-${hash}`, src: `/uploads/portfolio/${filename}`, name: filename }
+    } catch (error) {
+      lastError = error
+    }
+  }
+  throw new Error(lastError?.name === 'AbortError' ? 'YouTube 썸네일을 받아오는 시간이 너무 오래 걸려요.' : 'YouTube 썸네일을 가져오지 못했어.')
+}
+
 async function listMedia(collection = 'portfolio') {
   const mediaRoot = mediaRoots[collection]
   if (!mediaRoot) throw new Error('알 수 없는 이미지 보관함이야.')
@@ -359,6 +397,10 @@ const server = createServer(async (request, response) => {
     if (request.method === 'POST' && url.pathname === '/api/media') {
       const body = await readBody(request)
       return send(response, 201, { images: await importMedia(body.files, cleanText(body.collection, 20) || 'portfolio') })
+    }
+    if (request.method === 'POST' && url.pathname === '/api/youtube-thumbnail') {
+      const body = await readBody(request, 256 * 1024)
+      return send(response, 201, { image: await importYoutubeThumbnail(body.youtubeUrl) })
     }
     if (request.method === 'GET' && url.pathname === '/api/media') return send(response, 200, { images: await listMedia(cleanText(url.searchParams.get('collection'), 20) || 'portfolio') })
     if (request.method === 'POST' && url.pathname === '/api/generate') {

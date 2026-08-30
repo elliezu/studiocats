@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T09:29:02.974Z",
+  "updatedAt": "2026-08-30T09:30:38.720Z",
   "projects": [
     {
       "id": "project-1788081977122",
@@ -10,7 +10,7 @@
       "category": "3D Works",
       "date": "2026.08",
       "status": "공개됨",
-      "summary": "Blender/Zbrush",
+      "summary": "Marvelous/Blender/Zbrush",
       "tags": [
         "3D",
         "modeling",

@@ -15,6 +15,8 @@ function Icon({ name, size = 18 }) {
 function makeProject() { const stamp = Date.now(); return { id: `project-${stamp}`, title: '새 프로젝트', slug: `new-project-${stamp}`, category: 'Virtual Fashion', date: new Date().toISOString().slice(0, 10).replaceAll('-', '.'), status: '초안', summary: '', tags: [], boothUrl: '', youtubeUrl: '', gallery: [], coverId: '' } }
 function readFiles(files) { return Promise.all(files.map((file) => new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve({ name: file.name, dataUrl: reader.result }); reader.onerror = reject; reader.readAsDataURL(file) }))) }
 function youtubeEmbedUrl(value) { try { const url = new URL(value); const videoId = url.hostname === 'youtu.be' ? url.pathname.slice(1) : (url.pathname.startsWith('/embed/') || url.pathname.startsWith('/shorts/') ? url.pathname.split('/')[2] : url.searchParams.get('v')); return /^[A-Za-z0-9_-]{11}$/.test(videoId ?? '') ? `https://www.youtube-nocookie.com/embed/${videoId}` : '' } catch { return '' } }
+function html(value = '') { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;') }
+function externalUrl(value) { try { const url = new URL(value); return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '' } catch { return '' } }
 const NAV_ITEMS = [['Dashboard', '대시보드', 'grid'], ['Portfolio', '포트폴리오', 'folder'], ['Apps', 'Apps', 'cube'], ['Journal', '저널', 'book'], ['About', '소개', 'user'], ['Media', '미디어', 'image'], ['Settings', '설정', 'settings']]
 
 function usePreviewCopyButton(railLabel, buttonLabel, onCopy, enabled) {
@@ -46,6 +48,62 @@ function useEditorPublishButton(editorLabel, onPublish, enabled) {
       button.remove()
     }
   }, [editorLabel, onPublish, enabled])
+}
+
+function useEditorPreviewButton(editorLabel, onPreview, enabled) {
+  useEffect(() => {
+    if (!enabled) return undefined
+    const actions = document.querySelector(`[aria-label="${editorLabel}"] .top-actions`)
+    if (!actions || actions.querySelector('[data-editor-preview]')) return undefined
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.className = 'preview-button manager-preview-button'
+    button.dataset.editorPreview = 'true'
+    button.textContent = '미리보기'
+    button.addEventListener('click', onPreview)
+    actions.prepend(button)
+    return () => {
+      button.removeEventListener('click', onPreview)
+      button.remove()
+    }
+  }, [editorLabel, onPreview, enabled])
+}
+
+function journalPreviewBody(post, showGate = false) {
+  if (showGate) return `<section class="journal-gate-preview"><span>STUDENT MATERIAL</span><h2>비밀번호가 필요한 글이야</h2><p>수업에서 안내받은 비밀번호를 입력하면 이 브라우저에서 바로 읽을 수 있어.</p><div><input type="password" placeholder="비밀번호 입력" disabled><button type="button" disabled>열기 →</button></div></section>`
+  const blocks = (post.blocks || []).map((block) => {
+    const value = html(block.value)
+    if (block.type === 'heading') return `<h2>${value}</h2>`
+    if (block.type === 'image') return block.value ? `<figure><img src="${html(block.value)}" alt="${html(block.caption || post.title)}">${block.caption ? `<figcaption>${html(block.caption)}</figcaption>` : ''}</figure>` : ''
+    if (block.type === 'youtube') { const embed = youtubeEmbedUrl(block.value); return embed ? `<figure class="journal-video"><iframe title="${html(block.caption || post.title)}" src="${html(embed)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>${block.caption ? `<figcaption>${html(block.caption)}</figcaption>` : ''}</figure>` : `<p class="journal-preview-note">유효한 YouTube 링크를 넣어줘.</p>` }
+    if (block.type === 'link') { const url = externalUrl(block.value); return url ? `<a class="journal-link-preview" href="${html(url)}" target="_blank" rel="noreferrer">${html(block.caption || block.value)} <span>↗</span></a>` : '' }
+    if (block.type === 'code') return `<pre><code>${value}</code></pre>`
+    return value ? `<p class="journal-copy">${value}</p>` : ''
+  }).join('')
+  return `<article class="journal-article-preview"><span class="journal-kicker">05 / JOURNAL</span><h1>${html(post.title || '제목 없음')}</h1><time>${html(post.date || '')}</time><div class="journal-preview-tags">${(post.tags || []).map((tag) => `<span>${html(tag)}</span>`).join('')}</div>${post.hero ? `<img class="journal-hero-preview" src="${html(post.hero)}" alt="${html(post.title)}">` : ''}${post.summary ? `<p class="journal-lead">${html(post.summary)}</p>` : ''}${blocks}</article>`
+}
+
+function useJournalPreviewDialog(post) {
+  const [isOpen, setIsOpen] = useState(false)
+  useEffect(() => {
+    if (!isOpen || !post) return undefined
+    const backdrop = document.createElement('div')
+    backdrop.className = 'journal-preview-backdrop'
+    backdrop.innerHTML = `<section class="journal-preview-modal" role="dialog" aria-modal="true" aria-label="저널 글 미리보기"><header><div><span>공개 페이지 미리보기</span><strong>${html(post.title || '제목 없음')}</strong></div><div><button type="button" data-preview-mode="article">본문 보기</button>${post.protection?.mode === 'password' ? '<button type="button" data-preview-mode="gate">잠금 화면 보기</button>' : ''}<button type="button" class="journal-preview-close" aria-label="미리보기 닫기">×</button></div></header><div class="journal-preview-body"></div></section>`
+    const body = backdrop.querySelector('.journal-preview-body')
+    const render = (showGate) => { body.innerHTML = journalPreviewBody(post, showGate) }
+    render(false)
+    const close = () => setIsOpen(false)
+    const onClick = (event) => {
+      if (event.target === backdrop || event.target.closest('.journal-preview-close')) return close()
+      const mode = event.target.closest('[data-preview-mode]')?.dataset.previewMode
+      if (mode) render(mode === 'gate')
+    }
+    backdrop.addEventListener('click', onClick)
+    document.body.append(backdrop)
+    return () => { backdrop.removeEventListener('click', onClick); backdrop.remove() }
+  }, [isOpen, post])
+  return useCallback(() => setIsOpen(true), [])
 }
 
 function AppsScreen({ activeNav, onNavigate, notify, toast }) {
@@ -106,6 +164,8 @@ function JournalScreen({ activeNav, onNavigate, notify, toast }) {
   function add() { const stamp = Date.now(); const post = { id: `post-${stamp}`, title: '새 글', slug: `new-post-${stamp}`, status: '초안', date: new Date().toISOString().slice(0, 10).replaceAll('-', '.'), summary: '', tags: [], hero: '', protection: { mode: 'public' }, blocks: [{ id: `block-${stamp}`, type: 'text', value: '', caption: '' }] }; setPosts((current) => [post, ...current]); setSelectedId(post.id); notify('새 저널 글을 만들었어.') }
   const duplicate = useCallback(() => { if (!selected) return; const stamp = Date.now(); const copy = { ...selected, id: `post-${stamp}`, title: `${selected.title} 복사본`, slug: `${selected.slug.slice(0, 58)}-copy-${stamp}`, status: '초안', blocks: selected.blocks.map((block, index) => ({ ...block, id: `block-${stamp}-${index + 1}` })) }; setPosts((current) => [copy, ...current]); setSelectedId(copy.id); notify('글 복사본을 만들었어. 제목과 내용만 바꿔서 이어서 작업하면 돼.') }, [selected, notify])
   usePreviewCopyButton('저널 목록 카드', '이 글 복사하기', duplicate, Boolean(selected))
+  const openArticlePreview = useJournalPreviewDialog(selected)
+  useEditorPreviewButton('저널 글 편집', openArticlePreview, Boolean(selected))
   function remove() { if (!selected || !window.confirm(`“${selected.title}” 글을 삭제할까?`)) return; const next = posts.filter((post) => post.id !== selected.id); setPosts(next); setSelectedId(next[0]?.id ?? ''); notify('저널 글을 삭제했어.') }
   function updateBlock(id, patch) { update({ blocks: selected.blocks.map((block) => block.id === id ? { ...block, ...patch } : block) }) }
   function updateProtection(patch) { update({ protection: { ...(selected.protection || { mode: 'public' }), ...patch } }) }

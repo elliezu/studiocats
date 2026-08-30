@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T07:45:06.816Z",
+  "updatedAt": "2026-08-30T07:48:02.247Z",
   "projects": [
     {
       "id": "project-1788075774553",
       "demo": false,
-      "title": "작업 중 의상 세트-운동화",
+      "title": "Booth No.07 의상 세트-운동화",
       "slug": "shoes01",
       "category": "3D Works",
       "date": "2026.08",

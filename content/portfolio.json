@@ -1,7 +1,47 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T07:48:02.247Z",
+  "updatedAt": "2026-08-30T09:29:02.974Z",
   "projects": [
+    {
+      "id": "project-1788081977122",
+      "demo": false,
+      "title": "Booth No.07 의상 세트 WIP",
+      "slug": "no07-working",
+      "category": "3D Works",
+      "date": "2026.08",
+      "status": "공개됨",
+      "summary": "Blender/Zbrush",
+      "tags": [
+        "3D",
+        "modeling",
+        "zbrush"
+      ],
+      "boothUrl": "",
+      "youtubeUrl": "",
+      "gallery": [
+        {
+          "id": "image-5633e38c6e",
+          "src": "/uploads/portfolio/2026-08-30-180937-5633e38c6e.png",
+          "name": "2026-08-30-180937-5633e38c6e.png"
+        },
+        {
+          "id": "image-ec5b9920cc",
+          "src": "/uploads/portfolio/2026-08-30-181001-ec5b9920cc.png",
+          "name": "2026-08-30-181001-ec5b9920cc.png"
+        },
+        {
+          "id": "image-addc650e08",
+          "src": "/uploads/portfolio/2026-08-30-181116-addc650e08.png",
+          "name": "2026-08-30-181116-addc650e08.png"
+        },
+        {
+          "id": "image-d3e250a9cf",
+          "src": "/uploads/portfolio/2026-08-30-181058-d3e250a9cf.png",
+          "name": "2026-08-30-181058-d3e250a9cf.png"
+        }
+      ],
+      "coverId": "image-5633e38c6e"
+    },
     {
       "id": "project-1788075774553",
       "demo": false,

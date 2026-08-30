@@ -34,14 +34,15 @@ function AppsScreen({ activeNav, onNavigate, notify, toast }) {
   const [selectedId, setSelectedId] = useState('')
   const [state, setState] = useState('Apps 불러오는 중')
   const [hydrated, setHydrated] = useState(false)
+  const savedApps = useRef('')
   useEffect(() => {
     let cancelled = false
-    fetch('/api/apps').then(async (response) => { if (!response.ok) throw new Error((await response.json()).error); return response.json() }).then((data) => { if (!cancelled) { setApps(data.apps); setSelectedId(data.apps[0]?.id ?? ''); setState('저장됨') } }).catch(() => { if (!cancelled) setState('저장 실패') }).finally(() => { if (!cancelled) setHydrated(true) })
+    fetch('/api/apps').then(async (response) => { if (!response.ok) throw new Error((await response.json()).error); return response.json() }).then((data) => { if (!cancelled) { savedApps.current = JSON.stringify(data.apps); setApps(data.apps); setSelectedId(data.apps[0]?.id ?? ''); setState('저장됨') } }).catch(() => { if (!cancelled) setState('저장 실패') }).finally(() => { if (!cancelled) setHydrated(true) })
     return () => { cancelled = true }
   }, [])
   useEffect(() => {
-    if (!hydrated) return undefined
-    const timer = window.setTimeout(async () => { try { setState('저장 중'); const response = await fetch('/api/apps', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ apps }) }); if (!response.ok) throw new Error(); setState('저장됨') } catch { setState('저장 실패') } }, 700)
+    if (!hydrated || JSON.stringify(apps) === savedApps.current) return undefined
+    const timer = window.setTimeout(async () => { try { setState('저장 중'); const response = await fetch('/api/apps', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ apps }) }); if (!response.ok) throw new Error(); savedApps.current = JSON.stringify(apps); setState('저장됨') } catch { setState('저장 실패') } }, 700)
     return () => window.clearTimeout(timer)
   }, [apps, hydrated])
   const selected = apps.find((app) => app.id === selectedId) ?? apps[0]
@@ -60,8 +61,9 @@ function JournalScreen({ activeNav, onNavigate, notify, toast }) {
   const [selectedId, setSelectedId] = useState('')
   const [state, setState] = useState('저널 불러오는 중')
   const [hydrated, setHydrated] = useState(false)
-  useEffect(() => { let cancelled = false; fetch('/api/journal').then(async (response) => { if (!response.ok) throw new Error((await response.json()).error); return response.json() }).then((data) => { if (!cancelled) { setPosts(data.posts); setSelectedId(data.posts[0]?.id ?? ''); setState('저장됨') } }).catch(() => { if (!cancelled) setState('저장 실패') }).finally(() => { if (!cancelled) setHydrated(true) }); return () => { cancelled = true } }, [])
-  useEffect(() => { if (!hydrated) return undefined; const timer = window.setTimeout(async () => { try { setState('저장 중'); const response = await fetch('/api/journal', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ posts }) }); if (!response.ok) throw new Error(); setState('저장됨') } catch { setState('저장 실패') } }, 700); return () => window.clearTimeout(timer) }, [posts, hydrated])
+  const savedPosts = useRef('')
+  useEffect(() => { let cancelled = false; fetch('/api/journal').then(async (response) => { if (!response.ok) throw new Error((await response.json()).error); return response.json() }).then((data) => { if (!cancelled) { savedPosts.current = JSON.stringify(data.posts); setPosts(data.posts); setSelectedId(data.posts[0]?.id ?? ''); setState('저장됨') } }).catch(() => { if (!cancelled) setState('저장 실패') }).finally(() => { if (!cancelled) setHydrated(true) }); return () => { cancelled = true } }, [])
+  useEffect(() => { if (!hydrated || JSON.stringify(posts) === savedPosts.current) return undefined; const timer = window.setTimeout(async () => { try { setState('저장 중'); const response = await fetch('/api/journal', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ posts }) }); if (!response.ok) throw new Error(); savedPosts.current = JSON.stringify(posts); setState('저장됨') } catch { setState('저장 실패') } }, 700); return () => window.clearTimeout(timer) }, [posts, hydrated])
   const selected = posts.find((post) => post.id === selectedId) ?? posts[0]
   function update(patch) { setPosts((current) => current.map((post) => post.id === selected.id ? { ...post, ...patch } : post)) }
   function add() { const stamp = Date.now(); const post = { id: `post-${stamp}`, title: '새 글', slug: `new-post-${stamp}`, status: '초안', date: new Date().toISOString().slice(0, 10).replaceAll('-', '.'), summary: '', tags: [], hero: '', protection: { mode: 'public' }, blocks: [{ id: `block-${stamp}`, type: 'text', value: '', caption: '' }] }; setPosts((current) => [post, ...current]); setSelectedId(post.id); notify('새 저널 글을 만들었어.') }

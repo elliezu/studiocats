@@ -1,11 +1,13 @@
 {
   "files": [
     "about/index.html",
+    "animation-style/index.html",
+    "animation-style/no06/index.html",
     "apps/index.html",
     "sitemap.xml",
     "virtual-fashion/02/index.html",
     "virtual-fashion/index.html",
     "virtual-fashion/yeonseong-unframed-2025/index.html"
   ],
-  "generatedAt": "2026-08-30T05:35:17.965Z"
+  "generatedAt": "2026-08-30T05:48:14.325Z"
 }

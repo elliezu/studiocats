@@ -1,7 +1,43 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T05:35:17.395Z",
+  "updatedAt": "2026-08-30T05:48:13.782Z",
   "projects": [
+    {
+      "id": "project-1788068649332",
+      "demo": false,
+      "title": "SugarRebel",
+      "slug": "no06",
+      "category": "Anime Style",
+      "date": "2026.08",
+      "status": "공개됨",
+      "summary": "귀여운 리본과 진스타일의 믹스매치",
+      "tags": [
+        "vrchat",
+        "vtuber",
+        "virtual avartar",
+        "anime"
+      ],
+      "boothUrl": "https://studiocats.booth.pm/items/8700674",
+      "youtubeUrl": "https://studiocats.booth.pm/items/8700674",
+      "gallery": [
+        {
+          "id": "image-ccf24fab24",
+          "src": "/uploads/portfolio/chocolat-ccf24fab24.png",
+          "name": "chocolat-ccf24fab24.png"
+        },
+        {
+          "id": "image-0c38a5bcd6",
+          "src": "/uploads/portfolio/manuka-0c38a5bcd6.png",
+          "name": "manuka-0c38a5bcd6.png"
+        },
+        {
+          "id": "image-37f2610c2f",
+          "src": "/uploads/portfolio/lumina01-37f2610c2f.png",
+          "name": "lumina01-37f2610c2f.png"
+        }
+      ],
+      "coverId": "image-0c38a5bcd6"
+    },
     {
       "id": "project-1788068070565",
       "demo": false,

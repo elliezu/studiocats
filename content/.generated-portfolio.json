@@ -2,7 +2,9 @@
   "files": [
     "about/index.html",
     "apps/index.html",
-    "sitemap.xml"
+    "sitemap.xml",
+    "virtual-fashion/index.html",
+    "virtual-fashion/yeonseong-unframed-2025/index.html"
   ],
-  "generatedAt": "2026-08-22T11:32:33.624Z"
+  "generatedAt": "2026-08-30T05:16:17.483Z"
 }

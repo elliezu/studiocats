@@ -1,13 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
-
-const STORAGE_KEY = 'studiocats-manager.v1.projects'
-const imagePool = ['/demo/portfolio-01.png', '/demo/portfolio-02.png', '/demo/portfolio-03.png', '/demo/portfolio-04.png', '/demo/portfolio-05.png']
-const seedProjects = [
-  { id: 'cloud-layer-dress', demo: true, title: 'Cloud Layer Dress', slug: 'cloud-layer-dress', category: 'Virtual Fashion', date: '2026.08.21', status: '초안', summary: 'CLO 3D에서 완성한 레이어드 드레스와 리깅 과정을 정리하는 가상 패션 프로젝트입니다.', tags: ['CLO 3D', 'Virtual Fashion', 'Render'], boothUrl: 'https://studiocats.booth.pm/', youtubeUrl: '', gallery: [{ id: 'cloud-cover', src: imagePool[0], name: 'cloud-layer-cover.png' }, { id: 'cloud-02', src: imagePool[1], name: 'cloud-layer-detail.png' }, { id: 'cloud-03', src: imagePool[2], name: 'cloud-layer-pattern.png' }, { id: 'cloud-04', src: imagePool[3], name: 'cloud-layer-render.png' }], coverId: 'cloud-cover' },
-  { id: 'softform-collection', demo: true, title: 'Softform Collection', slug: 'softform-collection', category: 'Virtual Fashion', date: '2026.08.10', status: '초안', summary: '부드러운 구조감과 실루엣을 탐구한 버추얼 컬렉션입니다.', tags: ['CLO 3D', 'Unreal Engine'], boothUrl: '', youtubeUrl: '', gallery: [{ id: 'softform-cover', src: imagePool[1], name: 'softform-cover.png' }], coverId: 'softform-cover' },
-  { id: 'signal-accessory-set', demo: true, title: 'Signal Accessory Set', slug: 'signal-accessory-set', category: 'Anime Style', date: '2026.07.28', status: '초안', summary: 'VRChat 아바타를 위한 액세서리 세트입니다.', tags: ['VRChat', 'Blender'], boothUrl: 'https://studiocats.booth.pm/', youtubeUrl: '', gallery: [{ id: 'signal-cover', src: imagePool[4], name: 'signal-cover.png' }], coverId: 'signal-cover' },
-]
 
 function Icon({ name, size = 18 }) {
   const paths = {
@@ -20,7 +12,6 @@ function Icon({ name, size = 18 }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>
 }
 
-function readStoredProjects() { try { const stored = window.localStorage.getItem(STORAGE_KEY); return stored ? JSON.parse(stored) : seedProjects } catch { return seedProjects } }
 function makeProject() { const stamp = Date.now(); return { id: `project-${stamp}`, title: '새 프로젝트', slug: `new-project-${stamp}`, category: 'Virtual Fashion', date: new Date().toISOString().slice(0, 10).replaceAll('-', '.'), status: '초안', summary: '', tags: [], boothUrl: '', youtubeUrl: '', gallery: [], coverId: '' } }
 function readFiles(files) { return Promise.all(files.map((file) => new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve({ name: file.name, dataUrl: reader.result }); reader.onerror = reject; reader.readAsDataURL(file) }))) }
 const NAV_ITEMS = [['Dashboard', '대시보드', 'grid'], ['Portfolio', '포트폴리오', 'folder'], ['Apps', 'Apps', 'cube'], ['Journal', '저널', 'book'], ['About', '소개', 'user'], ['Media', '미디어', 'image'], ['Settings', '설정', 'settings']]
@@ -102,8 +93,8 @@ function MediaScreen({ activeNav, onNavigate, notify, toast }) {
 }
 
 function App() {
-  const [projects, setProjects] = useState(readStoredProjects)
-  const [selectedId, setSelectedId] = useState(() => readStoredProjects()[0]?.id ?? '')
+  const [projects, setProjects] = useState([])
+  const [selectedId, setSelectedId] = useState('')
   const [activeNav, setActiveNav] = useState('Portfolio')
   const [tagDraft, setTagDraft] = useState('')
   const [toast, setToast] = useState('')
@@ -114,22 +105,25 @@ function App() {
   const [isHydrated, setIsHydrated] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
   const [publishResult, setPublishResult] = useState(null)
+  const savedProjects = useRef(null)
 
   useEffect(() => {
     let cancelled = false
     fetch('/api/portfolio').then(async (response) => { if (!response.ok) throw new Error((await response.json()).error); return response.json() }).then((data) => {
-      if (cancelled || !data.projects?.length) return
-      setProjects(data.projects); setSelectedId((current) => data.projects.some((project) => project.id === current) ? current : data.projects[0].id); setRepositoryState('저장됨')
+      if (cancelled) return
+      const loadedProjects = data.projects ?? []
+      savedProjects.current = JSON.stringify(loadedProjects)
+      setProjects(loadedProjects); setSelectedId((current) => loadedProjects.some((project) => project.id === current) ? current : (loadedProjects[0]?.id ?? '')); setRepositoryState('저장됨')
     }).catch(() => { if (!cancelled) { setRepositoryState('브라우저 임시 저장'); setToast('저장소 연결이 안 돼서 이 브라우저에만 임시 저장 중이야.') } }).finally(() => { if (!cancelled) setIsHydrated(true) })
     return () => { cancelled = true }
   }, [])
-  useEffect(() => { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(projects)) }, [projects])
   useEffect(() => { if (!toast) return undefined; const timer = window.setTimeout(() => setToast(''), 3000); return () => window.clearTimeout(timer) }, [toast])
   useEffect(() => {
     if (!isHydrated) return undefined
+    if (JSON.stringify(projects) === savedProjects.current) return undefined
     const timer = window.setTimeout(async () => {
       setRepositoryState('저장 중')
-      try { const response = await fetch('/api/portfolio', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projects }) }); if (!response.ok) throw new Error((await response.json()).error); setRepositoryState('저장됨') } catch { setRepositoryState('브라우저 임시 저장') }
+      try { const response = await fetch('/api/portfolio', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projects }) }); if (!response.ok) throw new Error((await response.json()).error); savedProjects.current = JSON.stringify(projects); setRepositoryState('저장됨') } catch { setRepositoryState('브라우저 임시 저장') }
     }, 700)
     return () => window.clearTimeout(timer)
   }, [projects, isHydrated])
@@ -181,7 +175,7 @@ function App() {
   if (activeNav === 'About') return <SiteScreen activeNav={activeNav} onNavigate={navigate} notify={setToast} toast={toast} mode="about" />
   if (activeNav === 'Media') return <MediaScreen activeNav={activeNav} onNavigate={navigate} notify={setToast} toast={toast} />
   if (activeNav === 'Settings') return <SiteScreen activeNav={activeNav} onNavigate={navigate} notify={setToast} toast={toast} mode="settings" />
-  if (!selected) return <main className="manager-shell"><p className="toast">프로젝트를 불러오는 중이야.</p></main>
+  if (!selected) return <SimpleShell activeNav={activeNav} onNavigate={navigate} state={repositoryState} toast={toast}><section className="project-list" aria-label="포트폴리오 목록"><header className="list-header"><div><h1>포트폴리오</h1><p>총 0개 프로젝트</p></div><button className="outline-button" onClick={addProject}><Icon name="plus" />새 프로젝트</button></header><p className="field-hint">아직 등록한 포트폴리오가 없어.</p></section><section className="editor"><div className="editor-scroll"><div className="editor-heading"><div><h2>실제 작업부터 등록해줘</h2><p className="field-hint">이미지, 대표 썸네일, YouTube와 BOOTH 링크를 넣으면 돼.</p></div></div></div></section><aside className="preview-rail"><span className="rail-title">미리보기</span><p className="field-hint">프로젝트를 만들면 여기에 카드가 보여.</p></aside></SimpleShell>
   return <main className="manager-shell">
     <aside className="sidebar"><div className="brand"><img className="brand-mark" src="/logo_img.png" alt="StudioCats" /><span>StudioCats<br /><strong>Manager</strong></span></div><nav aria-label="관리 메뉴">{NAV_ITEMS.map(([key, label, icon]) => <button className={`nav-item ${activeNav === key ? 'is-active' : ''}`} onClick={() => setActiveNav(key)} key={key}><Icon name={icon} /><span>{label}</span></button>)}</nav><div className="sidebar-bottom"><span className="sync-dot" />{repositoryState}</div></aside>
     <section className="project-list" aria-label="포트폴리오 목록"><header className="list-header"><div><h1>포트폴리오</h1><p>총 {projects.length}개 프로젝트</p></div><button className="outline-button" onClick={addProject}><Icon name="plus" />새 프로젝트</button></header><div className="project-rows">{projects.map((project) => { const projectCover = project.gallery.find((image) => image.id === project.coverId) ?? project.gallery[0]; return <button className={`project-row ${project.id === selected.id ? 'is-selected' : ''}`} key={project.id} onClick={() => setSelectedId(project.id)}>{projectCover ? <img src={projectCover.src} alt="" /> : <span className="project-empty">이미지 없음</span>}<span className="project-row-copy"><strong>{project.title}</strong><span>{project.category}</span><span>{project.date}</span></span><span className={`status ${project.status === '공개됨' ? 'is-public' : ''}`}>{project.status}</span></button> })}</div></section>

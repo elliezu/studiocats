@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T05:48:13.782Z",
+  "updatedAt": "2026-08-30T05:48:29.019Z",
   "projects": [
     {
       "id": "project-1788068649332",
@@ -34,6 +34,11 @@
           "id": "image-37f2610c2f",
           "src": "/uploads/portfolio/lumina01-37f2610c2f.png",
           "name": "lumina01-37f2610c2f.png"
+        },
+        {
+          "id": "image-f16ed6fb9b",
+          "src": "/uploads/portfolio/colorway-f16ed6fb9b.png",
+          "name": "colorway-f16ed6fb9b.png"
         }
       ],
       "coverId": "image-0c38a5bcd6"

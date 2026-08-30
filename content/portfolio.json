@@ -1,7 +1,33 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T07:39:34.550Z",
+  "updatedAt": "2026-08-30T07:45:06.816Z",
   "projects": [
+    {
+      "id": "project-1788075774553",
+      "demo": false,
+      "title": "작업 중 의상 세트-운동화",
+      "slug": "shoes01",
+      "category": "3D Works",
+      "date": "2026.08",
+      "status": "공개됨",
+      "summary": "Shoes-Zbrush \nBase-Blender",
+      "tags": [
+        "3D",
+        "modeling",
+        "shoes",
+        "zbrush"
+      ],
+      "boothUrl": "",
+      "youtubeUrl": "",
+      "gallery": [
+        {
+          "id": "image-11e8022e22",
+          "src": "/uploads/portfolio/2026-08-30-164315-11e8022e22.png",
+          "name": "2026-08-30-164315-11e8022e22.png"
+        }
+      ],
+      "coverId": "image-11e8022e22"
+    },
     {
       "id": "project-1788075378933",
       "demo": false,

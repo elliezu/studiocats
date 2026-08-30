@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-22T00:00:00.000Z",
+  "domain": "https://studiocats.kr",
+  "brand": "StudioCats",
+  "email": "yzoo2@naver.com",
+  "aboutTitle": "StudioCats는\n1인 디지털 패션\n스튜디오입니다.",
+  "aboutIntro": "VRChat 아바타용 아웃핏 세트를 제작해 BOOTH에서 판매합니다. CLO 3D로 만든 버추얼 컬렉션을 Unreal Engine에서 MetaHuman으로 연출하고, 대학에서 버추얼 패션을 강의하며, 같은 일을 하는 사람들을 위한 도구를 만들어 배포합니다.",
+  "contactText": "커미션, 컬렉션 개발, 브랜드 협업, 강의 및 직원 교육 문의를 받고 있습니다.",
+  "skills": [
+    { "title": "3D Fashion", "items": ["CLO 3D", "Marvelous Designer"] },
+    { "title": "3D Graphics", "items": ["Blender", "Photoshop", "Substance Painter", "3ds Max", "ZBrush", "DaVinci Resolve"] },
+    { "title": "Engine", "items": ["Unreal Engine", "Unity", "MetaHuman"] },
+    { "title": "Shops", "items": ["BOOTH", "Superhive", "GitHub", "ZEPETO Creator"] }
+  ],
+  "career": ["연세대학교 영어영문학 · 심리학 전공", "연성대학교 패션디자인비즈니스과 강의", "제페토 공식 크리에이터", "에픽게임즈 포트나이트 맵 크리에이터", "BOOTH 샵 크리에이터"],
+  "services": ["3D 에셋 — 의상, 헤어, 액세서리", "3D 배경 제작 (언리얼 엔진)", "CLO–언리얼 애니메이션 연계 작업 (메타휴먼 포함)", "AI 협업 개발, 자동화, 데이터 사이언스"],
+  "links": [
+    { "label": "BOOTH", "url": "https://studiocats.booth.pm/" },
+    { "label": "Superhive", "url": "https://superhivemarket.com/creators/studiocats" },
+    { "label": "X", "url": "https://x.com/StudioCats_Elle" },
+    { "label": "YouTube", "url": "https://www.youtube.com/@elliezu" },
+    { "label": "YouTube StudioCats", "url": "https://www.youtube.com/@StudioCats_Elle" }
+  ]
+}

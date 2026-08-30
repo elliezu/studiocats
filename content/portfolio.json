@@ -1,7 +1,58 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T05:50:01.821Z",
+  "updatedAt": "2026-08-30T07:39:34.550Z",
   "projects": [
+    {
+      "id": "project-1788075378933",
+      "demo": false,
+      "title": "Frilly",
+      "slug": "no05",
+      "category": "Anime Style",
+      "date": "2026.06",
+      "status": "공개됨",
+      "summary": "프릴을 테마로 한 미니 드레스",
+      "tags": [
+        "vrchat",
+        "vtuber",
+        "virtual avartar",
+        "anime"
+      ],
+      "boothUrl": "https://studiocats.booth.pm/items/8448252",
+      "youtubeUrl": "https://youtube.com/shorts/-VNuB7uqnIY?si=FSsO-EwRgrHyloNj",
+      "gallery": [
+        {
+          "id": "image-e457cdfb89",
+          "src": "/uploads/portfolio/01-e457cdfb89.png",
+          "name": "01-e457cdfb89.png"
+        },
+        {
+          "id": "image-6ee93c4d39",
+          "src": "/uploads/portfolio/03-6ee93c4d39.png",
+          "name": "03-6ee93c4d39.png"
+        },
+        {
+          "id": "image-578ce4d380",
+          "src": "/uploads/portfolio/10-578ce4d380.png",
+          "name": "10-578ce4d380.png"
+        },
+        {
+          "id": "image-1f4f2dcd82",
+          "src": "/uploads/portfolio/21-1f4f2dcd82.png",
+          "name": "21-1f4f2dcd82.png"
+        },
+        {
+          "id": "image-9101982816",
+          "src": "/uploads/portfolio/20-9101982816.png",
+          "name": "20-9101982816.png"
+        },
+        {
+          "id": "image-35bb5fcb5a",
+          "src": "/uploads/portfolio/18-35bb5fcb5a.png",
+          "name": "18-35bb5fcb5a.png"
+        }
+      ],
+      "coverId": "image-e457cdfb89"
+    },
     {
       "id": "project-1788068649332",
       "demo": false,

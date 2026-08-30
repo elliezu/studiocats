@@ -1,7 +1,33 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T05:26:05.539Z",
+  "updatedAt": "2026-08-30T05:35:17.395Z",
   "projects": [
+    {
+      "id": "project-1788068070565",
+      "demo": false,
+      "title": "연성대학교 2025 졸업작품전 Emotional Shelter",
+      "slug": "02",
+      "category": "Virtual Fashion",
+      "date": "2026.11",
+      "status": "공개됨",
+      "summary": "연성대학교 학생들의 버츄얼 런웨이 졸업작품입니다. 3D를 전혀 몰라도 CLO와 Unreal을 사용해 디지털 런웨이를 제작할 수 있도록 구성된 강의입니다.",
+      "tags": [
+        "digital runway",
+        "virtual fashion",
+        "unreal",
+        "clo"
+      ],
+      "boothUrl": "",
+      "youtubeUrl": "https://youtu.be/wnY0xhngGPM?si=Rd4Ai4sSn8rgIqAX",
+      "gallery": [
+        {
+          "id": "image-bac94e966e",
+          "src": "/uploads/portfolio/youtube-wnY0xhngGPM-bac94e966e.jpg",
+          "name": "youtube-wnY0xhngGPM-bac94e966e.jpg"
+        }
+      ],
+      "coverId": "image-bac94e966e"
+    },
     {
       "id": "yeonseong-unframed-2025",
       "demo": false,

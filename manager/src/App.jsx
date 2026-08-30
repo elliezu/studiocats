@@ -17,6 +17,18 @@ function readFiles(files) { return Promise.all(files.map((file) => new Promise((
 function youtubeEmbedUrl(value) { try { const url = new URL(value); const videoId = url.hostname === 'youtu.be' ? url.pathname.slice(1) : (url.pathname.startsWith('/embed/') || url.pathname.startsWith('/shorts/') ? url.pathname.split('/')[2] : url.searchParams.get('v')); return /^[A-Za-z0-9_-]{11}$/.test(videoId ?? '') ? `https://www.youtube-nocookie.com/embed/${videoId}` : '' } catch { return '' } }
 const NAV_ITEMS = [['Dashboard', '대시보드', 'grid'], ['Portfolio', '포트폴리오', 'folder'], ['Apps', 'Apps', 'cube'], ['Journal', '저널', 'book'], ['About', '소개', 'user'], ['Media', '미디어', 'image'], ['Settings', '설정', 'settings']]
 
+function usePreviewCopyButton(railLabel, buttonLabel, onCopy, enabled) {
+  useEffect(() => {
+    if (!enabled) return undefined
+    const rail = [...document.querySelectorAll('.preview-rail')].find((item) => item.querySelector('p')?.textContent === railLabel)
+    if (!rail) return undefined
+    const button = document.createElement('button')
+    button.type = 'button'; button.className = 'outline-button project-copy-button'; button.textContent = buttonLabel; button.addEventListener('click', onCopy)
+    rail.append(button)
+    return () => { button.removeEventListener('click', onCopy); button.remove() }
+  }, [railLabel, buttonLabel, onCopy, enabled])
+}
+
 function AppsScreen({ activeNav, onNavigate, notify, toast }) {
   const [apps, setApps] = useState([])
   const [selectedId, setSelectedId] = useState('')
@@ -35,6 +47,8 @@ function AppsScreen({ activeNav, onNavigate, notify, toast }) {
   const selected = apps.find((app) => app.id === selectedId) ?? apps[0]
   function update(patch) { setApps((current) => current.map((app) => app.id === selected.id ? { ...app, ...patch } : app)) }
   function add() { const stamp = Date.now(); const app = { id: `app-${stamp}`, title: '새 앱', slug: `new-app-${stamp}`, category: 'AI Tools', status: '초안', version: '', platform: '', summary: '', details: '', distribution: '', license: '', price: '', externalUrl: '', buttonLabel: '열기', image: '', order: apps.length * 10 + 10 }; setApps((current) => [app, ...current]); setSelectedId(app.id); notify('새 앱 항목을 만들었어.') }
+  const duplicate = useCallback(() => { if (!selected) return; const stamp = Date.now(); const copy = { ...selected, id: `app-${stamp}`, title: `${selected.title} 복사본`, slug: `${selected.slug.slice(0, 58)}-copy-${stamp}`, status: '초안', order: apps.length * 10 + 10 }; setApps((current) => [copy, ...current]); setSelectedId(copy.id); notify('앱 복사본을 만들었어. 이름과 링크만 바꿔서 이어서 작업하면 돼.') }, [selected, apps.length, notify])
+  usePreviewCopyButton('Apps 목록 카드', '이 앱 복사하기', duplicate, Boolean(selected))
   function remove() { if (!selected || !window.confirm(`“${selected.title}” 앱 항목을 삭제할까?`)) return; const next = apps.filter((app) => app.id !== selected.id); setApps(next); setSelectedId(next[0]?.id ?? ''); notify('앱 항목을 삭제했어.') }
   async function upload(event) { const file = event.target.files?.[0]; event.target.value = ''; if (!file) return; if (file.size > 5 * 1024 * 1024) return notify('이미지는 5MB 이하로 넣어줘.'); try { setState('이미지 복사 중'); const response = await fetch('/api/media', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ collection: 'apps', files: await readFiles([file]) }) }); const body = await response.json(); if (!response.ok) throw new Error(body.error); update({ image: body.images[0].src }); notify('앱 이미지를 홈페이지 폴더에 복사했어.') } catch (error) { setState('저장 실패'); notify(error.message || '이미지 추가에 실패했어.') } }
   async function generate() { if (!selected) return; const next = apps.map((app) => app.id === selected.id ? { ...app, status: '공개됨' } : app); try { const save = await fetch('/api/apps', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ apps: next }) }); const data = await save.json(); if (!save.ok) throw new Error(data.error); setApps(data.apps); const response = await fetch('/api/generate', { method: 'POST' }); const result = await response.json(); if (!response.ok) throw new Error(result.error); setState('공개 파일 생성됨'); notify(`Apps 페이지를 포함해 ${result.generated.length}개 파일을 만들었어.`) } catch (error) { notify(error.message || 'Apps 페이지 생성에 실패했어.') } }
@@ -51,6 +65,8 @@ function JournalScreen({ activeNav, onNavigate, notify, toast }) {
   const selected = posts.find((post) => post.id === selectedId) ?? posts[0]
   function update(patch) { setPosts((current) => current.map((post) => post.id === selected.id ? { ...post, ...patch } : post)) }
   function add() { const stamp = Date.now(); const post = { id: `post-${stamp}`, title: '새 글', slug: `new-post-${stamp}`, status: '초안', date: new Date().toISOString().slice(0, 10).replaceAll('-', '.'), summary: '', tags: [], hero: '', protection: { mode: 'public' }, blocks: [{ id: `block-${stamp}`, type: 'text', value: '', caption: '' }] }; setPosts((current) => [post, ...current]); setSelectedId(post.id); notify('새 저널 글을 만들었어.') }
+  const duplicate = useCallback(() => { if (!selected) return; const stamp = Date.now(); const copy = { ...selected, id: `post-${stamp}`, title: `${selected.title} 복사본`, slug: `${selected.slug.slice(0, 58)}-copy-${stamp}`, status: '초안', blocks: selected.blocks.map((block, index) => ({ ...block, id: `block-${stamp}-${index + 1}` })) }; setPosts((current) => [copy, ...current]); setSelectedId(copy.id); notify('글 복사본을 만들었어. 제목과 내용만 바꿔서 이어서 작업하면 돼.') }, [selected, notify])
+  usePreviewCopyButton('저널 목록 카드', '이 글 복사하기', duplicate, Boolean(selected))
   function remove() { if (!selected || !window.confirm(`“${selected.title}” 글을 삭제할까?`)) return; const next = posts.filter((post) => post.id !== selected.id); setPosts(next); setSelectedId(next[0]?.id ?? ''); notify('저널 글을 삭제했어.') }
   function updateBlock(id, patch) { update({ blocks: selected.blocks.map((block) => block.id === id ? { ...block, ...patch } : block) }) }
   function updateProtection(patch) { update({ protection: { ...(selected.protection || { mode: 'public' }), ...patch } }) }

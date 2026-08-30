@@ -70,7 +70,7 @@ function useEditorPreviewButton(editorLabel, onPreview, enabled) {
 }
 
 function journalPreviewBody(post, showGate = false) {
-  if (showGate) return `<section class="journal-gate-preview"><span>STUDENT MATERIAL</span><h2>비밀번호가 필요한 글이야</h2><p>수업에서 안내받은 비밀번호를 입력하면 이 브라우저에서 바로 읽을 수 있어.</p><div><input type="password" placeholder="비밀번호 입력" disabled><button type="button" disabled>열기 →</button></div></section>`
+  if (showGate) return `<section class="journal-gate-preview"><span>STUDENT MATERIAL</span><h2>비밀번호 인증이 필요한 콘텐츠입니다.</h2><p>안내받은 비밀번호를 입력하면 콘텐츠를 열람할 수 있습니다.</p><div><input type="password" placeholder="비밀번호 입력" disabled><button type="button" disabled>콘텐츠 열람 →</button></div></section>`
   const blocks = (post.blocks || []).map((block) => {
     const value = html(block.value)
     if (block.type === 'heading') return `<h2>${value}</h2>`

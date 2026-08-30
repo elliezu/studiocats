@@ -134,7 +134,7 @@ function App() {
   const videoEmbed = youtubeEmbedUrl(selected?.youtubeUrl)
   function updateProject(patch) { setProjects((current) => current.map((project) => (project.id === selected.id ? { ...project, ...patch } : project))) }
   function addProject() { const project = makeProject(); setProjects((current) => [project, ...current]); setSelectedId(project.id); setToast('새 프로젝트를 만들었어. 먼저 이미지를 넣어줘.') }
-  function duplicateProject() { const stamp = Date.now(); const copy = { ...selected, id: `project-${stamp}`, title: `${selected.title} 복사본`, slug: `${selected.slug}-copy-${stamp}`.slice(0, 80), status: '초안', demo: false }; setProjects((current) => [copy, ...current]); setSelectedId(copy.id); setToast('프로젝트 복사본을 만들었어. 제목과 슬러그만 바꿔서 이어서 작업하면 돼.') }
+  function duplicateProject() { const stamp = Date.now(); const copy = { ...selected, id: `project-${stamp}`, title: `${selected.title} 복사본`, slug: `${selected.slug.slice(0, 58)}-copy-${stamp}`, status: '초안', demo: false }; setProjects((current) => [copy, ...current]); setSelectedId(copy.id); setToast('프로젝트 복사본을 만들었어. 제목과 슬러그만 바꿔서 이어서 작업하면 돼.') }
   function deleteProject() { if (projects.length === 1 || !window.confirm(`“${selected.title}” 프로젝트를 삭제할까?`)) return; const next = projects.filter((project) => project.id !== selected.id); setProjects(next); setSelectedId(next[0].id); setToast('프로젝트를 삭제했어.') }
   function addTag() { const tag = tagDraft.trim(); if (!tag || selected.tags.includes(tag)) return; updateProject({ tags: [...selected.tags, tag] }); setTagDraft('') }
   function removeTag(tag) { updateProject({ tags: selected.tags.filter((item) => item !== tag) }) }

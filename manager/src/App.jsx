@@ -94,8 +94,9 @@ function DashboardScreen({ activeNav, onNavigate, notify, toast }) {
 
 function SiteScreen({ activeNav, onNavigate, notify, toast, mode }) {
   const [site, setSite] = useState(null); const [state, setState] = useState('사이트 정보 불러오는 중'); const [hydrated, setHydrated] = useState(false)
-  useEffect(() => { fetch('/api/site').then((response) => response.json()).then((data) => { setSite(data); setState('저장됨') }).catch(() => setState('저장 실패')).finally(() => setHydrated(true)) }, [])
-  useEffect(() => { if (!hydrated || !site) return undefined; const timer = window.setTimeout(async () => { try { setState('저장 중'); const response = await fetch('/api/site', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(site) }); const data = await response.json(); if (!response.ok) throw new Error(data.error); setSite(data); setState('저장됨') } catch { setState('저장 실패') } }, 700); return () => window.clearTimeout(timer) }, [site, hydrated])
+  const savedSite = useRef('')
+  useEffect(() => { fetch('/api/site').then((response) => response.json()).then((data) => { savedSite.current = JSON.stringify(data); setSite(data); setState('저장됨') }).catch(() => setState('저장 실패')).finally(() => setHydrated(true)) }, [])
+  useEffect(() => { if (!hydrated || !site || JSON.stringify(site) === savedSite.current) return undefined; const timer = window.setTimeout(async () => { try { setState('저장 중'); const response = await fetch('/api/site', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(site) }); const data = await response.json(); if (!response.ok) throw new Error(data.error); savedSite.current = JSON.stringify(data); setSite(data); setState('저장됨') } catch { setState('저장 실패') } }, 700); return () => window.clearTimeout(timer) }, [site, hydrated])
   function update(patch) { setSite((current) => ({ ...current, ...patch })) }
   function lines(key) { return (site?.[key] || []).join('\n') }
   if (!site) return <SimpleShell activeNav={activeNav} onNavigate={onNavigate} state={state} toast={toast}><section className="editor" /></SimpleShell>

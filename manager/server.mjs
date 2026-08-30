@@ -160,6 +160,12 @@ async function writeApps(apps) {
 function normalizePost(post, index) {
   const fallback = `post-${index + 1}`
   const status = allowedStatuses.has(post.status) ? post.status : '초안'
+  const protectionMode = post.protection?.mode === 'password' ? 'password' : 'public'
+  const requestedPassword = cleanText(post.protection?.password, 240)
+  const savedPasswordHash = cleanText(post.protection?.passwordHash, 128)
+  if (protectionMode === 'password' && !requestedPassword && !/^[a-f0-9]{64}$/i.test(savedPasswordHash)) {
+    throw new Error('비밀번호 글은 비밀번호를 한 번 입력해줘.')
+  }
   const blocks = Array.isArray(post.blocks) ? post.blocks.slice(0, 80).map((block) => ({
     id: cleanText(block.id, 120) || `block-${index + 1}`,
     type: allowedBlockTypes.has(block.type) ? block.type : 'text',
@@ -178,6 +184,9 @@ function normalizePost(post, index) {
     tags: Array.isArray(post.tags) ? [...new Set(post.tags.map((tag) => cleanText(tag, 50)).filter(Boolean))].slice(0, 20) : [],
     hero,
     blocks,
+    protection: protectionMode === 'password'
+      ? { mode: 'password', passwordHash: requestedPassword ? createHash('sha256').update(requestedPassword).digest('hex') : savedPasswordHash.toLowerCase() }
+      : { mode: 'public' },
   }
 }
 

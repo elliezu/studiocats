@@ -54,7 +54,7 @@ function normalizeProject(project, index) {
     .slice(0, 30)
     .map((image, imageIndex) => ({ id: cleanText(image.id, 120) || `${fallback}-image-${imageIndex + 1}`, src: image.src, name: cleanText(image.name, 180) || 'image' })) : []
   if (!gallery.length && project.status === '공개됨') throw new Error('공개하려면 이미지를 최소 한 장 넣어줘.')
-  const coverId = gallery.some((image) => image.id === project.coverId) ? project.coverId : gallery[0].id
+  const coverId = gallery.some((image) => image.id === project.coverId) ? project.coverId : (gallery[0]?.id ?? '')
   const category = allowedCategories.has(project.category) ? project.category : 'Virtual Fashion'
   const status = allowedStatuses.has(project.status) ? project.status : '초안'
   return {

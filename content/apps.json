@@ -1,7 +1,25 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-22T00:00:00.000Z",
+  "updatedAt": "2026-08-30T05:58:02.620Z",
   "apps": [
+    {
+      "id": "app-1788069056184",
+      "title": "Photoshop/Clipstudio/Gimp to Unity LiveSync",
+      "slug": "app-1",
+      "category": "Unity",
+      "status": "공개됨",
+      "version": "Live Texture Work",
+      "platform": "Unity/PhotoShop/ClipStudio/GIMP",
+      "summary": "Photoshop 또는 CLIP STUDIO PAINT, GIMP에서 작업 중인 텍스처를 Unity에서 바로 확인할 수 있는 로컬 프리뷰 툴입니다.\n아바타 얼굴, 메이크업, 의상 및 바디 텍스처를 수정하면서 Unity의 적용 결과를 빠르게 확인할 수 있습니다.",
+      "details": "multi language support",
+      "distribution": "BOOTH",
+      "license": "",
+      "price": "FREE",
+      "externalUrl": "https://studiocats.booth.pm/items/8740429",
+      "buttonLabel": "열기",
+      "image": "/uploads/apps/01-livesync-cover-1200x1200-0785f39541.png",
+      "order": 50
+    },
     {
       "id": "pawstick",
       "title": "PawStick",

@@ -261,9 +261,22 @@ async function runGit(args) {
   return result
 }
 
+async function existingPaths(paths) {
+  const found = []
+  for (const path of paths) {
+    try {
+      await stat(join(siteRoot, path))
+      found.push(path)
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error
+    }
+  }
+  return found
+}
+
 async function publishToGit(message) {
   await runNode(generator)
-  const managedPaths = ['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'about', 'sitemap.xml']
+  const managedPaths = await existingPaths(['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'about', 'sitemap.xml'])
   const before = await runGit(['status', '--porcelain', '--', ...managedPaths])
   if (!before.stdout.trim()) {
     const branch = (await runGit(['branch', '--show-current'])).stdout.trim()

@@ -161,7 +161,9 @@ const publicProjects = (source.projects ?? []).filter((project) => project.statu
 const publicApps = (appsSource.apps ?? []).filter((app) => app.status === '공개됨').toSorted((a, b) => a.order - b.order)
 const publishedPosts = (journalSource.posts ?? []).filter((post) => post.status === '공개됨').toSorted((a, b) => String(b.date).localeCompare(String(a.date)))
 const publicPosts = publishedPosts.filter((post) => !courseSchoolOf(post) && post.audience !== 'unassigned')
-const schoolMaterials = (journalSource.posts ?? []).filter((post) => courseSchoolOf(post)).toSorted((a, b) => String(b.date).localeCompare(String(a.date)))
+// 학교 소속은 Manager에서 초안을 분류하기 위한 값이기도 하다. 웹의 비밀번호
+// 페이지에는 게시 상태가 공개됨인 자료만 생성해서, 초안은 Manager 안에서만 관리한다.
+const schoolMaterials = publishedPosts.filter((post) => courseSchoolOf(post)).toSorted((a, b) => String(b.date).localeCompare(String(a.date)))
 const previous = await previousManifest()
 const files = new Set()
 for (const section of sections) {

@@ -1,23 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
   <title id="title">CLO Virtual Fashion course cover</title>
-  <desc id="desc">Abstract garment pattern and virtual runway illustration.</desc>
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#102848"/><stop offset="1" stop-color="#286c78"/></linearGradient>
-    <linearGradient id="floor" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#efb36b"/><stop offset="1" stop-color="#d88830"/></linearGradient>
-  </defs>
-  <rect width="1600" height="900" fill="url(#bg)"/>
-  <path d="M0 745 800 408 1600 745v155H0Z" fill="url(#floor)" opacity=".92"/>
-  <path d="M800 408 530 900h540Z" fill="#f8f8f6" opacity=".18"/>
-  <g fill="none" stroke="#f8f8f6" stroke-width="9" opacity=".7">
-    <path d="M472 236h193l66 89-79 153H487l-81-153Z"/>
-    <path d="M934 196h207l82 119-98 193H948l-89-193Z"/>
-    <path d="m519 292 86 87m-81-13 95-77m386-27 119 111m-117-36 114-86" stroke-width="5"/>
-  </g>
-  <g fill="#f8f8f6">
-    <text x="116" y="130" font-family="Arial, sans-serif" font-size="30" letter-spacing="8">CLASS MATERIAL</text>
-    <text x="115" y="242" font-family="Arial, sans-serif" font-size="94" font-weight="700">CLO</text>
-    <text x="115" y="332" font-family="Arial, sans-serif" font-size="57" font-weight="700">VIRTUAL FASHION</text>
-    <text x="116" y="386" font-family="Arial, sans-serif" font-size="25" letter-spacing="3">PATTERN · GARMENT · RUNWAY</text>
-  </g>
-  <text x="1080" y="818" text-anchor="end" fill="#102848" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">STUDIOCATS</text>
+  <desc id="desc">Solid navy course cover.</desc>
+  <rect width="1200" height="900" fill="#102848"/>
 </svg>

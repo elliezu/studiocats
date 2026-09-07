@@ -1,10 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
   <title id="title">CLO Unreal LiveSync course cover</title>
-  <desc id="desc">Abstract CLO to Unreal data connection illustration.</desc>
-  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#161b28"/><stop offset="1" stop-color="#364d72"/></linearGradient></defs>
-  <rect width="1600" height="900" fill="url(#bg)"/>
-  <g fill="none" stroke="#f8f8f6" stroke-width="8"><rect x="760" y="216" width="230" height="274" rx="18"/><rect x="1120" y="216" width="230" height="274" rx="18"/><path d="M990 353h130" stroke="#efb36b" stroke-width="18"/><path d="m1068 300 54 53-54 53" stroke="#efb36b" stroke-width="18"/></g>
-  <g fill="#f8f8f6" opacity=".9"><circle cx="825" cy="281" r="23"/><path d="M786 432c10-73 66-109 115-109s104 36 115 109Z"/><circle cx="1185" cy="281" r="23"/><path d="M1146 432c10-73 66-109 115-109s104 36 115 109Z"/></g>
-  <g fill="#f8f8f6"><text x="116" y="130" font-family="Arial, sans-serif" font-size="30" letter-spacing="8">CLASS MATERIAL</text><text x="115" y="242" font-family="Arial, sans-serif" font-size="94" font-weight="700">CLO × UNREAL</text><text x="115" y="332" font-family="Arial, sans-serif" font-size="57" font-weight="700">LIVESYNC REVIEW</text><text x="116" y="386" font-family="Arial, sans-serif" font-size="25" letter-spacing="3">CONNECT · UPDATE · SAVE CACHE</text></g>
-  <text x="1080" y="818" text-anchor="end" fill="#efb36b" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">STUDIOCATS</text>
+  <desc id="desc">Solid slate-blue course cover.</desc>
+  <rect width="1200" height="900" fill="#314766"/>
 </svg>

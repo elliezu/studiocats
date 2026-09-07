@@ -18,6 +18,9 @@ function youtubeEmbedUrl(value) { try { const url = new URL(value); const videoI
 function html(value = '') { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;') }
 function externalUrl(value) { try { const url = new URL(value); return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '' } catch { return '' } }
 const NAV_ITEMS = [['Dashboard', '대시보드', 'grid'], ['Portfolio', '포트폴리오', 'folder'], ['Apps', 'Apps', 'cube'], ['Journal', '저널', 'book'], ['About', '소개', 'user'], ['Media', '미디어', 'image'], ['Settings', '설정', 'settings']]
+const POST_AUDIENCES = [['public', '공개 저널'], ['yeonseong', '연성대학교 강의자료'], ['kyunghee', '경희대학교 강의자료'], ['unassigned', '미분류 — 게시 보류']]
+function postAudienceLabel(value) { return POST_AUDIENCES.find(([id]) => id === value)?.[1] ?? '공개 저널' }
+function isCourseMaterial(post) { return post?.audience === 'yeonseong' || post?.audience === 'kyunghee' }
 
 function usePreviewCopyButton(railLabel, buttonLabel, onCopy, enabled) {
   useEffect(() => {
@@ -69,8 +72,56 @@ function useEditorPreviewButton(editorLabel, onPreview, enabled) {
   }, [editorLabel, onPreview, enabled])
 }
 
+function useJournalAudienceControl(post, onChange) {
+  useEffect(() => {
+    if (!post) return undefined
+    const editor = document.querySelector('[aria-label="저널 글 편집"]')
+    const grid = editor?.querySelector('.editor-scroll > .field-grid')
+    if (!grid) return undefined
+    const label = document.createElement('label')
+    label.className = 'journal-audience-field'
+    label.textContent = '게시 위치'
+    const select = document.createElement('select')
+    for (const [value, text] of POST_AUDIENCES) {
+      const option = document.createElement('option')
+      option.value = value; option.textContent = text
+      select.append(option)
+    }
+    select.value = post.audience || 'public'
+    const change = () => onChange({ audience: select.value })
+    select.addEventListener('change', change)
+    label.append(select)
+    const hint = document.createElement('p')
+    hint.className = 'field-hint journal-audience-hint'
+    hint.textContent = isCourseMaterial(post)
+      ? `${postAudienceLabel(post.audience)}에는 학교 공통 비밀번호가 적용돼.`
+      : post.audience === 'unassigned'
+        ? '미분류 글은 사이트 파일을 생성해도 게시되지 않아.'
+        : '공개 저널은 일반 방문자에게 바로 열려.'
+    grid.append(label)
+    grid.after(hint)
+    const accessSection = [...editor.querySelectorAll('.gallery-section')].find((section) => section.querySelector('h3')?.textContent === '열람 설정')
+    const accessCopy = accessSection?.querySelector('.section-title p')
+    const accessControls = accessSection?.querySelector('.field-grid')
+    const accessHint = accessSection?.querySelector('.field-hint')
+    const originalCopy = accessCopy?.textContent
+    const isCourse = isCourseMaterial(post)
+    if (isCourse) {
+      if (accessCopy) accessCopy.textContent = '학교별 강의자료는 학교 공통 비밀번호로 열립니다.'
+      if (accessControls) accessControls.style.display = 'none'
+      if (accessHint) accessHint.style.display = 'none'
+    }
+    return () => {
+      select.removeEventListener('change', change); label.remove(); hint.remove()
+      if (accessCopy) accessCopy.textContent = originalCopy || ''
+      if (accessControls) accessControls.style.display = ''
+      if (accessHint) accessHint.style.display = ''
+    }
+  }, [post, onChange])
+}
+
 function journalPreviewBody(post, showGate = false) {
-  if (showGate) return `<section class="journal-gate-preview"><span>STUDENT MATERIAL</span><h2>비밀번호 인증이 필요한 콘텐츠입니다.</h2><p>안내받은 비밀번호를 입력하면 콘텐츠를 열람할 수 있습니다.</p><div><input type="password" placeholder="비밀번호 입력" disabled><button type="button" disabled>콘텐츠 열람 →</button></div></section>`
+  if (showGate) return `<section class="journal-gate-preview"><span>${html(isCourseMaterial(post) ? `${postAudienceLabel(post.audience)} / CLASS MATERIAL` : 'STUDENT MATERIAL')}</span><h2>비밀번호 인증이 필요한 콘텐츠입니다.</h2><p>${isCourseMaterial(post) ? '해당 수업에서 안내된 비밀번호를 입력하면 강의자료를 열람할 수 있습니다.' : '안내받은 비밀번호를 입력하면 콘텐츠를 열람할 수 있습니다.'}</p><div><input type="password" placeholder="비밀번호 입력" disabled><button type="button" disabled>콘텐츠 열람 →</button></div></section>`
   const blocks = (post.blocks || []).map((block) => {
     const value = html(block.value)
     if (block.type === 'heading') return `<h2>${value}</h2>`
@@ -89,7 +140,7 @@ function useJournalPreviewDialog(post) {
     if (!isOpen || !post) return undefined
     const backdrop = document.createElement('div')
     backdrop.className = 'journal-preview-backdrop'
-    backdrop.innerHTML = `<section class="journal-preview-modal" role="dialog" aria-modal="true" aria-label="저널 글 미리보기"><header><div><span>공개 페이지 미리보기</span><strong>${html(post.title || '제목 없음')}</strong></div><div><button type="button" data-preview-mode="article">본문 보기</button>${post.protection?.mode === 'password' ? '<button type="button" data-preview-mode="gate">잠금 화면 보기</button>' : ''}<button type="button" class="journal-preview-close" aria-label="미리보기 닫기">×</button></div></header><div class="journal-preview-body"></div></section>`
+    backdrop.innerHTML = `<section class="journal-preview-modal" role="dialog" aria-modal="true" aria-label="저널 글 미리보기"><header><div><span>공개 페이지 미리보기</span><strong>${html(post.title || '제목 없음')}</strong></div><div><button type="button" data-preview-mode="article">본문 보기</button>${post.protection?.mode === 'password' || isCourseMaterial(post) ? '<button type="button" data-preview-mode="gate">잠금 화면 보기</button>' : ''}<button type="button" class="journal-preview-close" aria-label="미리보기 닫기">×</button></div></header><div class="journal-preview-body"></div></section>`
     const body = backdrop.querySelector('.journal-preview-body')
     const render = (showGate) => { body.innerHTML = journalPreviewBody(post, showGate) }
     render(false)
@@ -161,7 +212,8 @@ function JournalScreen({ activeNav, onNavigate, notify, toast }) {
   useEffect(() => { if (!hydrated || JSON.stringify(posts) === savedPosts.current) return undefined; const timer = window.setTimeout(async () => { try { setState('저장 중'); const response = await fetch('/api/journal', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ posts }) }); if (!response.ok) throw new Error(); savedPosts.current = JSON.stringify(posts); setState('저장됨') } catch { setState('저장 실패') } }, 700); return () => window.clearTimeout(timer) }, [posts, hydrated])
   const selected = posts.find((post) => post.id === selectedId) ?? posts[0]
   function update(patch) { setPosts((current) => current.map((post) => post.id === selected.id ? { ...post, ...patch } : post)) }
-  function add() { const stamp = Date.now(); const post = { id: `post-${stamp}`, title: '새 글', slug: `new-post-${stamp}`, status: '초안', date: new Date().toISOString().slice(0, 10).replaceAll('-', '.'), summary: '', tags: [], hero: '', protection: { mode: 'public' }, blocks: [{ id: `block-${stamp}`, type: 'text', value: '', caption: '' }] }; setPosts((current) => [post, ...current]); setSelectedId(post.id); notify('새 저널 글을 만들었어.') }
+  useJournalAudienceControl(selected, update)
+  function add() { const stamp = Date.now(); const post = { id: `post-${stamp}`, title: '새 글', slug: `new-post-${stamp}`, status: '초안', audience: 'unassigned', date: new Date().toISOString().slice(0, 10).replaceAll('-', '.'), summary: '', tags: [], hero: '', protection: { mode: 'public' }, blocks: [{ id: `block-${stamp}`, type: 'text', value: '', caption: '' }] }; setPosts((current) => [post, ...current]); setSelectedId(post.id); notify('새 글을 만들었어. 게시 위치를 먼저 선택해줘.') }
   const duplicate = useCallback(() => { if (!selected) return; const stamp = Date.now(); const copy = { ...selected, id: `post-${stamp}`, title: `${selected.title} 복사본`, slug: `${selected.slug.slice(0, 58)}-copy-${stamp}`, status: '초안', blocks: selected.blocks.map((block, index) => ({ ...block, id: `block-${stamp}-${index + 1}` })) }; setPosts((current) => [copy, ...current]); setSelectedId(copy.id); notify('글 복사본을 만들었어. 제목과 내용만 바꿔서 이어서 작업하면 돼.') }, [selected, notify])
   usePreviewCopyButton('저널 목록 카드', '이 글 복사하기', duplicate, Boolean(selected))
   const openArticlePreview = useJournalPreviewDialog(selected)

@@ -20,6 +20,7 @@ const allowedCategories = new Set(['Anime Style', 'Virtual Fashion', '3D Works']
 const allowedStatuses = new Set(['초안', '공개 준비', '공개됨'])
 const allowedAppCategories = new Set(['Windows', 'Blender', 'Unity', 'ComfyUI', 'AI Tools'])
 const allowedBlockTypes = new Set(['text', 'heading', 'image', 'youtube', 'link', 'code'])
+const allowedPostAudiences = new Set(['public', 'yeonseong', 'kyunghee', 'unassigned'])
 const imageExtensions = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/gif': 'gif' }
 
 function send(response, statusCode, body, headers = {}) {
@@ -160,6 +161,7 @@ async function writeApps(apps) {
 function normalizePost(post, index) {
   const fallback = `post-${index + 1}`
   const status = allowedStatuses.has(post.status) ? post.status : '초안'
+  const audience = allowedPostAudiences.has(post.audience) ? post.audience : 'public'
   const protectionMode = post.protection?.mode === 'password' ? 'password' : 'public'
   const requestedPassword = cleanText(post.protection?.password, 240)
   const savedPasswordHash = cleanText(post.protection?.passwordHash, 128)
@@ -179,6 +181,7 @@ function normalizePost(post, index) {
     title: cleanText(post.title, 160) || '제목 없는 글',
     slug: cleanSlug(post.slug, fallback),
     status,
+    audience,
     date: cleanText(post.date, 20),
     summary: cleanText(post.summary, 800),
     tags: Array.isArray(post.tags) ? [...new Set(post.tags.map((tag) => cleanText(tag, 50)).filter(Boolean))].slice(0, 20) : [],
@@ -276,7 +279,7 @@ async function existingPaths(paths) {
 
 async function publishToGit(message) {
   await runNode(generator)
-  const managedPaths = await existingPaths(['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'about', 'sitemap.xml'])
+  const managedPaths = await existingPaths(['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'course-materials', 'about', 'sitemap.xml'])
   const branch = (await runGit(['branch', '--show-current'])).stdout.trim()
   if (!branch) throw new Error('현재 Git 브랜치를 찾을 수 없어요.')
   const before = await runGit(['status', '--porcelain', '--', ...managedPaths])

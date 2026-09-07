@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-07T09:07:07.563Z",
+  "updatedAt": "2026-09-07T09:12:57.219Z",
   "posts": [
     {
       "id": "virtual-fashion-clo-to-unreal-runway",
@@ -233,7 +233,7 @@
       "id": "clo-interface-transform-ai-pose-review",
       "title": "CLO 기본 학습: 인터페이스·패턴 Transform·AI Pose",
       "slug": "clo-interface-transform-ai-pose-review",
-      "status": "초안",
+      "status": "공개됨",
       "audience": "kyunghee",
       "date": "2026.09.07",
       "summary": "CLO의 2D·3D 작업 화면, Object Browser, Property Editor의 역할을 확인하고 GPU Simulation을 기준으로 아바타·원단 속성을 구분합니다. 이어서 Transform Pattern과 Google 이미지 레퍼런스를 활용한 Image to Pose로 수업용 패턴 변형과 정지 포즈를 완성합니다.",

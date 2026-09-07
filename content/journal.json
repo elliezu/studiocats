@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-07T12:58:32.351Z",
+  "updatedAt": "2026-09-07T13:07:57.953Z",
   "posts": [
     {
       "id": "virtual-fashion-clo-to-unreal-runway",
@@ -547,7 +547,8 @@
           "id": "clo-dict-workspace-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-workspace-2026-1.png",
-          "caption": "CLO 2026.1 전체 화면: 왼쪽 3D Garment Window, 가운데 2D Pattern Window, 오른쪽 Object Browser와 Property Editor"
+          "caption": "CLO 2026.1 전체 화면: 왼쪽 3D Garment Window, 가운데 2D Pattern Window, 오른쪽 Object Browser와 Property Editor",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-read-menu",
@@ -571,7 +572,8 @@
           "id": "clo-dict-file-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-file-2026-1.png",
-          "caption": "실제 CLO 2026.1 File 메뉴"
+          "caption": "실제 CLO 2026.1 File 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-file-list",
@@ -583,7 +585,8 @@
           "id": "clo-dict-file-import-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-submenu-file-import-2026-1.png",
-          "caption": "File > Import 실제 하위 메뉴"
+          "caption": "File > Import 실제 하위 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-file-import-list",
@@ -601,7 +604,8 @@
           "id": "clo-dict-edit-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-edit-2026-1.png",
-          "caption": "실제 CLO 2026.1 Edit 메뉴"
+          "caption": "실제 CLO 2026.1 Edit 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-edit-list",
@@ -619,7 +623,8 @@
           "id": "clo-dict-3d-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-3d-main-2026-1.png",
-          "caption": "실제 CLO 2026.1 3D 메뉴"
+          "caption": "실제 CLO 2026.1 3D 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-3d-list",
@@ -631,7 +636,8 @@
           "id": "clo-dict-3d-select-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-submenu-3d-select-2026-1.png",
-          "caption": "3D > Select 실제 하위 메뉴"
+          "caption": "3D > Select 실제 하위 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-3d-select-list",
@@ -649,7 +655,8 @@
           "id": "clo-dict-3d-pen-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-submenu-3d-pen-2026-1.png",
-          "caption": "3D > 3D pen 실제 하위 메뉴"
+          "caption": "3D > 3D pen 실제 하위 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-3d-pen-list",
@@ -661,7 +668,8 @@
           "id": "clo-dict-3d-arrangement-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-submenu-3d-arrangement-2026-1.png",
-          "caption": "3D > Arrangement 실제 하위 메뉴"
+          "caption": "3D > Arrangement 실제 하위 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-3d-arrangement-list",
@@ -679,7 +687,8 @@
           "id": "clo-dict-2d-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-2d-main-2026-1.png",
-          "caption": "실제 CLO 2026.1 2D 메뉴"
+          "caption": "실제 CLO 2026.1 2D 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-2d-list",
@@ -691,7 +700,8 @@
           "id": "clo-dict-2d-create-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-submenu-2d-create-2026-1.png",
-          "caption": "2D > Create 실제 하위 메뉴"
+          "caption": "2D > Create 실제 하위 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-2d-create-list",
@@ -703,7 +713,8 @@
           "id": "clo-dict-2d-edit-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-submenu-2d-edit-2026-1.png",
-          "caption": "2D > Edit 실제 하위 메뉴"
+          "caption": "2D > Edit 실제 하위 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-2d-edit-list",
@@ -715,7 +726,8 @@
           "id": "clo-dict-2d-sewing-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-submenu-2d-sewing-2026-1.png",
-          "caption": "2D > Sewing 실제 하위 메뉴"
+          "caption": "2D > Sewing 실제 하위 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-2d-sewing-list",
@@ -733,7 +745,8 @@
           "id": "clo-dict-materials-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-materials-uv-2026-1.png",
-          "caption": "실제 CLO 2026.1 Materials/UV 메뉴"
+          "caption": "실제 CLO 2026.1 Materials/UV 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-materials-list",
@@ -751,7 +764,8 @@
           "id": "clo-dict-avatar-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-avatar-2026-1.png",
-          "caption": "실제 CLO 2026.1 Avatar 메뉴"
+          "caption": "실제 CLO 2026.1 Avatar 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-avatar-list",
@@ -775,7 +789,8 @@
           "id": "clo-dict-fabric-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-fabric-2026-1.png",
-          "caption": "실제 CLO 2026.1 Fabric 메뉴"
+          "caption": "실제 CLO 2026.1 Fabric 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-fabric-list",
@@ -793,7 +808,8 @@
           "id": "clo-dict-production-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-production-2026-1.png",
-          "caption": "실제 CLO 2026.1 Production 메뉴"
+          "caption": "실제 CLO 2026.1 Production 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-production-list",
@@ -811,7 +827,8 @@
           "id": "clo-dict-animation-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-animation-2026-1.png",
-          "caption": "실제 CLO 2026.1 Animation 메뉴"
+          "caption": "실제 CLO 2026.1 Animation 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-animation-list",
@@ -829,7 +846,8 @@
           "id": "clo-dict-render-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-render-2026-1.png",
-          "caption": "실제 CLO 2026.1 Render 메뉴"
+          "caption": "실제 CLO 2026.1 Render 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-render-list",
@@ -847,7 +865,8 @@
           "id": "clo-dict-connect-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-connect-2026-1.png",
-          "caption": "실제 CLO 2026.1 CONNECT 메뉴"
+          "caption": "실제 CLO 2026.1 CONNECT 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-connect-list",
@@ -865,7 +884,8 @@
           "id": "clo-dict-closet-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-clo-set-2026-1.png",
-          "caption": "실제 CLO 2026.1 CLO-SET 메뉴"
+          "caption": "실제 CLO 2026.1 CLO-SET 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-closet-list",
@@ -883,7 +903,8 @@
           "id": "clo-dict-plugins-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-plugins-2026-1.png",
-          "caption": "실제 CLO 2026.1 Plugins 메뉴"
+          "caption": "실제 CLO 2026.1 Plugins 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-plugins-list",
@@ -901,7 +922,8 @@
           "id": "clo-dict-settings-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-settings-2026-1.png",
-          "caption": "실제 CLO 2026.1 Settings 메뉴"
+          "caption": "실제 CLO 2026.1 Settings 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-settings-list",
@@ -919,7 +941,8 @@
           "id": "clo-dict-help-shot",
           "type": "image",
           "value": "/uploads/course-guides/clo-menu-help-2026-1.png",
-          "caption": "실제 CLO 2026.1 Help 메뉴"
+          "caption": "실제 CLO 2026.1 Help 메뉴",
+          "variant": "screenshot"
         },
         {
           "id": "clo-dict-help-list",
@@ -1016,6 +1039,18 @@
           "type": "link",
           "value": "https://support.clo3d.com/hc/en-us/articles/115014785207-Edit-V-Ray-Image-Video-Properties",
           "caption": "V-Ray 이미지·영상 출력 속성"
+        },
+        {
+          "id": "clo-dict-link-closet",
+          "type": "link",
+          "value": "https://support.clo-set.com/hc/en-us/articles/45303203672473-Share-via-CLO-SET-Direct-Upload",
+          "caption": "CLO에서 CLO-SET으로 직접 업로드"
+        },
+        {
+          "id": "clo-dict-closing",
+          "type": "text",
+          "value": "이 글은 메뉴의 위치와 역할을 찾는 사전입니다. 기능을 실행했는데 결과가 이상하면 “버튼을 더 찾기”보다 지금 선택한 대상과 Property Editor, 앞·뒷면, 봉제 방향, 초기 배치, 물성 순서로 확인하면 원인을 훨씬 빨리 좁힐 수 있습니다.",
+          "caption": ""
         }
       ],
       "protection": {

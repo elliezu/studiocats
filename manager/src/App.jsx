@@ -125,7 +125,10 @@ function journalPreviewBody(post, showGate = false) {
   const blocks = (post.blocks || []).map((block) => {
     const value = html(block.value)
     if (block.type === 'heading') return `<h2>${value}</h2>`
-    if (block.type === 'image') return block.value ? `<figure><img src="${html(block.value)}" alt="${html(block.caption || post.title)}">${block.caption ? `<figcaption>${html(block.caption)}</figcaption>` : ''}</figure>` : ''
+    if (block.type === 'image') {
+      const imageClass = block.variant === 'screenshot' ? 'journal-menu-shot' : ''
+      return block.value ? `<figure><img class="${imageClass}" src="${html(block.value)}" alt="${html(block.caption || post.title)}">${block.caption ? `<figcaption>${html(block.caption)}</figcaption>` : ''}</figure>` : ''
+    }
     if (block.type === 'youtube') { const embed = youtubeEmbedUrl(block.value); return embed ? `<figure class="journal-video"><iframe title="${html(block.caption || post.title)}" src="${html(embed)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>${block.caption ? `<figcaption>${html(block.caption)}</figcaption>` : ''}</figure>` : `<p class="journal-preview-note">유효한 YouTube 링크를 넣어줘.</p>` }
     if (block.type === 'link') { const url = externalUrl(block.value); return url ? `<a class="journal-link-preview" href="${html(url)}" target="_blank" rel="noreferrer">${html(block.caption || block.value)} <span>↗</span></a>` : '' }
     if (block.type === 'code') return `<pre><code>${value}</code></pre>`

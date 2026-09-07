@@ -119,7 +119,11 @@ function renderJournalDetail(post, school = null) {
   const depth = school ? 4 : 2
   const block = (item) => {
     if (item.type === 'heading') return `<h2 style="font-size:25px;margin-top:42px">${esc(item.value)}</h2>`
-    if (item.type === 'image') return `<figure style="margin:34px 0"><img class="hero-cover" src="${toPath(item.value, depth)}" alt="${attr(item.caption || post.title)}"><figcaption class="date" style="margin-top:10px">${esc(item.caption)}</figcaption></figure>`
+    if (item.type === 'image') {
+      const imageClass = item.variant === 'screenshot' ? 'journal-menu-shot' : 'hero-cover'
+      const imageStyle = item.variant === 'screenshot' ? ' style="width:auto;max-width:100%;height:auto;margin:0 auto;border:1px solid #343434;background:#151515"' : ''
+      return `<figure style="margin:34px 0"><img class="${imageClass}"${imageStyle} src="${toPath(item.value, depth)}" alt="${attr(item.caption || post.title)}"><figcaption class="date" style="margin-top:10px">${esc(item.caption)}</figcaption></figure>`
+    }
     if (item.type === 'youtube') { const id = youtubeId(item.value); return id ? `<section class="youtube"><iframe class="video" title="${attr(post.title)} video" src="https://www.youtube-nocookie.com/embed/${attr(id)}" loading="lazy" allowfullscreen></iframe></section>` : '' }
     if (item.type === 'link') return `<a class="open" href="${attr(item.value)}" target="_blank" rel="noopener" style="margin-top:22px"><span>${esc(item.caption || item.value)}</span><span>↗</span></a>`
     if (item.type === 'code') return `<pre style="overflow:auto;background:#102848;color:#F8F8F6;padding:20px;font-size:12px;line-height:1.6;margin-top:26px"><code>${esc(item.value)}</code></pre>`

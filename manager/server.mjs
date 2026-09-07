@@ -168,11 +168,12 @@ function normalizePost(post, index) {
   if (protectionMode === 'password' && !requestedPassword && !/^[a-f0-9]{64}$/i.test(savedPasswordHash)) {
     throw new Error('비밀번호 글은 비밀번호를 한 번 입력해줘.')
   }
-  const blocks = Array.isArray(post.blocks) ? post.blocks.slice(0, 80).map((block) => ({
+  const blocks = Array.isArray(post.blocks) ? post.blocks.slice(0, 200).map((block) => ({
     id: cleanText(block.id, 120) || `block-${index + 1}`,
     type: allowedBlockTypes.has(block.type) ? block.type : 'text',
     value: cleanText(block.value, 8000),
     caption: cleanText(block.caption, 500),
+    variant: block.type === 'image' && block.variant === 'screenshot' ? 'screenshot' : '',
   })).filter((block) => block.value) : []
   const hero = cleanText(post.hero, 500)
   if (hero && !hero.startsWith('/uploads/')) throw new Error('저널 이미지는 홈페이지 uploads 폴더 안의 경로여야 해.')
@@ -284,7 +285,7 @@ async function existingPaths(paths) {
 
 async function publishToGit(message) {
   await runNode(generator)
-  const managedPaths = await existingPaths(['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'about', 'sitemap.xml'])
+  const managedPaths = await existingPaths(['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'uploads/course-guides', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'about', 'sitemap.xml'])
   const branch = (await runGit(['branch', '--show-current'])).stdout.trim()
   if (!branch) throw new Error('현재 Git 브랜치를 찾을 수 없어요.')
   const before = await runGit(['status', '--porcelain', '--', ...managedPaths])

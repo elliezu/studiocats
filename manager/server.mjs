@@ -269,17 +269,22 @@ async function existingPaths(paths) {
   for (const path of paths) {
     try {
       await stat(join(siteRoot, path))
-      found.push(path)
     } catch (error) {
       if (error.code !== 'ENOENT') throw error
+      continue
     }
+    const [tracked, changed] = await Promise.all([
+      runGit(['ls-files', '--', path]),
+      runGit(['status', '--porcelain', '--untracked-files=all', '--', path]),
+    ])
+    if (tracked.stdout.trim() || changed.stdout.trim()) found.push(path)
   }
   return found
 }
 
 async function publishToGit(message) {
   await runNode(generator)
-  const managedPaths = await existingPaths(['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'course-materials', 'about', 'sitemap.xml'])
+  const managedPaths = await existingPaths(['content/portfolio.json', 'content/apps.json', 'content/journal.json', 'content/site.json', 'content/.generated-portfolio.json', 'uploads/portfolio', 'uploads/apps', 'uploads/journal', 'animation-style', 'virtual-fashion', '3d-works', 'apps', 'ai-automation', 'about', 'sitemap.xml'])
   const branch = (await runGit(['branch', '--show-current'])).stdout.trim()
   if (!branch) throw new Error('현재 Git 브랜치를 찾을 수 없어요.')
   const before = await runGit(['status', '--porcelain', '--', ...managedPaths])

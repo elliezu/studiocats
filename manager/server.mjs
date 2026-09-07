@@ -303,7 +303,7 @@ async function publishToGit(message) {
 }
 
 function mediaType(pathname) {
-  return ({ '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif' })[extname(pathname).toLowerCase()] ?? 'application/octet-stream'
+  return ({ '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.svg': 'image/svg+xml' })[extname(pathname).toLowerCase()] ?? 'application/octet-stream'
 }
 
 async function serveMedia(request, response, pathname) {

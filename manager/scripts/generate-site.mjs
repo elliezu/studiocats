@@ -83,13 +83,20 @@ function renderApps(apps) {
 
 function renderJournalList(posts, schoolMaterials) {
   const prefix = '../'
+  const classMaterialCard = `<article class="project"><div class="project-cover" style="display:grid;place-items:center;background:#102848;color:#F8F8F6;font-size:12px;letter-spacing:.12em">CLASS<br>MATERIAL</div><div><div class="kicker">CLASS MATERIAL</div><h2><a href="./class-materials/">강의자료</a></h2><span class="date">${schoolMaterials.length} MATERIAL${schoolMaterials.length === 1 ? '' : 'S'} · ${courseSchools.length} INSTITUTIONS</span><p class="summary">수업 진행에 필요한 자료와 실습 안내를 학교별로 구분해 관리합니다.</p><div class="tags"><span class="tag">비밀번호 인증</span></div></div><a class="open" href="./class-materials/"><span>학교별 목록</span><span>→</span></a></article>`
+  const journalList = posts.map((post) => { const protectedPost = post.protection?.mode === 'password' && /^[a-f0-9]{64}$/i.test(post.protection?.passwordHash || ''); return `<article class="project">${post.hero ? `<img class="project-cover" src="${toPath(post.hero, 1)}" alt="${attr(post.title)}">` : `<div class="project-cover" style="background:#ECEAE5"></div>`}<div><div class="kicker">05 / JOURNAL</div><h2><a href="./${attr(post.slug)}/">${esc(post.title)}</a></h2><span class="date">${esc(post.date)}</span><p class="summary">${esc(post.summary)}</p><div class="tags">${post.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}${protectedPost ? `<span class="tag">🔒 인증 필요</span>` : ''}</div></div><a class="open" href="./${attr(post.slug)}/"><span>${protectedPost ? '비밀번호 인증' : '읽기'}</span><span>→</span></a></article>` }).join('')
+  const body = `<div class="wrap page"><section class="heading"><div><div class="kicker">05 / JOURNAL</div><h1>Journal</h1><p>작업 과정과 도구, 생각을 기록합니다. 강의자료는 학교별 목록에서 관리합니다.</p></div><span class="count">1 CLASS MATERIAL${posts.length ? ` · ${posts.length} POST${posts.length === 1 ? '' : 'S'}` : ''}</span></section><div class="project-list">${classMaterialCard}${journalList}</div></div>`
+  return document({ title: 'Journal', description: 'StudioCats 작업 기록', canonical: `${domain}/ai-automation/`, prefix, active: 'journal', body })
+}
+
+function renderCourseDirectory(schoolMaterials) {
+  const prefix = '../../'
   const schoolList = courseSchools.map((school) => {
     const materials = schoolMaterials.filter((post) => post.audience === school.id)
     return `<article class="project"><div class="project-cover" style="display:grid;place-items:center;background:#102848;color:#F8F8F6;font-size:12px;letter-spacing:.12em">CLASS<br>MATERIAL</div><div><div class="kicker">${esc(school.name)} / CLASS MATERIAL</div><h2><a href="./${school.id}/">${esc(school.name)} 강의자료</a></h2><span class="date">${materials.length} MATERIAL${materials.length === 1 ? '' : 'S'}</span><p class="summary">수업 진행에 필요한 자료와 실습 안내를 학교별로 정리합니다.</p><div class="tags"><span class="tag">비밀번호 인증</span></div></div><a class="open" href="./${school.id}/"><span>자료 목록</span><span>→</span></a></article>`
   }).join('')
-  const journalList = posts.map((post) => { const protectedPost = post.protection?.mode === 'password' && /^[a-f0-9]{64}$/i.test(post.protection?.passwordHash || ''); return `<article class="project">${post.hero ? `<img class="project-cover" src="${toPath(post.hero, 1)}" alt="${attr(post.title)}">` : `<div class="project-cover" style="background:#ECEAE5"></div>`}<div><div class="kicker">05 / JOURNAL</div><h2><a href="./${attr(post.slug)}/">${esc(post.title)}</a></h2><span class="date">${esc(post.date)}</span><p class="summary">${esc(post.summary)}</p><div class="tags">${post.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}${protectedPost ? `<span class="tag">🔒 인증 필요</span>` : ''}</div></div><a class="open" href="./${attr(post.slug)}/"><span>${protectedPost ? '비밀번호 인증' : '읽기'}</span><span>→</span></a></article>` }).join('')
-  const body = `<div class="wrap page"><section class="heading"><div><div class="kicker">05 / JOURNAL</div><h1>Journal</h1><p>작업 과정과 도구, 생각을 기록합니다. 수업자료는 학교별 목록에서 관리합니다.</p></div><span class="count">${courseSchools.length} CLASS MATERIAL${posts.length ? ` · ${posts.length} POST${posts.length === 1 ? '' : 'S'}` : ''}</span></section><div class="project-list">${schoolList}${journalList}</div></div>`
-  return document({ title: 'Journal', description: 'StudioCats 작업 기록', canonical: `${domain}/ai-automation/`, prefix, active: 'journal', body })
+  const body = `<div class="wrap page"><section class="heading"><div><div class="kicker">05 / JOURNAL</div><h1>강의자료</h1><p>수업 진행에 필요한 자료와 실습 안내를 학교별로 구분해 제공합니다.</p></div><span class="count">${courseSchools.length} INSTITUTIONS</span></section><div class="project-list">${schoolList}</div></div>`
+  return document({ title: '강의자료', description: 'StudioCats 학교별 강의자료', canonical: `${domain}/ai-automation/class-materials/`, prefix, active: 'journal', body })
 }
 
 function coursePasswordGate(school, contentId) {
@@ -100,16 +107,16 @@ function coursePasswordGate(school, contentId) {
 }
 
 function renderCourseList(school, posts) {
-  const prefix = '../../'
+  const prefix = '../../../'
   const contentId = `course-material-list-${school.id}`
-  const list = posts.length ? posts.map((post) => `<article class="project">${post.hero ? `<img class="project-cover" src="${toPath(post.hero, 2)}" alt="${attr(post.title)}">` : `<div class="project-cover" style="background:#ECEAE5"></div>`}<div><div class="kicker">${esc(school.name)} / CLASS MATERIAL</div><h2><a href="./${attr(post.slug)}/">${esc(post.title)}</a></h2><span class="date">${esc(post.date)}</span><p class="summary">${esc(post.summary)}</p><div class="tags">${post.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}${post.status === '초안' ? '<span class="tag">검토 중</span>' : ''}</div></div><a class="open" href="./${attr(post.slug)}/"><span>자료 열람</span><span>→</span></a></article>`).join('') : `<section class="empty"><div class="kicker">${esc(school.name)} / 준비 중</div><h1>강의자료</h1><p>자료를 정리하는 대로 이곳에 등록됩니다.</p></section>`
+  const list = posts.length ? posts.map((post) => `<article class="project">${post.hero ? `<img class="project-cover" src="${toPath(post.hero, 3)}" alt="${attr(post.title)}">` : `<div class="project-cover" style="background:#ECEAE5"></div>`}<div><div class="kicker">${esc(school.name)} / CLASS MATERIAL</div><h2><a href="./${attr(post.slug)}/">${esc(post.title)}</a></h2><span class="date">${esc(post.date)}</span><p class="summary">${esc(post.summary)}</p><div class="tags">${post.tags.map((tag) => `<span class="tag">${esc(tag)}</span>`).join('')}${post.status === '초안' ? '<span class="tag">검토 중</span>' : ''}</div></div><a class="open" href="./${attr(post.slug)}/"><span>자료 열람</span><span>→</span></a></article>`).join('') : `<section class="empty"><div class="kicker">${esc(school.name)} / 준비 중</div><h1>강의자료</h1><p>자료를 정리하는 대로 이곳에 등록됩니다.</p></section>`
   const body = `<div class="wrap page"><section class="heading"><div><div class="kicker">CLASS MATERIAL</div><h1>${esc(school.name)} 강의자료</h1><p>수업 진행에 필요한 자료와 실습 안내를 정리합니다.</p></div><span class="count">${posts.length} MATERIAL${posts.length === 1 ? '' : 'S'}</span></section>${coursePasswordGate(school, contentId)}<div id="${contentId}" class="project-list" hidden>${list}</div></div>`
-  return document({ title: `${school.name} 강의자료`, description: `${school.name} 수업 자료`, canonical: `${domain}/ai-automation/${school.id}/`, prefix, active: 'journal', body })
+  return document({ title: `${school.name} 강의자료`, description: `${school.name} 수업 자료`, canonical: `${domain}/ai-automation/class-materials/${school.id}/`, prefix, active: 'journal', body })
 }
 
 function renderJournalDetail(post, school = null) {
-  const prefix = school ? '../../../' : '../../'
-  const depth = school ? 3 : 2
+  const prefix = school ? '../../../../' : '../../'
+  const depth = school ? 4 : 2
   const block = (item) => {
     if (item.type === 'heading') return `<h2 style="font-size:25px;margin-top:42px">${esc(item.value)}</h2>`
     if (item.type === 'image') return `<figure style="margin:34px 0"><img class="hero-cover" src="${toPath(item.value, depth)}" alt="${attr(item.caption || post.title)}"><figcaption class="date" style="margin-top:10px">${esc(item.caption)}</figcaption></figure>`
@@ -123,7 +130,7 @@ function renderJournalDetail(post, school = null) {
   const passwordHash = school?.passwordHash || (post.protection?.mode === 'password' && /^[a-f0-9]{64}$/i.test(post.protection?.passwordHash || '') ? post.protection.passwordHash.toLowerCase() : '')
   const gate = school ? coursePasswordGate(school, contentId) : (passwordHash ? `<section id="journal-password-gate" style="max-width:520px;border:1px solid #DCD9D1;padding:32px;margin:18px auto 0"><div class="kicker">STUDENT MATERIAL</div><h2 style="font-size:28px;margin-top:12px">비밀번호 인증이 필요한 콘텐츠입니다.</h2><p class="summary" style="margin-top:14px">안내받은 비밀번호를 입력하면 콘텐츠를 열람할 수 있습니다.</p><form id="journal-password-form" style="display:flex;gap:8px;margin-top:24px"><label style="flex:1"><span style="position:absolute;width:1px;height:1px;overflow:hidden">글 비밀번호</span><input id="journal-password-input" type="password" autocomplete="current-password" required style="box-sizing:border-box;width:100%;padding:12px;border:1px solid #102848;background:#fff;font:inherit" placeholder="비밀번호 입력"></label><button class="open" type="submit" style="background:#102848;color:#F8F8F6;white-space:nowrap">콘텐츠 열람 →</button></form><p id="journal-password-error" class="date" role="alert" style="display:none;color:#B44734;margin-top:12px">비밀번호가 일치하지 않습니다. 다시 확인해 주세요.</p></section><script>document.addEventListener('DOMContentLoaded',()=>{const hash=${JSON.stringify(passwordHash)};const key=${JSON.stringify(`studiocats-journal:${post.slug}:${passwordHash}`)};const article=document.getElementById('journal-content');const gate=document.getElementById('journal-password-gate');const form=document.getElementById('journal-password-form');const input=document.getElementById('journal-password-input');const error=document.getElementById('journal-password-error');const open=()=>{article.hidden=false;gate.hidden=true};if(sessionStorage.getItem(key)==='open'){open();return}article.hidden=true;form.addEventListener('submit',async(event)=>{event.preventDefault();const bytes=new TextEncoder().encode(input.value);const digest=await crypto.subtle.digest('SHA-256',bytes);const actual=Array.from(new Uint8Array(digest)).map((byte)=>byte.toString(16).padStart(2,'0')).join('');if(actual===hash){sessionStorage.setItem(key,'open');open()}else{error.style.display='block';input.select()}})});</script>` : '')
   const body = `<div class="wrap page">${gate}${article}</div>`
-  return document({ title: post.title, description: post.summary || post.title, canonical: school ? `${domain}/ai-automation/${school.id}/${post.slug}/` : `${domain}/ai-automation/${post.slug}/`, prefix, active: 'journal', body })
+  return document({ title: post.title, description: post.summary || post.title, canonical: school ? `${domain}/ai-automation/class-materials/${school.id}/${post.slug}/` : `${domain}/ai-automation/${post.slug}/`, prefix, active: 'journal', body })
 }
 
 function renderAbout(site) {
@@ -186,13 +193,16 @@ if (publicPosts.length || courseSchools.length || hadJournal) {
     files.add(detailPath)
   }
 }
+const courseDirectoryIndex = 'ai-automation/class-materials/index.html'
+await write(courseDirectoryIndex, renderCourseDirectory(schoolMaterials))
+files.add(courseDirectoryIndex)
 for (const school of courseSchools) {
   const materials = schoolMaterials.filter((post) => post.audience === school.id)
-  const listPath = `ai-automation/${school.id}/index.html`
+  const listPath = `ai-automation/class-materials/${school.id}/index.html`
   await write(listPath, renderCourseList(school, materials))
   files.add(listPath)
   for (const material of materials) {
-    const detailPath = `ai-automation/${school.id}/${material.slug}/index.html`
+    const detailPath = `ai-automation/class-materials/${school.id}/${material.slug}/index.html`
     await write(detailPath, renderJournalDetail(material, school))
     files.add(detailPath)
   }

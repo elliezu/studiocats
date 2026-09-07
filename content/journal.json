@@ -576,7 +576,7 @@
         "Fabric",
         "수업자료"
       ],
-      "hero": "/uploads/course-covers/clo-interface-transform.svg",
+      "hero": "/uploads/course-guides/clo-interface-learning-cover.png",
       "blocks": [
         {
           "id": "clo-review-intro",
@@ -606,8 +606,8 @@
         {
           "id": "clo-review-interface-map",
           "type": "image",
-          "value": "/uploads/course-guides/clo-interface-menu-map.svg",
-          "caption": "메뉴 위치 도식 — 2D·3D 작업 화면, Object Browser, Property Editor"
+          "value": "/uploads/course-guides/clo-interface-learning-cover.png",
+          "caption": "2D 패턴 구성과 3D 아바타 착장의 관계를 보여주는 학습 참고 이미지"
         },
         {
           "id": "clo-review-workflow-heading",
@@ -632,8 +632,8 @@
         {
           "id": "clo-review-simulation-map",
           "type": "image",
-          "value": "/uploads/course-guides/clo-simulation-gpu-map.svg",
-          "caption": "GPU Simulation 메뉴 경로 — Object Browser > Scene > Environment > Simulation Properties"
+          "value": "/uploads/course-guides/clo-gpu-simulation-visual.png",
+          "caption": "GPU Simulation에서 원단 흐름과 실루엣 변화를 확인하는 학습 참고 이미지"
         },
         {
           "id": "clo-review-simulation-practice-heading",
@@ -688,8 +688,8 @@
         {
           "id": "clo-review-fabric-map",
           "type": "image",
-          "value": "/uploads/course-guides/clo-fabric-property-map.svg",
-          "caption": "Fabric 메뉴 구조 — Material은 표면 표현, Physical Property는 시뮬레이션 물성"
+          "value": "/uploads/course-guides/clo-fabric-material-visual.png",
+          "caption": "표면 재질과 물성에 따라 달라지는 원단의 광택·투명도·드레이프를 비교하는 학습 참고 이미지"
         },
         {
           "id": "clo-review-transform-heading",
@@ -714,8 +714,8 @@
         {
           "id": "clo-review-transform-pose-map",
           "type": "image",
-          "value": "/uploads/course-guides/clo-transform-image-to-pose-map.svg",
-          "caption": "Transform Pattern과 Image to Pose 메뉴 경로"
+          "value": "/uploads/course-guides/clo-transform-pattern-visual.png",
+          "caption": "선택한 패턴 전체를 이동·크기 조절·회전하는 Transform Pattern 학습 참고 이미지"
         },
         {
           "id": "clo-review-pose-heading",
@@ -726,6 +726,12 @@
           "id": "clo-review-pose-text",
           "value": "AI Pose Generator는 Main Menu > Avatar > AI Pose Generator에서 실행합니다. 이번 수업에서는 Text Prompt 대신 Image 방식(Image to Pose)을 사용합니다. Google 이미지에서 의상 실루엣을 확인하기 좋은 모델 포즈를 검색한 뒤, 머리부터 발끝까지 전신이 보이고 팔·다리 관절이 가려지지 않은 이미지를 선택합니다. AI Pose Generator의 Image 영역에서 Upload로 레퍼런스를 불러오고 Generate를 실행합니다. 생성 결과는 포즈 확인 후 Save 버튼으로 .pos 파일로 저장합니다. 이 기능은 CLO 2025.0에 추가된 Beta 기능이므로 결과와 제공 범위가 변경될 수 있습니다.",
           "type": "text"
+        },
+        {
+          "id": "clo-review-pose-reference-image",
+          "type": "image",
+          "value": "/uploads/course-guides/clo-image-to-pose-reference.png",
+          "caption": "Image to Pose에 사용할 수 있는 전신 포즈 레퍼런스 예시 — 관절과 발끝이 모두 보이는 이미지를 선택"
         },
         {
           "id": "clo-review-pose-practice-heading",

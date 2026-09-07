@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-30T08:08:45.164Z",
+  "updatedAt": "2026-09-07T08:36:01.428Z",
   "posts": [
     {
       "id": "virtual-fashion-clo-to-unreal-runway",
@@ -581,27 +581,32 @@
         {
           "id": "clo-review-intro",
           "type": "text",
-          "value": "이번 수업은 CLO 작업 화면과 속성 패널의 역할을 정리한 뒤, GPU Simulation을 기준으로 패턴·아바타·원단을 확인하는 기초 복습입니다. 메뉴 이름만 외우지 않고, 작업 대상 선택 → Object Browser 탐색 → Property Editor 확인의 순서로 실제 작업 위치를 익히는 것을 목표로 합니다."
+          "value": "이번 수업은 CLO 작업 화면과 속성 패널의 역할을 정리한 뒤, GPU Simulation을 기준으로 패턴·아바타·원단을 확인하는 기초 복습입니다. 메뉴 이름만 외우지 않고, 작업 대상 선택 → Object Browser 탐색 → Property Editor 확인의 순서로 실제 작업 위치를 익히는 것을 목표로 합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-goal-heading",
           "type": "heading",
-          "value": "수업 결과물"
+          "value": "수업 결과물",
+          "caption": ""
         },
         {
           "id": "clo-review-goal-text",
           "type": "text",
-          "value": "수업 종료 전 아래 두 파일을 준비합니다. ① GPU Simulation으로 확인한 패턴 변형과 원단 설정이 포함된 W02_이름_basic-review.zprj, ② Image to Pose로 생성해 저장한 W02_이름_pose01.pos. 귀걸이 응용은 선택 과제로만 포함합니다."
+          "value": "수업 종료 전 아래 두 파일을 준비합니다. ① GPU Simulation으로 확인한 패턴 변형과 원단 설정이 포함된 W02_이름_basic-review.zprj, ② Image to Pose로 생성해 저장한 W02_이름_pose01.pos. 귀걸이 응용은 선택 과제로만 포함합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-interface-heading",
           "type": "heading",
-          "value": "1. 인터페이스와 메뉴의 역할"
+          "value": "1. 인터페이스와 메뉴의 역할",
+          "caption": ""
         },
         {
           "id": "clo-review-interface-text",
           "type": "text",
-          "value": "2D Pattern Window는 패턴의 외곽선·내부선·배치와 Transform 작업을 수행하는 화면입니다. 3D Garment Window는 아바타 위 의상, 원단의 반응, GPU Simulation 결과를 확인하는 화면입니다. Object Browser는 Scene·Environment·Fabric처럼 현재 프로젝트의 대상을 찾는 패널이고, Property Editor는 선택한 대상의 설정값을 읽고 조정하는 패널입니다. 같은 Property Editor라도 패턴, 아바타, 원단 중 무엇을 선택했는지에 따라 표시되는 항목이 달라집니다."
+          "value": "2D Pattern Window는 패턴의 외곽선·내부선·배치와 Transform 작업을 수행하는 화면입니다. 3D Garment Window는 아바타 위 의상, 원단의 반응, GPU Simulation 결과를 확인하는 화면입니다. Object Browser는 Scene·Environment·Fabric처럼 현재 프로젝트의 대상을 찾는 패널이고, Property Editor는 선택한 대상의 설정값을 읽고 조정하는 패널입니다. 같은 Property Editor라도 패턴, 아바타, 원단 중 무엇을 선택했는지에 따라 표시되는 항목이 달라집니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-interface-map",
@@ -612,22 +617,26 @@
         {
           "id": "clo-review-workflow-heading",
           "type": "heading",
-          "value": "선택 → 탐색 → 속성 확인의 순서"
+          "value": "선택 → 탐색 → 속성 확인의 순서",
+          "caption": ""
         },
         {
           "id": "clo-review-workflow-text",
           "type": "text",
-          "value": "수업에서는 항상 ① 2D 또는 3D 화면에서 대상 선택, ② Object Browser에서 해당 탭으로 이동, ③ Property Editor에서 현재 값을 확인하는 순서로 작업합니다. 예를 들어 시뮬레이션은 Scene 탭, 원단은 Fabric 탭, 아바타는 3D 화면에서 아바타를 직접 선택한 뒤 확인합니다. 원하는 값이 보이지 않으면 먼저 선택 대상과 Object Browser 탭이 맞는지 확인합니다."
+          "value": "수업에서는 항상 ① 2D 또는 3D 화면에서 대상 선택, ② Object Browser에서 해당 탭으로 이동, ③ Property Editor에서 현재 값을 확인하는 순서로 작업합니다. 예를 들어 시뮬레이션은 Scene 탭, 원단은 Fabric 탭, 아바타는 3D 화면에서 아바타를 직접 선택한 뒤 확인합니다. 원하는 값이 보이지 않으면 먼저 선택 대상과 Object Browser 탭이 맞는지 확인합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-simulation-heading",
           "type": "heading",
-          "value": "2. GPU Simulation: 프로젝트 전체 시뮬레이션 설정"
+          "value": "2. GPU Simulation: 프로젝트 전체 시뮬레이션 설정",
+          "caption": ""
         },
         {
           "id": "clo-review-simulation-text",
           "type": "text",
-          "value": "시뮬레이션 설정은 Object Browser > Scene > Environment > Simulation Properties에서 열며, 선택하면 Property Editor에 설정이 표시됩니다. 수업 중 시뮬레이션 Preset은 반드시 GPU로 선택합니다. GPU 선택 후 Time Step, Number of Simulation, Self Collision Iteration Count, Gravity, Avatar-Cloth Collision, Self-Collision Detection은 임의로 변경하지 않고 기본값을 유지합니다. CLO 공식 매뉴얼도 Time Step·충돌·Gravity 등의 고급값은 기본값 사용을 권장합니다."
+          "value": "시뮬레이션 설정은 Object Browser > Scene > Environment > Simulation Properties에서 열며, 선택하면 Property Editor에 설정이 표시됩니다. 수업 중 시뮬레이션 Preset은 반드시 GPU로 선택합니다. GPU 선택 후 Time Step, Number of Simulation, Self Collision Iteration Count, Gravity, Avatar-Cloth Collision, Self-Collision Detection은 임의로 변경하지 않고 기본값을 유지합니다. CLO 공식 매뉴얼도 Time Step·충돌·Gravity 등의 고급값은 기본값 사용을 권장합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-simulation-map",
@@ -638,52 +647,62 @@
         {
           "id": "clo-review-simulation-practice-heading",
           "type": "heading",
-          "value": "시뮬레이션 확인 실습"
+          "value": "시뮬레이션 확인 실습",
+          "caption": ""
         },
         {
           "id": "clo-review-simulation-practice-text",
           "type": "text",
-          "value": "Simulation Properties를 열어 Preset을 GPU로 선택합니다. 이어서 Time Step, Number of Simulation, Gravity, Avatar-Cloth Collision, Self-Collision Detection의 위치를 확인합니다. 이 단계의 목적은 고급값 튜닝이 아니라 GPU Preset으로 동일한 기준에서 결과를 비교하는 것입니다. 충돌 문제가 생기면 값을 즉시 바꾸기보다, 패턴 겹침·봉제 상태·아바타와의 거리부터 먼저 점검합니다."
+          "value": "Simulation Properties를 열어 Preset을 GPU로 선택합니다. 이어서 Time Step, Number of Simulation, Gravity, Avatar-Cloth Collision, Self-Collision Detection의 위치를 확인합니다. 이 단계의 목적은 고급값 튜닝이 아니라 GPU Preset으로 동일한 기준에서 결과를 비교하는 것입니다. 충돌 문제가 생기면 값을 즉시 바꾸기보다, 패턴 겹침·봉제 상태·아바타와의 거리부터 먼저 점검합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-avatar-heading",
           "type": "heading",
-          "value": "3. Avatar Properties: 아바타와 의상의 간격 확인"
+          "value": "3. Avatar Properties: 아바타와 의상의 간격 확인",
+          "caption": ""
         },
         {
           "id": "clo-review-avatar-text",
           "type": "text",
-          "value": "아바타 속성은 Main Menu > 3D Garment > Select/Move(Q), 또는 3D Toolbar > Select/Move(Q)로 아바타를 클릭한 뒤 Property Editor에서 확인합니다. Surface Distance는 아바타 표면과 의상 사이의 간격이며 기본값은 3mm입니다. 밀착 의상처럼 정밀한 피팅이 필요할 때만 마지막 단계에서 낮춥니다. Static Friction은 의상이 정지했을 때, Dynamic Friction은 움직일 때 아바타와 의상 사이의 마찰을 의미합니다. 값이 낮은 Surface Distance와 낮은 Particle Distance를 동시에 사용하면 GPU Simulation도 느려질 수 있으므로, 기본값으로 작업한 뒤 필요한 구간만 조정합니다."
+          "value": "아바타 속성은 Main Menu > 3D Garment > Select/Move(Q), 또는 3D Toolbar > Select/Move(Q)로 아바타를 클릭한 뒤 Property Editor에서 확인합니다. Surface Distance는 아바타 표면과 의상 사이의 간격이며 기본값은 3mm입니다. 밀착 의상처럼 정밀한 피팅이 필요할 때만 마지막 단계에서 낮춥니다. Static Friction은 의상이 정지했을 때, Dynamic Friction은 움직일 때 아바타와 의상 사이의 마찰을 의미합니다. 값이 낮은 Surface Distance와 낮은 Particle Distance를 동시에 사용하면 GPU Simulation도 느려질 수 있으므로, 기본값으로 작업한 뒤 필요한 구간만 조정합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-fabric-apply-heading",
           "type": "heading",
-          "value": "4. Fabric 적용: 패턴에 원단을 연결하기"
+          "value": "4. Fabric 적용: 패턴에 원단을 연결하기",
+          "caption": ""
         },
         {
           "id": "clo-review-fabric-apply-text",
           "type": "text",
-          "value": "원단은 Object Browser > Fabric 탭에서 관리합니다. 기본 원단은 Fabric 탭 오른쪽 상단 Add로 추가하고, 라이브러리 원단(.zfab)은 Fabric Library에서 더블 클릭하거나 Fabric 탭으로 드래그해 불러옵니다. 적용할 패턴을 먼저 선택한 뒤 원단 오른쪽 Assign 버튼을 누르거나, Fabric 탭의 원단을 2D 또는 3D 패턴 위로 직접 드래그합니다. 같은 프로젝트 안에서도 용도별로 Fabric_Base, Fabric_Matte처럼 이름을 구분합니다."
+          "value": "원단은 Object Browser > Fabric 탭에서 관리합니다. 기본 원단은 Fabric 탭 오른쪽 상단 Add로 추가하고, 라이브러리 원단(.zfab)은 Fabric Library에서 더블 클릭하거나 Fabric 탭으로 드래그해 불러옵니다. 적용할 패턴을 먼저 선택한 뒤 원단 오른쪽 Assign 버튼을 누르거나, Fabric 탭의 원단을 2D 또는 3D 패턴 위로 직접 드래그합니다. 같은 프로젝트 안에서도 용도별로 Fabric_Base, Fabric_Matte처럼 이름을 구분합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-fabric-material-heading",
           "type": "heading",
-          "value": "Fabric Material: 화면에 보이는 재질 설정"
+          "value": "Fabric Material: 화면에 보이는 재질 설정",
+          "caption": ""
         },
         {
           "id": "clo-review-fabric-material-text",
           "type": "text",
-          "value": "Fabric 탭에서 원단을 선택하면 Property Editor의 Material 영역이 열립니다. Front, Back, Side 탭은 원단의 앞면·뒷면·옆면 표현을 구분하며, Back 또는 Side에서 Use Same Material as Front를 해제하면 별도 재질을 설정할 수 있습니다. Material Type, Base Color, Normal, Opacity, Roughness, Reflection, Metalness는 화면에서 보이는 표면 표현을 조정합니다. 예를 들어 Base Color는 색상과 텍스처, Normal은 표면 요철, Opacity는 투명도, Roughness·Reflection·Metalness는 광택과 반사 표현을 담당합니다."
+          "value": "Fabric 탭에서 원단을 선택하면 Property Editor의 Material 영역이 열립니다. Front, Back, Side 탭은 원단의 앞면·뒷면·옆면 표현을 구분하며, Back 또는 Side에서 Use Same Material as Front를 해제하면 별도 재질을 설정할 수 있습니다. Material Type, Base Color, Normal, Opacity, Roughness, Reflection, Metalness는 화면에서 보이는 표면 표현을 조정합니다. 예를 들어 Base Color는 색상과 텍스처, Normal은 표면 요철, Opacity는 투명도, Roughness·Reflection·Metalness는 광택과 반사 표현을 담당합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-fabric-physical-heading",
           "type": "heading",
-          "value": "Fabric Physical Property: 원단의 움직임과 물성"
+          "value": "Fabric Physical Property: 원단의 움직임과 물성",
+          "caption": ""
         },
         {
           "id": "clo-review-fabric-physical-text",
           "type": "text",
-          "value": "원단의 움직임은 Fabric 탭에서 원단을 선택한 뒤 Property Editor > Physical Property에서 확인합니다. Preset은 물성의 출발점을 정하고, Detail에서 Stretch Weft, Stretch Warp, Shear를 확인합니다. Weft·Warp·Shear는 2D 창 기준 가로·세로·대각 방향 탄성 저항과 관련됩니다. Material 영역의 금속성·반사값은 화면 표현이고, Physical Property는 GPU Simulation에서 원단이 늘어나고 주름지는 방식을 정합니다. 물성은 한 항목씩 조정한 뒤 GPU Simulation 결과를 비교합니다."
+          "value": "원단의 움직임은 Fabric 탭에서 원단을 선택한 뒤 Property Editor > Physical Property에서 확인합니다. Preset은 물성의 출발점을 정하고, Detail에서 Stretch Weft, Stretch Warp, Shear를 확인합니다. Weft·Warp·Shear는 2D 창 기준 가로·세로·대각 방향 탄성 저항과 관련됩니다. Material 영역의 금속성·반사값은 화면 표현이고, Physical Property는 GPU Simulation에서 원단이 늘어나고 주름지는 방식을 정합니다. 물성은 한 항목씩 조정한 뒤 GPU Simulation 결과를 비교합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-fabric-map",
@@ -694,22 +713,26 @@
         {
           "id": "clo-review-transform-heading",
           "type": "heading",
-          "value": "5. Transform Pattern: 기본 패턴 변형"
+          "value": "5. Transform Pattern: 기본 패턴 변형",
+          "caption": ""
         },
         {
           "id": "clo-review-transform-text",
           "type": "text",
-          "value": "Transform Pattern은 Main Menu > 2D Pattern > Edit > Transform Pattern에서 선택하거나 2D Toolbar > Transform Pattern에서 실행합니다. 이 도구는 패턴 전체의 위치·크기·회전을 조정합니다. 개별 포인트나 선분을 직접 편집하는 도구가 아니므로, 점 또는 선분만 조정해야 하면 Transform Point/Segment나 Edit Pattern을 사용합니다."
+          "value": "Transform Pattern은 Main Menu > 2D Pattern > Edit > Transform Pattern에서 선택하거나 2D Toolbar > Transform Pattern에서 실행합니다. 이 도구는 패턴 전체의 위치·크기·회전을 조정합니다. 개별 포인트나 선분을 직접 편집하는 도구가 아니므로, 점 또는 선분만 조정해야 하면 Transform Point/Segment나 Edit Pattern을 사용합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-transform-practice-heading",
           "type": "heading",
-          "value": "Transform Pattern 실습 순서"
+          "value": "Transform Pattern 실습 순서",
+          "caption": ""
         },
         {
           "id": "clo-review-transform-practice-text",
           "type": "text",
-          "value": "① Transform Pattern을 선택하고 기존 패턴 한 장을 클릭합니다. ② 이동은 드래그 또는 방향키로 실행합니다. Shift 또는 Ctrl을 누른 채 이동하면 수직·수평·대각 방향으로 정렬해 이동할 수 있습니다. ③ 여러 패턴은 Shift 클릭 또는 2D 창의 드래그 선택으로 함께 선택합니다. ④ 선택 후 표시되는 Scale Guide로 크기를 조절합니다. ⑤ Pivot을 더블 클릭해 활성화한 뒤 회전 핸들을 드래그하면 해당 Pivot 기준으로 회전합니다. ⑥ 정확한 이동 거리가 필요할 때만 우클릭 또는 F1로 수치를 입력합니다."
+          "value": "① Transform Pattern을 선택하고 기존 패턴 한 장을 클릭합니다. ② 이동은 드래그 또는 방향키로 실행합니다. Shift 또는 Ctrl을 누른 채 이동하면 수직·수평·대각 방향으로 정렬해 이동할 수 있습니다. ③ 여러 패턴은 Shift 클릭 또는 2D 창의 드래그 선택으로 함께 선택합니다. ④ 선택 후 표시되는 Scale Guide로 크기를 조절합니다. ⑤ Pivot을 더블 클릭해 활성화한 뒤 회전 핸들을 드래그하면 해당 Pivot 기준으로 회전합니다. ⑥ 정확한 이동 거리가 필요할 때만 우클릭 또는 F1로 수치를 입력합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-transform-pose-map",
@@ -720,12 +743,14 @@
         {
           "id": "clo-review-pose-heading",
           "type": "heading",
-          "value": "6. Image to Pose: 이미지 레퍼런스로 정지 포즈 만들기"
+          "value": "6. Image to Pose: 이미지 레퍼런스로 정지 포즈 만들기",
+          "caption": ""
         },
         {
           "id": "clo-review-pose-text",
+          "type": "text",
           "value": "AI Pose Generator는 Main Menu > Avatar > AI Pose Generator에서 실행합니다. 이번 수업에서는 Text Prompt 대신 Image 방식(Image to Pose)을 사용합니다. Google 이미지에서 의상 실루엣을 확인하기 좋은 모델 포즈를 검색한 뒤, 머리부터 발끝까지 전신이 보이고 팔·다리 관절이 가려지지 않은 이미지를 선택합니다. AI Pose Generator의 Image 영역에서 Upload로 레퍼런스를 불러오고 Generate를 실행합니다. 생성 결과는 포즈 확인 후 Save 버튼으로 .pos 파일로 저장합니다. 이 기능은 CLO 2025.0에 추가된 Beta 기능이므로 결과와 제공 범위가 변경될 수 있습니다.",
-          "type": "text"
+          "caption": ""
         },
         {
           "id": "clo-review-pose-reference-image",
@@ -736,37 +761,44 @@
         {
           "id": "clo-review-pose-practice-heading",
           "type": "heading",
-          "value": "AI Pose 실습 기준"
+          "value": "AI Pose 실습 기준",
+          "caption": ""
         },
         {
           "id": "clo-review-pose-practice-text",
           "type": "text",
-          "value": "① Google 이미지에서 model standing pose, fashion pose front, full body pose처럼 검색합니다. ② 배경이나 소품보다 인체 관절과 무게중심이 명확한 전신 이미지를 우선 선택합니다. ③ 얼굴·발·손이 잘린 이미지, 앉거나 누운 이미지, 두 명 이상이 함께 있는 이미지는 제외합니다. ④ Image to Pose 결과 중 의상 실루엣을 확인하기 좋은 정면 또는 3/4 시점 하나를 선택합니다. ⑤ W02_이름_pose01.pos로 저장하고 .zprj에도 적용 상태를 저장합니다."
+          "value": "① Google 이미지에서 model standing pose, fashion pose front, full body pose처럼 검색합니다. ② 배경이나 소품보다 인체 관절과 무게중심이 명확한 전신 이미지를 우선 선택합니다. ③ 얼굴·발·손이 잘린 이미지, 앉거나 누운 이미지, 두 명 이상이 함께 있는 이미지는 제외합니다. ④ Image to Pose 결과 중 의상 실루엣을 확인하기 좋은 정면 또는 3/4 시점 하나를 선택합니다. ⑤ W02_이름_pose01.pos로 저장하고 .zprj에도 적용 상태를 저장합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-earring-heading",
           "type": "heading",
-          "value": "짧은 응용: 패턴 귀걸이로 재질 변화 보기"
+          "value": "짧은 응용: 패턴 귀걸이로 재질 변화 보기",
+          "caption": ""
         },
         {
           "id": "clo-review-earring-text",
           "type": "text",
-          "value": "귀걸이 제작은 이번 주의 핵심 결과물이 아니라 Fabric Material과 Physical Property를 구분하는 짧은 응용입니다. 작은 닫힌 패턴 하나를 만들고, 같은 형태에 무광·금속 등 두 가지 원단을 적용해 화면 표현을 비교합니다. 액세서리 등록, 복잡한 스트랜드·퍼 설정, 렌더용 유리 세팅은 이번 실습 범위에서 제외합니다."
+          "value": "귀걸이 제작은 이번 주의 핵심 결과물이 아니라 Fabric Material과 Physical Property를 구분하는 짧은 응용입니다. 작은 닫힌 패턴 하나를 만들고, 같은 형태에 무광·금속 등 두 가지 원단을 적용해 화면 표현을 비교합니다. 액세서리 등록, 복잡한 스트랜드·퍼 설정, 렌더용 유리 세팅은 이번 실습 범위에서 제외합니다.",
+          "caption": ""
         },
         {
           "id": "clo-review-check-heading",
           "type": "heading",
-          "value": "제출 전 점검"
+          "value": "제출 전 점검",
+          "caption": ""
         },
         {
           "id": "clo-review-check-text",
           "type": "text",
-          "value": "□ Simulation Properties에서 Preset을 GPU로 선택했다. □ Avatar Properties에서 Surface Distance와 Friction의 역할을 확인했다. □ 한 패턴에 Fabric을 적용하고 Material과 Physical Property의 차이를 비교했다. □ Transform Pattern으로 이동·크기·회전을 적용했다. □ Google 이미지 레퍼런스를 Image to Pose로 생성하고 .pos로 저장했다. □ .zprj에 최종 적용 상태를 저장했다."
+          "value": "□ Simulation Properties에서 Preset을 GPU로 선택했다. □ Avatar Properties에서 Surface Distance와 Friction의 역할을 확인했다. □ 한 패턴에 Fabric을 적용하고 Material과 Physical Property의 차이를 비교했다. □ Transform Pattern으로 이동·크기·회전을 적용했다. □ Google 이미지 레퍼런스를 Image to Pose로 생성하고 .pos로 저장했다. □ .zprj에 최종 적용 상태를 저장했다.",
+          "caption": ""
         },
         {
           "id": "clo-review-links-heading",
           "type": "heading",
-          "value": "공식 CLO 매뉴얼"
+          "value": "공식 CLO 매뉴얼",
+          "caption": ""
         },
         {
           "id": "clo-review-link-simulation",
@@ -810,7 +842,10 @@
           "value": "https://support.clo3d.com/hc/en-us/articles/45345426205721-AI-Pose-Generator-Beta",
           "caption": "AI Pose Generator (Beta)"
         }
-      ]
+      ],
+      "protection": {
+        "mode": "public"
+      }
     },
     {
       "id": "clo-unreal-livesync-refresher-01",
@@ -860,12 +895,6 @@
           "caption": ""
         },
         {
-          "id": "ls1-shot-version",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 01 — CLO 버전, Unreal 버전과 LiveSync 플러그인 버전을 확인하는 위치"
-        },
-        {
           "id": "ls1-project-heading",
           "type": "heading",
           "value": "2. CLO 원본 프로젝트를 먼저 정리합니다",
@@ -876,12 +905,6 @@
           "type": "text",
           "value": "1. CLO 프로젝트를 먼저 저장합니다. 파일명은 영문과 숫자를 중심으로 간단하게 작성합니다. 저장하지 않은 프로젝트는 Unreal에 Save할 때 상위 폴더가 Untitled로 만들어질 수 있습니다.\n2. 의상 시뮬레이션을 안정된 상태에서 멈춥니다. 관통이나 폭발 상태를 그대로 전송하지 않습니다.\n3. 사용할 아바타와 의상만 남기고 필요 없는 테스트 오브젝트는 숨기거나 정리합니다.\n4. 정지 화보용이면 원하는 포즈를 적용합니다. 런웨이용이면 Animation Editor에서 사용할 모션, 시작 프레임과 끝 프레임을 확인합니다.\n5. Metal, Leather, 투명 소재 등 중요한 재질이 CLO에서 정상인지 확인합니다. Unreal에서는 렌더러 차이로 완전히 동일하지 않을 수 있지만, Base Color·Normal·Roughness·Metallic·Reflection·Opacity 맵이 LiveSync 대상입니다.\n6. 프로젝트를 다시 저장합니다.",
           "caption": ""
-        },
-        {
-          "id": "ls1-shot-clo-ready",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 02 — LiveSync 전 CLO에서 확인할 의상·아바타·포즈·Animation Editor 범위"
         },
         {
           "id": "ls1-unreal-heading",
@@ -896,12 +919,6 @@
           "caption": ""
         },
         {
-          "id": "ls1-shot-plugins",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 03 — Unreal Plugins에서 LiveSync와 Substance 플러그인을 확인하는 화면"
-        },
-        {
           "id": "ls1-open-heading",
           "type": "heading",
           "value": "4. CLO/MD LiveSync Mode를 엽니다",
@@ -912,12 +929,6 @@
           "type": "text",
           "value": "1. CLO와 Unreal Editor를 모두 실행합니다.\n2. Unreal 왼쪽 상단 Selection Mode 메뉴에서 CLO/MD LiveSync를 선택합니다. 단축키는 Shift+9입니다.\n3. LiveSync 탭의 Connection Status를 확인합니다. 초록색이면 연결됨, 빨간색이면 연결되지 않은 상태입니다.\n4. 빨간색일 때는 CLO 창으로 이동해 패턴을 한 번 클릭하거나 Viewport를 조작한 뒤 다시 확인합니다.\n5. 그래도 빨간색이면 CLO의 LiveSync 사용 설정, 실행 중인 프로그램 개수와 버전 조합을 확인한 뒤 CLO를 다시 시작합니다.\n\n예전 버전 자료의 Window → CLO/MD LiveSync Editor와 현재 LiveSync 2의 Selection Mode 방식이 다를 수 있습니다. 이 수업에서는 Unreal 화면에 보이는 최신 LiveSync Mode를 기준으로 진행합니다.",
           "caption": ""
-        },
-        {
-          "id": "ls1-shot-mode",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 04 — Selection Mode → CLO/MD LiveSync와 초록색 Connection Status"
         },
         {
           "id": "ls1-options-heading",
@@ -944,12 +955,6 @@
           "caption": ""
         },
         {
-          "id": "ls1-shot-options",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 05 — Garment·Avatar·Include Cache Animation·Play Region 설정 예시"
-        },
-        {
           "id": "ls1-update-heading",
           "type": "heading",
           "value": "6. Update로 Unreal Viewport에서 먼저 확인합니다",
@@ -962,12 +967,6 @@
           "caption": ""
         },
         {
-          "id": "ls1-shot-update",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 06 — Update 버튼, 생성된 UsdStageActor와 정상 전송 결과"
-        },
-        {
           "id": "ls1-save-heading",
           "type": "heading",
           "value": "7. Save로 Unreal Asset을 만듭니다",
@@ -978,12 +977,6 @@
           "type": "text",
           "value": "1. Update 결과가 정상일 때 LiveSync 탭의 Save를 누릅니다.\n2. 저장할 의상, 아바타, 재질과 애니메이션 Asset을 선택합니다.\n3. Content Browser에서 수업용 폴더를 지정합니다. 예: Content/Students/이름/LiveSync.\n4. 저장이 끝나면 CLO 프로젝트 파일명을 기준으로 만들어진 상위 폴더를 찾습니다.\n5. 런웨이 애니메이션 작업에서는 Avatar Cache로 저장된 아바타 Geometry Cache와 Garment Cache로 저장된 의상 Geometry Cache를 각각 찾습니다.\n6. Joint Animation을 시험한 경우에는 Skeletal Mesh와 Animation Sequence가 별도로 생성될 수 있지만, 이번 수업에서는 이 Asset을 메인 런웨이 재생에 사용하지 않습니다.\n7. LiveSync Save가 끝났다고 Level Sequence 작업까지 끝난 것은 아닙니다. 다음 저널에서 Level Sequence를 직접 만들고 아바타와 가먼트 Geometry Cache를 Track으로 추가합니다.\n8. Asset 저장을 확인한 뒤 임시 확인용 UsdStageActor는 삭제해도 됩니다.\n9. Content Browser에서 Save All을 실행합니다.",
           "caption": ""
-        },
-        {
-          "id": "ls1-shot-save",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 07 — LiveSync Save 선택창과 생성된 Asset 폴더 구조"
         },
         {
           "id": "ls1-repeat-heading",
@@ -1124,12 +1117,6 @@
           "caption": ""
         },
         {
-          "id": "seq2-shot-create",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 01 — Content Browser에서 Level Sequence 생성과 Playback Range 설정"
-        },
-        {
           "id": "seq2-auto-heading",
           "type": "heading",
           "value": "2. LiveSync로 저장된 Cache Asset을 확인합니다",
@@ -1140,12 +1127,6 @@
           "type": "text",
           "value": "Content Browser에서 LiveSync Save 폴더를 열고 아바타와 가먼트의 Geometry Cache Asset을 각각 찾습니다. 이름이 비슷하므로 Thumbnail만 보지 말고 Asset Type을 확인합니다.\n\n아바타 Cache에는 CLO 아바타의 표면 움직임이, 가먼트 Cache에는 시뮬레이션된 의상 움직임이 들어 있습니다. 두 Asset은 하나의 완성된 Sequence가 아니라 별도의 재생 데이터입니다.\n\n수업에서는 새 Level Sequence를 직접 만든 뒤 아바타와 가먼트 Cache를 각각 Level에 배치하고 Geometry Cache Track으로 추가합니다. 문제가 생기면 먼저 각 Cache Asset 자체가 정상인지 확인한 다음 Track 시작 프레임과 FPS를 확인합니다.",
           "caption": ""
-        },
-        {
-          "id": "seq2-shot-cache-assets",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 02 — LiveSync 저장 폴더의 아바타 Geometry Cache와 가먼트 Geometry Cache"
         },
         {
           "id": "seq2-pose-heading",
@@ -1160,12 +1141,6 @@
           "caption": ""
         },
         {
-          "id": "seq2-shot-pose",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 03 — 아바타와 가먼트 Geometry Cache를 같은 원점에 배치한 화면"
-        },
-        {
           "id": "seq2-motion-heading",
           "type": "heading",
           "value": "4. 아바타 Geometry Cache를 Level Sequence에 추가하기",
@@ -1176,12 +1151,6 @@
           "type": "text",
           "value": "1. Level에 배치한 GC_Avatar Actor를 선택합니다.\n2. Sequencer의 + Track → Actor to Sequencer에서 GC_Avatar를 추가합니다.\n3. 추가된 Actor Track의 + Track에서 Geometry Cache Track을 선택합니다.\n4. LiveSync로 저장한 아바타 Geometry Cache Asset을 지정합니다.\n5. Geometry Cache Section의 왼쪽 끝을 시작 프레임 0에 맞춥니다.\n6. Playhead를 앞뒤로 Scrub해 아바타 표면과 모션이 정상적으로 움직이는지 확인합니다.\n7. Section 길이가 Playback Range와 맞는지 확인합니다.\n\nJoint Animation은 Skeletal Mesh와 Animation Sequence 방식으로 들어올 수 있지만 이번 수업의 기본 절차에서는 사용하지 않습니다. 해당 방식의 루트 위치, 포즈와 가먼트 동기화는 테스트 프로젝트가 준비된 뒤 별도로 검증합니다.",
           "caption": ""
-        },
-        {
-          "id": "seq2-shot-motion",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 04 — 아바타 Actor에 Geometry Cache Track과 Avatar Cache 추가"
         },
         {
           "id": "seq2-gc-heading",
@@ -1196,12 +1165,6 @@
           "caption": ""
         },
         {
-          "id": "seq2-shot-gc",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 05 — 아바타·가먼트 Geometry Cache Section의 시작 프레임 정렬"
-        },
-        {
           "id": "seq2-camera-heading",
           "type": "heading",
           "value": "6. Cine Camera와 Camera Cuts 만들기",
@@ -1212,12 +1175,6 @@
           "type": "text",
           "value": "1. Sequencer 상단의 Create Camera 버튼을 누릅니다.\n2. Cine Camera Actor, Camera Track과 Camera Cuts Track이 자동으로 만들어지는지 확인합니다.\n3. Camera Cuts Track의 카메라 아이콘을 켜 Viewport를 현재 카메라에 고정합니다.\n4. Playhead를 시작 프레임에 둡니다.\n5. 카메라를 Pilot 상태로 움직여 아바타 전신과 런웨이 공간이 함께 보이는 구도를 만듭니다.\n6. 첫 복습에서는 35–50mm 정도의 Focal Length에서 시작하고, 발이 잘리거나 왜곡이 심하면 카메라 거리와 초점거리를 함께 조정합니다.\n7. Camera Transform에 시작 Key를 추가합니다.\n8. 카메라를 움직이지 않을 경우에도 시작 Key를 남겨 구도가 바뀌지 않도록 합니다.",
           "caption": ""
-        },
-        {
-          "id": "seq2-shot-camera",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 06 — Create Camera 버튼, Cine Camera Track과 Camera Cuts Track"
         },
         {
           "id": "seq2-camera-move-heading",
@@ -1232,12 +1189,6 @@
           "caption": ""
         },
         {
-          "id": "seq2-shot-cuts",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 07 — 두 카메라와 Camera Cuts Section의 전환 지점"
-        },
-        {
           "id": "seq2-play-heading",
           "type": "heading",
           "value": "8. 모션과 카메라를 함께 재생합니다",
@@ -1250,12 +1201,6 @@
           "caption": ""
         },
         {
-          "id": "seq2-shot-play",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 08 — Sequencer 재생 버튼과 정상적인 아바타·의상·카메라 동시 재생"
-        },
-        {
           "id": "seq2-render-heading",
           "type": "heading",
           "value": "9. Movie Render Queue로 출력하기",
@@ -1266,12 +1211,6 @@
           "type": "text",
           "value": "1. Edit → Plugins에서 Movie Render Queue가 활성화되어 있는지 확인합니다. 처음 켰다면 Unreal을 다시 시작합니다.\n2. Sequencer 상단 Render 버튼의 옵션이 Movie Render Queue인지 확인합니다. 또는 Window → Cinematics → Movie Render Queue를 엽니다.\n3. + Render를 눌러 LS_이름_Runway_Main을 Queue에 추가합니다.\n4. Unsaved Config를 열고 Output을 추가합니다.\n5. Output Directory를 학생 작업 폴더 안의 Render/Runway_v01로 지정합니다.\n6. 처음 복습은 1920×1080, Sequence와 같은 Frame Rate로 설정합니다.\n7. 출력 형식은 PNG Image Sequence를 권장합니다. 중간 프레임이 실패해도 다시 이어서 출력하기 쉽고 편집 프로그램에서 영상으로 만들 수 있습니다.\n8. Start/End Frame이 Sequencer Playback Range와 맞는지 확인합니다.\n9. Render Local을 누르고 출력이 끝날 때까지 프로젝트를 조작하지 않습니다.\n10. 출력 폴더에서 첫 프레임, 중간 프레임과 마지막 프레임을 열어 카메라, 의상과 조명을 확인합니다.",
           "caption": ""
-        },
-        {
-          "id": "seq2-shot-mrq",
-          "type": "image",
-          "value": "",
-          "caption": "스크린샷 09 — Movie Render Queue의 Sequence, Output Directory, 해상도와 PNG 설정"
         },
         {
           "id": "seq2-render-check-heading",

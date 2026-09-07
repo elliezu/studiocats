@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">CLO pose and material course cover</title>
+  <desc id="desc">Abstract pose silhouette and material swatches.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#49335d"/><stop offset="1" stop-color="#1f5267"/></linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edc77f"/><stop offset="1" stop-color="#d88830"/></linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1152" cy="434" r="238" fill="none" stroke="url(#ring)" stroke-width="46"/>
+  <circle cx="1152" cy="434" r="149" fill="none" stroke="#f8f8f6" stroke-width="2" opacity=".7"/>
+  <g fill="none" stroke="#f8f8f6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="714" cy="251" r="59" stroke-width="18"/>
+    <path d="M714 318v204m0-136-112 80m112-80 120 60m-120 76-94 161m94-161 104 161" stroke-width="26"/>
+  </g>
+  <g transform="translate(1038 680)"><rect width="89" height="89" rx="12" fill="#f8f8f6"/><rect x="106" width="89" height="89" rx="12" fill="#d88830"/><rect x="212" width="89" height="89" rx="12" fill="#7fbcc3"/></g>
+  <g fill="#f8f8f6">
+    <text x="116" y="130" font-family="Arial, sans-serif" font-size="30" letter-spacing="8">CLASS MATERIAL</text>
+    <text x="115" y="242" font-family="Arial, sans-serif" font-size="94" font-weight="700">CLO</text>
+    <text x="115" y="332" font-family="Arial, sans-serif" font-size="57" font-weight="700">POSE &amp; MATERIAL</text>
+    <text x="116" y="386" font-family="Arial, sans-serif" font-size="25" letter-spacing="3">AVATAR · SURFACE · FABRIC</text>
+  </g>
+  <text x="1080" y="818" text-anchor="end" fill="#f8f8f6" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">STUDIOCATS</text>
+</svg>

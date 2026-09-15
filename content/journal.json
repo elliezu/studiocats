@@ -108,7 +108,7 @@
         {
           "id": "clo-motion-download-text",
           "type": "text",
-          "value": "이번 수업에서는 위 네 항목을 공통 설정으로 사용합니다. FBX Binary는 CLO에서 읽을 수 있는 일반 FBX 형식이고, 30 FPS는 CLO 모션 제작 권장 기준과 맞습니다. Keyframe Reduction을 None으로 두면 변환 전에 키가 줄어들어 손발이 미끄러지는 변수를 피할 수 있습니다.\n\n 다운로드한 파일명은 즉시 영문으로 정리합니다.",
+          "value": "이번 수업에서는 위 네 항목을 공통 설정으로 사용합니다. FBX Binary는 CLO에서 읽을 수 있는 일반 FBX 형식이고, 30 FPS는 CLO 모션 제작 권장 기준과 맞습니다. Keyframe Reduction을 None으로 두면 변환 전에 키가 줄어들어 손발이 미끄러지는 변수를 피할 수 있습니다.\n\n다운로드한 파일명은 즉시 영문으로 정리합니다.",
           "caption": "",
           "variant": ""
         },
@@ -178,7 +178,7 @@
         {
           "id": "clo-motion-class-practice-text",
           "type": "text",
-          "value": "① Mixamo에서 Catwalk Walk Forward 또는 단순한 Walking 모션을 찾습니다. ② 팔과 몸, 다리와 치맛단 사이가 겹치지 않는지 Preview에서 확인합니다. ③ 필요한 구간을 Trim하고 FBX Binary / With Skin / 30 FPS / None으로 다운로드합니다. ④ CLO에서 Auto Convert to Motion으로 MTN을 만들고 저장합니다. ⑤ 의상 프로젝트에 MTN을 적용하고 짧은 구간을 Play합니다. ⑥ 첫 프레임을 안정화한 뒤 Animation (Stable)에서 Record합니다. ⑦ Repeat와 Frame Stepping으로 손·겨드랑이·가랑이·무릎·치맛단을 점검합니다.\n\n걷기 모션 하나가 안정적으로 끝나면 그다음에 정지–걷기–회전처럼 더 긴 시퀀스로 확장합니다. 이번 주에는 여러 모션을 이어 붙이는 편집보다 한 모션의 의상 시뮬레이션 품질을 우선합니다.",
+          "value": "① Mixamo에서 Catwalk Walk Forward 또는 단순한 Walking 모션을 찾습니다. ② 팔과 몸, 다리와 치맛단 사이가 겹치지 않는지 Preview에서 확인합니다. ③ 필요한 구간을 Trim하고 FBX Binary / Without Skin / 30 FPS / None으로 다운로드합니다. ④ CLO에서 Auto Convert to Motion으로 MTN을 만들고 저장합니다. ⑤ 의상 프로젝트에 MTN을 적용하고 짧은 구간을 Play합니다. ⑥ 첫 프레임을 안정화한 뒤 Animation (Stable)에서 Record합니다. ⑦ Repeat와 Frame Stepping으로 손·겨드랑이·가랑이·무릎·치맛단을 점검합니다.\n\n걷기 모션 하나가 안정적으로 끝나면 그다음에 정지–걷기–회전처럼 더 긴 시퀀스로 확장합니다. 이번 주에는 여러 모션을 이어 붙이는 편집보다 한 모션의 의상 시뮬레이션 품질을 우선합니다.",
           "caption": "",
           "variant": ""
         },
@@ -192,7 +192,7 @@
         {
           "id": "clo-motion-check-text",
           "type": "text",
-          "value": "□ Adobe ID로 Mixamo에 로그인했다. □ Animations 화면에서 Preview와 조정값을 확인했다. □ FBX Binary / With Skin / 30 FPS / None으로 다운로드했다. □ Auto Convert to Motion에서 성별을 맞추고 MTN으로 저장했다. □ MTN과 ZPRJ를 각각 저장했다. □ Animation Editor의 Start·Play/Pause·End·Repeat·속도·재생 구간을 사용할 수 있다. □ Record 전에 첫 프레임 의상이 안정돼 있다. □ 손·겨드랑이·무릎·치맛단의 관통과 갑작스러운 붕괴가 없다.",
+          "value": "□ Adobe ID로 Mixamo에 로그인했다. □ Animations 화면에서 Preview와 조정값을 확인했다. □ FBX Binary / Without Skin / 30 FPS / None으로 다운로드했다. □ Auto Convert to Motion에서 성별을 맞추고 MTN으로 저장했다. □ MTN과 ZPRJ를 각각 저장했다. □ Animation Editor의 Start·Play/Pause·End·Repeat·속도·재생 구간을 사용할 수 있다. □ Record 전에 첫 프레임 의상이 안정돼 있다. □ 손·겨드랑이·무릎·치맛단의 관통과 갑작스러운 붕괴가 없다.",
           "caption": "",
           "variant": ""
         },

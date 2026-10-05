@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-05T13:54:02.178Z",
+  "updatedAt": "2026-10-05T13:54:17.632Z",
   "posts": [
     {
       "id": "clo-mixamo-motion-animation-editor",
@@ -2116,7 +2116,7 @@
       "id": "unreal-level-sequence-runway-refresher-02",
       "title": "Unreal Level Sequence에 CLO 모션과 카메라 구성하기 ②",
       "slug": "unreal-level-sequence-runway-refresher-02",
-      "status": "초안",
+      "status": "공개됨",
       "audience": "yeonseong",
       "date": "2026.08.30",
       "summary": "LiveSync Save로 만든 아바타 Skeletal Mesh·Animation Sequence와 가먼트 Geometry Cache를 Level Sequence에 넣고, 세로형 런웨이 카메라·포커스·키프레임을 설정하는 매뉴얼입니다.",
